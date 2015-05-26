@@ -21,7 +21,9 @@ public:
     {
         WorkData *workData = reinterpret_cast<WorkData*>( data );
 
-        std::cout << "Changing volume to: " << workData->newVolumePercents << "\n";
+        std::cout << "Changing volume to: " << int( workData->newVolumePercents ) << "%\n";
+
+        return true;
     }
 };
 
