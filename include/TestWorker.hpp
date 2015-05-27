@@ -5,7 +5,7 @@
 
 #include <iostream>
 
-class VolumeChanger : public Worker
+class TestWorker : public Worker
 {
 private:
     struct WorkData
@@ -14,8 +14,8 @@ private:
     };
 
 public:
-    VolumeChanger( ) {}
-    ~VolumeChanger( ) {}
+    TestWorker( ) {}
+    ~TestWorker( ) {}
 
     bool doWork( char *data )
     {
