@@ -1,32 +1,36 @@
-#ifndef _STATICMAP_HPP_
-#define _STATICMAP_HPP_
+#ifndef _CONSTMAP_HPP_
+#define _CONSTMAP_HPP_
 
 #include <map>
 #include <memory>
 
 template <class KeyType, class ValueType>
-class StaticMap
+class ConstMap
 {
 private:
-    static std::map<KeyType, ValueType> map;
-    typedef  std::pair<KeyType, std::unique_ptr<ValueType>> ElementPair;
+    typedef std::pair<KeyType, std::shared_ptr<ValueType>> ElementPair;
 
-    static void createElement( KeyType keyType, ValueType value )
+    std::map<KeyType, ValueType> map;
+
+    void createElement( KeyType keyType, ValueType value )
     {
         map.insert( ElementPair( KeyType,
-                    std::make_unique<ValueType>( value ) ) );
+                    std::make_shared<ValueType>( value ) ) );
     }
 
     virtual void init() = 0;
 
 public:
-    StaticMap()
+    ConstMap()
     {
         init();
     }
-    virtual ~StaticMap() {}
+    virtual ~ConstMap( ) {}
 
-    ValueType& operator[]( const KeyType &
+    const ValueType& operator[]( const KeyType &key ) const
+    {
+        return map[key];
+    }
 };
 
-#endif
+#endif // _CONSTMAP_HPP_
