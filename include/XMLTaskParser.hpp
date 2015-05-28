@@ -1,51 +1,54 @@
 #ifndef _XMLTASKPARSER_HPP_
 #define _XMLTASKPARSER_HPP_
 
-#include <string>
-#include <map>
-
 #include <tinyxml/tinyxml2.h>
 
-#include <TaskTypeEnum.h>
+#include <Task.hpp>
+#include <TaskTypeMap.hpp>
 
 using namespace tinyxml2;
-
 
 class XMLTaskParser
 {
 private:
-    static std::map<std::string, TaskType> taskTypeMap;
-    static bool mapInitiali
+    static TaskTypeMap taskTypeMap;
 
-    TaskType extractTaskType( const char *xmlData )
+    static char* extractElementText( const char *xmlData, const char *elementName )
     {
         XMLDocument doc( xmlData );
-        XMLElement* taskTypeElement;
+
+        doc.FirstChildElement( elementName )->GetText();
+    }
+
+    static TaskType extractTaskType( const char *xmlData )
+    {
         const char *taskTypeString;
 
-        taskTypeElement = doc.FirstChildElement( "tasktype" );
-        taskTypeString = taskTypeElement->GetText();
+        taskTypeString = extractElementText( xmlData, "tasktype" );
 
         return taskTypeMap[taskTypeString];
     }
 
-    static
-
-public:
-    TaskType taskType;
-    std::string taskData;
-
-    XMLTaskParser() {}
-    XMLTaskParser( const char *xmlData ) 
+    static std::string extractTaskData( const char *xmlData )
     {
+        const char *taskTypeString;
 
-        
-        
+        taskTypeString = extractElementText( xmlData, "taskdata" );
+
+        return std::string( taskTypeString );
     }
 
+public:
+    XMLTaskParser() {}
     ~XMLTaskParser() {}
 
+    static Task extrackTask( const char *xmlData )
+    {
+        TaskType taskType = extractTaskType( xmlData );
+        std::string taskData = extractTaskData( xmlData );
 
+        return Task( taskType, taskData );
+    }
 
 };
 
