@@ -17,11 +17,9 @@ public:
     VolumeChanger( ) {}
     ~VolumeChanger( ) {}
 
-    bool doWork( char *data )
+    bool doWork( const char *data )
     {
-        WorkData *workData = reinterpret_cast<WorkData*>( data );
-
-        std::cout << "Changing volume to: " << int( workData->newVolumePercents ) << "%\n";
+        std::cout << "Changing volume to: 50%\n";
 
         return true;
     }

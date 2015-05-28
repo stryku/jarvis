@@ -9,7 +9,7 @@ public:
     Worker() {}
     virtual ~Worker() {}
 
-    virtual bool doWork( char *data ) = 0;
+    virtual bool doWork( const char *data ) = 0;
 };
 
 #endif

@@ -16,8 +16,9 @@ public:
     {
         switch( type )
         {
-            case TASK_TEST:             return std::make_shared<TestWorker>();
-            case TASK_VOLUME_CHANGE:    return std::make_shared<VolumeChanger>();
+            case TASK_TEST:             return std::make_shared<TestWorker>(); 
+            case TASK_VOLUME_CHANGE:    return std::make_shared<VolumeChanger>(); 
+            default:                    return std::make_shared<TestWorker>(); 
         }
     }
 };
