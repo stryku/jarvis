@@ -3,8 +3,12 @@
 
 enum TaskType
 {
-    WT_VOLUME_CHANGER = 0,
-    WT_TEST
+    TASK_PC_MANAGE,
+    TASK_JARVIS_MANAGE,
+
+    TASK_TEST,
+    TASK_VOLUME_CHANGE
+
 };
 
 
