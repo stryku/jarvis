@@ -52,7 +52,7 @@ public:
 
     static Task extractTask( const std::string &xmlData )
     {
-        return extrackTask( xmlData.c_str() );
+        return extractTask( xmlData.c_str( ) );
     }
 
 };
