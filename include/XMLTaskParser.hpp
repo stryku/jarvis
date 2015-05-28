@@ -13,11 +13,11 @@ class XMLTaskParser
 private:
     static TaskTypeMap taskTypeMap;
 
-    static char* extractElementText( const char *xmlData, const char *elementName )
+    static const char* extractElementText( const char *xmlData, const char *elementName )
     {
         XMLDocument doc( xmlData );
 
-        doc.FirstChildElement( elementName )->GetText();
+        return doc.FirstChildElement( elementName )->GetText();
     }
 
     static TaskType extractTaskType( const char *xmlData )
@@ -44,8 +44,9 @@ public:
 
     static Task extractTask( const char *xmlData )
     {
-        TaskType taskType = extractTaskType( xmlData );
-        std::string taskData = extractTaskData( xmlData );
+        const char *taskText = extractElementText( xmlData, "task" );
+        TaskType taskType = extractTaskType( taskText );
+        std::string taskData = extractTaskData( taskText );
 
         return Task( taskType, taskData );
     }
