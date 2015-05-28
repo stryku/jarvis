@@ -9,8 +9,9 @@ class ConstMap
 {
 protected:
     typedef std::pair<KeyType, ValueType> ElementPair;
+    typedef std::map<KeyType, ValueType> Map;
 
-    std::map<KeyType, ValueType> map;
+    Map map;
 
     virtual void init() = 0;
 
@@ -24,6 +25,11 @@ public:
     const ValueType& operator[]( const KeyType &key ) const
     {
         return map[key];
+    }
+
+    const KeyType& operator[]( const ValueType &value ) const
+    {
+        return map.find( value )->first;
     }
 };
 
