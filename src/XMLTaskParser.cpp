@@ -2,7 +2,7 @@
 
 TaskTypeMap XMLTaskParser::taskTypeMap = TaskTypeMap( );
 
-TaskType XMLTaskParser::extractTaskType( xml_node<> *taskNode )
+TaskType XMLTaskParser::extractTaskType( const xml_node<> *taskNode )
 {
     const char *taskTypeString;
 
@@ -11,11 +11,7 @@ TaskType XMLTaskParser::extractTaskType( xml_node<> *taskNode )
     return taskTypeMap[taskTypeString];
 }
 
-#include <iostream>
-#include <string>
-#include <rapidxml\rapidxml_print.hpp>
-
-std::string XMLTaskParser::extractTaskData( xml_node<> *taskNode )
+std::string XMLTaskParser::extractTaskData( const xml_node<> *taskNode )
 {
     auto taskDataNode = taskNode->first_node( "taskdata" );
     std::string ret;
@@ -25,19 +21,44 @@ std::string XMLTaskParser::extractTaskData( xml_node<> *taskNode )
     return ret;
 }
 
-Task XMLTaskParser::extractTask( const char *xmlData )
+std::vector<Task> XMLTaskParser::extractTasks( const char *xmlData )
 {
+    std::vector<Task> tasks;
     xml_document <> doc;
     doc.parse<0>( const_cast<char*>( xmlData ) );
 
-    auto taskElement = doc.first_node();
-    TaskType taskType = extractTaskType( taskElement );
-    std::string taskData = extractTaskData( taskElement );
+    for( auto *taskNode = doc.first_node( );
+         taskNode;
+         taskNode = doc.first_node( ) )
+    {
+        TaskType taskType = extractTaskType( taskNode );
+        std::string taskData = extractTaskData( taskNode );
+
+        tasks.push_back( Task( taskType, taskData ) );
+
+        doc.remove_first_node( );
+    }
+
+    return tasks;
+}
+
+Task XMLTaskParser::extractTask( const char *xmlData )
+{
+    std::vector<Task> tasks;
+    xml_document <> doc;
+    doc.parse<0>( const_cast<char*>( xmlData ) );
+    auto *taskNode = doc.first_node();
+
+    TaskType taskType = extractTaskType( taskNode );
+    std::string taskData = extractTaskData( taskNode );
 
     return Task( taskType, taskData );
 }
 
-Task XMLTaskParser::extractTask( const std::string &xmlData )
+Task XMLTaskParser::extractTask( const xml_node<> *taskNode )
 {
-    return extractTask( xmlData.c_str( ) );
+    TaskType taskType = extractTaskType( taskNode );
+    std::string taskData = extractTaskData( taskNode );
+
+    return Task( taskType, taskData );
 }
