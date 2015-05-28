@@ -4,8 +4,8 @@
 </task>
 
 taskType
-	PC Manage Task
-	Jarvis Manage Task
+	pc manage
+	jarvis manage
 
 taskData
 	Depends of taskType

@@ -1,5 +1,5 @@
 <task>
-	<tasktype> PCManageTask </tasktype>
+	<tasktype>pc manage</tasktype>
 	<taskdata> 
 		<tasktype>	PCManageTaskType </tasktype>
 		<taskdata> PCManageTaskData </taskdata>
@@ -9,8 +9,8 @@
 PCManageTask - const
 
 PCManageTaskType
-	ChangeVolume
-	Test
+	test
+	change volume
 
 PCManageTaskData
 	Depends of PCManageTaskType
