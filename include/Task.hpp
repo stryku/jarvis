@@ -15,18 +15,10 @@ struct Task
     std::string data;
 
     Task() {}
-    Task( TaskType type, std::string data ) :
-        type( type ),
-        data( data )
-    {}
+    Task( TaskType type, std::string data );
     ~Task() {}
 
-    friend std::ostream& operator<<( std::ostream &ostream, const Task &task )
-    {
-        ostream << "Task type: " << task.taskTypeMap[task.type] << "\n"
-                << "Data:\n" << task.data;
-    }
-
+    friend std::ostream& operator<<( std::ostream &ostream, const Task &task );
 };
 
 #endif // _TASKSTRUCT_HPP_
