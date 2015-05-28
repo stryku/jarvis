@@ -9,7 +9,7 @@
 
 struct Task
 {
-    static const TaskTypeMap taskTypeMap;
+    static TaskTypeMap taskTypeMap;
 
     TaskType type;
     std::string data;

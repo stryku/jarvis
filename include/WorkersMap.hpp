@@ -8,22 +8,8 @@ class WorkersMap : public ConstMap<TaskType, std::shared_ptr<Worker>>
 {
 private:
 
-    void addWorker( TaskType type )
-    {
-        map.insert( ElementPair( type,
-                                 WorkersFactory::createWorker( type ) ) );
-    }
-
-    void init()
-    {
-        TaskType begin, end;
-
-        begin = static_cast<TaskType>( TASK_BEGIN + 1 );
-        end = TASK_END;
-
-        for( size_t type = begin; type != end; ++type )
-            addWorker( static_cast<TaskType>( type ) );
-    }
+    void addWorker( TaskType type );
+    void init();
 
 public:
     WorkersMap() {}

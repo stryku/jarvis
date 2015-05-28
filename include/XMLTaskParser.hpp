@@ -26,7 +26,7 @@ private:
 
         taskTypeString = extractElementText( xmlData, "tasktype" );
 
-        return taskTypeMap[taskTypeString];
+        return taskTypeMap[ taskTypeString ];
     }
 
     static std::string extractTaskData( const char *xmlData )

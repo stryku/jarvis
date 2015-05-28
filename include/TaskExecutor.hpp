@@ -7,7 +7,7 @@
 class TaskExecutor
 {
 private:
-    WorkersManager workersManager;
+    //WorkersManager workersManager;
 
 public:
     TaskExecutor( ) {}
@@ -22,7 +22,7 @@ public:
         auto task = XMLTaskParser::extractTask( mainTask.data );
         std::cout << task << "\n";
 
-        workersManager.doWork( task.type, task.data );
+        //workersManager.doWork( task.type, task.data );
     }
 };
 

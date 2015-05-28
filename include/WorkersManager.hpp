@@ -5,7 +5,7 @@
 #include <memory>
 
 #include <WorkersMap.hpp>
-#include <TaskTypeEnum.h>
+#include <TaskTypeMap.hpp>
 
 class WorkersManager
 {
@@ -21,7 +21,7 @@ public:
 
     bool doWork( TaskType taskType, char *data )
     {
-        return workersMap[taskType]->doWork( data );
+        return workersMap[ taskType ]->doWork( data );
     }
 
     bool doWork( TaskType taskType, const std::string &data )

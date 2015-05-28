@@ -1,6 +1,6 @@
 #include <Task.hpp>
 
-const TaskTypeMap Task::taskTypeMap = TaskTypeMap( );
+TaskTypeMap Task::taskTypeMap = TaskTypeMap( );
 
 Task::Task( TaskType type, std::string data ) :
     type( type ),
@@ -10,7 +10,7 @@ Task::Task( TaskType type, std::string data ) :
 
 std::ostream& operator<<( std::ostream &ostream, const Task &task )
 {
-    ostream << "Task type: " << task.taskTypeMap[task.type] << "\n"
+    ostream << "Task type: " << task.taskTypeMap[ task.type ] << "\n"
         << "Data:\n" << task.data;
 
     return ostream;
