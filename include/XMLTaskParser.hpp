@@ -42,12 +42,17 @@ public:
     XMLTaskParser() {}
     ~XMLTaskParser() {}
 
-    static Task extrackTask( const char *xmlData )
+    static Task extractTask( const char *xmlData )
     {
         TaskType taskType = extractTaskType( xmlData );
         std::string taskData = extractTaskData( xmlData );
 
         return Task( taskType, taskData );
+    }
+
+    static Task extractTask( const std::string &xmlData )
+    {
+        return extrackTask( xmlData.c_str() );
     }
 
 };
