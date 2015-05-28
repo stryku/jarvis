@@ -7,16 +7,10 @@
 template <class KeyType, class ValueType>
 class ConstMap
 {
-private:
-    typedef std::pair<KeyType, std::shared_ptr<ValueType>> ElementPair;
+protected:
+    typedef std::pair<KeyType, ValueType> ElementPair;
 
     std::map<KeyType, ValueType> map;
-
-    void createElement( KeyType keyType, ValueType value )
-    {
-        map.insert( ElementPair( KeyType,
-                    std::make_shared<ValueType>( value ) ) );
-    }
 
     virtual void init() = 0;
 
