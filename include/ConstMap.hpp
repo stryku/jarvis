@@ -17,10 +17,9 @@ protected:
     typedef boost::bimap<KeyType, ValueType> Map;
 
     Map map;
-    virtual void init() {}
 
 public:
-    ConstMap() { init(); }
+    ConstMap() {}
     virtual ~ConstMap( ) {}
 
     const ValueType& operator[]( const KeyType &key )

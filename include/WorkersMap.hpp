@@ -12,7 +12,7 @@ private:
     void init();
 
 public:
-    WorkersMap( ) {  }
+    WorkersMap() { init(); }
     ~WorkersMap() {}
 };
 
