@@ -21,10 +21,10 @@ struct Task
     {}
     ~Task() {}
 
-    std::ostream& operator<<( std::ostream &ostream )
+    friend std::ostream& operator<<( std::ostream &ostream, const Task &task )
     {
-        ostream << "Task type: " << taskTypeMap[type] << "\n"
-                << "Data:\n" << data;
+        ostream << "Task type: " << task.taskTypeMap[task.type] << "\n"
+                << "Data:\n" << task.data;
     }
 
 };
