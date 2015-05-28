@@ -1,5 +1,7 @@
-<tasktype> taskType </tasktype>
-<taskdata> taskData </taskdata>
+<task>
+	<tasktype> taskType </tasktype>
+	<taskdata> taskData </taskdata>
+</task>
 
 taskType
 	PCManageTask

@@ -1,8 +1,10 @@
-<tasktype> PCManageTask </tasktype>
-<taskdata> 
-	<pcmanagetasktype>	PCManageTaskType </pcmanagetasktype>
-	<taskdata> PCManageTaskData </taskdata>
-</taskdata>
+<task>
+	<tasktype> PCManageTask </tasktype>
+	<taskdata> 
+		<pcmanagetasktype>	PCManageTaskType </pcmanagetasktype>
+		<taskdata> PCManageTaskData </taskdata>
+	</taskdata>
+</task>
 
 PCManageTask - const
 
