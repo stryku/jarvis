@@ -10,8 +10,10 @@ class WorkersFactory
 public:
     enum WorkerType
     {
-        WT_TEST,
-        WT_VOLUME_CHANGER
+        WT_TEST = 0,
+        WT_VOLUME_CHANGER,
+
+        WT_END
     };
 
     WorkersFactory() {}
