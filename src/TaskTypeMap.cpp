@@ -10,8 +10,8 @@ void TaskTypeMap::addTaskType( const std::string &taskString, TaskType taskType 
 
 void TaskTypeMap::init( )
 {
-    addTaskType( "PC Manage Task", TASK_PC_MANAGE );
-    addTaskType( "Jarvis Manage Task", TASK_JARVIS_MANAGE );
+    addTaskType( "pc manage", TASK_PC_MANAGE );
+    addTaskType( "jarvis manage", TASK_JARVIS_MANAGE );
 
     addTaskType( "test", TASK_TEST );
     addTaskType( "change volume", TASK_VOLUME_CHANGE );

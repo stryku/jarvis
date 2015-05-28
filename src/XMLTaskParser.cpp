@@ -2,29 +2,35 @@
 
 TaskTypeMap XMLTaskParser::taskTypeMap = TaskTypeMap( );
 
-TaskType XMLTaskParser::extractTaskType( XMLElement *taskElement )
+TaskType XMLTaskParser::extractTaskType( xml_node<> *taskNode )
 {
     const char *taskTypeString;
 
-    taskTypeString = taskElement->FirstChildElement( "tasktype" )->GetText( );
+    taskTypeString = taskNode->first_node( "tasktype" )->value();
 
     return taskTypeMap[taskTypeString];
 }
 
-std::string XMLTaskParser::extractTaskData( XMLElement *taskElement )
+#include <iostream>
+#include <string>
+#include <rapidxml\rapidxml_print.hpp>
+
+std::string XMLTaskParser::extractTaskData( xml_node<> *taskNode )
 {
-    const char *taskTypeString;
+    auto taskDataNode = taskNode->first_node( "taskdata" );
+    std::string ret;
 
-    taskTypeString = taskElement->FirstChildElement( "taskdata" )->GetText( );
+    print( std::back_inserter( ret ), *taskDataNode, 0 );
 
-    return std::string( taskTypeString );
+    return ret;
 }
 
 Task XMLTaskParser::extractTask( const char *xmlData )
 {
-    XMLDocument doc;
-    doc.Parse( xmlData );
-    auto taskElement = doc.FirstChildElement();
+    xml_document <> doc;
+    doc.parse<0>( const_cast<char*>( xmlData ) );
+
+    auto taskElement = doc.first_node();
     TaskType taskType = extractTaskType( taskElement );
     std::string taskData = extractTaskData( taskElement );
 

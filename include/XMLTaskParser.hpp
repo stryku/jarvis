@@ -1,22 +1,22 @@
 #ifndef _XMLTASKPARSER_HPP_
 #define _XMLTASKPARSER_HPP_
 
-#include <tinyxml/tinyxml2.h>
+#include <rapidxml\rapidxml.hpp>
 
 #include <Task.hpp>
 #include <TaskTypeMap.hpp>
 
-using namespace tinyxml2;
+using namespace rapidxml;
 
 class XMLTaskParser
 {
 private:
     static TaskTypeMap taskTypeMap;
 
-    static const char* extractChildElementText( XMLElement *taskElement,
+    static const char* extractChildElementText( xml_node<> *taskNode,
                                                 const char *elementName );
-    static TaskType extractTaskType( XMLElement *taskElement );
-    static std::string extractTaskData( XMLElement *taskElement );
+    static TaskType extractTaskType( xml_node<> *taskNode );
+    static std::string extractTaskData( xml_node<> *taskNode );
 
 public:
     XMLTaskParser() {}
