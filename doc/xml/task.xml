@@ -1,2 +1,9 @@
-<tasktype> task id </tasktype>
-<taskdata> task data </taskdata>
+<tasktype> taskType </tasktype>
+<taskdata> taskData </taskdata>
+
+taskType
+	PCManageTask
+	JarvisManageTask
+
+taskData
+	Depends of taskType
