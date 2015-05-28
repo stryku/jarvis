@@ -18,7 +18,8 @@ struct Task
     Task( TaskType type, std::string data );
     ~Task() {}
 
-    friend std::ostream& operator<<( std::ostream &ostream, const Task &task );
 };
+
+std::ostream& operator<<( std::ostream &ostream, const Task &task );
 
 #endif // _TASKSTRUCT_HPP_
