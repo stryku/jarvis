@@ -13,7 +13,7 @@ public:
     TaskExecutor( ) {}
     ~TaskExecutor( ) {}
 
-    void execute( char *data )
+    void execute( const char *data )
     {
         Task mainTask = XMLTaskParser::extractTask( data );
 
