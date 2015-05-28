@@ -1,0 +1,14 @@
+<tasktype> PCManageTask </tasktype>
+<taskdata> 
+	<pcmanagetasktype>	PCManageTaskType </pcmanagetasktype>
+	<taskdata> PCManageTaskData </taskdata>
+</taskdata>
+
+PCManageTask - const
+
+PCManageTaskType
+	ChangeVolume
+	Test
+
+PCManageTaskData
+	Depends of PCManageTaskType
