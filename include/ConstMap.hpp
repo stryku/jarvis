@@ -16,21 +16,12 @@ protected:
     virtual void init() = 0;
 
 public:
-    ConstMap()
-    {
-        init();
-    }
+    ConstMap();
     virtual ~ConstMap( ) {}
 
-    const ValueType& operator[]( const KeyType &key ) const
-    {
-        return map[key];
-    }
+    const ValueType& operator[]( const KeyType &key ) const;
 
-    const KeyType& operator[]( const ValueType &value ) const
-    {
-        return map.find( value )->first;
-    }
+    const KeyType& operator[]( const ValueType &value ) const;
 };
 
 #endif // _CONSTMAP_HPP_
