@@ -23,6 +23,11 @@ public:
     {
         return workersMap[taskType]->doWork( data );
     }
+
+    bool doWork( TaskType taskType, const std::string &data )
+    {
+        return doWork( taskType, data.c_str() );
+    }
 };
 
 #endif

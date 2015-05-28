@@ -15,7 +15,14 @@ public:
 
     void execute( char *data )
     {
+        Task mainTask = XMLTaskParser::extractTask( data );
 
+        std::cout << mainTask << "\n";
+
+        auto task = XMLTaskParser::extractTask( mainTask.data );
+        std::cout << task << "\n";
+
+        workersManager.doWork( task.type, task.data );
     }
 };
 
