@@ -5,11 +5,13 @@
 #include <memory>
 
 #include <WorkersMap.hpp>
+#include <TaskTypeEnum.h>
 
 class WorkersManager
 {
 private:
     WorkersMap workersMap;
+    TaskTypeMap taskTypeMap;
 
 public:
     WorkersManager() 
@@ -17,9 +19,9 @@ public:
     }
     ~WorkersManager() {}
 
-    bool doWork( WorkerType workerType, char *data )
+    bool doWork( TaskType taskType, char *data )
     {
-        return workersMap[workerType]->doWork( data );
+        return workersMap[taskType]->doWork( data );
     }
 };
 

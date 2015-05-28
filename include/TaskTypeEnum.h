@@ -3,12 +3,15 @@
 
 enum TaskType
 {
+    TASK_BEGIN = 0,
+
     TASK_PC_MANAGE,
     TASK_JARVIS_MANAGE,
 
     TASK_TEST,
-    TASK_VOLUME_CHANGE
+    TASK_VOLUME_CHANGE,
 
+    TASK_END
 };
 
 

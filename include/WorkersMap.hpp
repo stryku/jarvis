@@ -4,13 +4,11 @@
 #include <ConstMap.hpp>
 #include <WorkersFactory.hpp>
 
-typedef WorkersFactory::WorkerType WorkerType;
-
-class WorkersMap : public ConstMap<WorkerType, std::shared_ptr<Worker>>
+class WorkersMap : public ConstMap<TaskType, std::shared_ptr<Worker>>
 {
 private:
 
-    void addWorker( WorkerType type )
+    void addWorker( TaskType type )
     {
         map.insert( ElementPair( type,
                                  WorkersFactory::createWorker( type ) ) );
@@ -18,11 +16,13 @@ private:
 
     void init()
     {
-        WorkerType begin = WorkerType::WT_VOLUME_CHANGER,
-                   end = WorkerType::WT_END;
+        TaskType begin, end;
+
+        begin = static_cast<TaskType>( TASK_BEGIN + 1 );
+        end = TASK_END;
 
         for( size_t type = begin; type != end; ++type )
-            addWorker( static_cast<WorkerType>( type ) );
+            addWorker( static_cast<TaskType>( type ) );
     }
 
 public:
