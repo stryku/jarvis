@@ -4,27 +4,20 @@
 #include <memory>
 
 #include <Workers.h>
+#include <TaskTypeEnum.h>
 
 class WorkersFactory
 {
 public:
-    enum WorkerType
-    {
-        WT_TEST = 0,
-        WT_VOLUME_CHANGER,
-
-        WT_END
-    };
-
     WorkersFactory() {}
     ~WorkersFactory() {}
 
-    static std::shared_ptr<Worker> createWorker( WorkerType type )
+    static std::shared_ptr<Worker> createWorker( TaskType type )
     {
         switch( type )
         {
-            case WT_TEST:           return std::make_shared<TestWorker>();
-            case WT_VOLUME_CHANGER: return std::make_shared<VolumeChanger>();
+            case TASK_TEST:             return std::make_shared<TestWorker>();
+            case TASK_VOLUME_CHANGE:    return std::make_shared<VolumeChanger>();
         }
     }
 };
