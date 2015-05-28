@@ -14,10 +14,7 @@ private:
     void init();
 
 public:
-    TaskTypeMap() 
-    {
-        init();
-    }
+    TaskTypeMap() { }
     ~TaskTypeMap() {}
 };
 

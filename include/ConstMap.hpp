@@ -1,13 +1,14 @@
 #ifndef _CONSTMAP_HPP_
 #define _CONSTMAP_HPP_
 
-#include <map>
 #include <memory>
 
 #include <boost/bimap.hpp>
 
+#include <AbstractConstMap.hpp>
+
 template <class KeyType, class ValueType>
-class ConstMap
+class ConstMap : public AbstractConstMap
 {
 protected:
     typedef std::pair<KeyType, ValueType> ElementPair;
@@ -16,15 +17,10 @@ protected:
     typedef boost::bimap<KeyType, ValueType> Map;
 
     Map map;
-
-
-    virtual void init() = 0;
+    virtual void init() {}
 
 public:
-    ConstMap()
-    {
-        init();
-    }
+    ConstMap() { init(); }
     virtual ~ConstMap( ) {}
 
     const ValueType& operator[]( const KeyType &key )
