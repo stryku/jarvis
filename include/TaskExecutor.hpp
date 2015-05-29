@@ -11,10 +11,10 @@ private:
 
     void executeTask( const Task &task )
     {
-        std::cout << task << "\n\n";
+        //std::cout << task << "\n\n";
 
         auto subTask = XMLTaskParser::extractTask( task.data.c_str( ) );
-        std::cout << subTask << "\n\n\n";
+        //std::cout << subTask << "\n\n\n";
 
         workersManager.doWork( subTask.type, subTask.data );
     }

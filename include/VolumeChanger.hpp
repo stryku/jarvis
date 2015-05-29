@@ -5,6 +5,8 @@
 
 #include <iostream>
 
+#include <Windows.h>
+
 class VolumeChanger : public Worker
 {
 private:
@@ -20,6 +22,7 @@ public:
     bool doWork( const char *data )
     {
         std::cout << "Changing volume to: 50%\n";
+        waveOutSetVolume( NULL, 100 );
 
         return true;
     }

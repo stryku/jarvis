@@ -48,9 +48,16 @@ private:
                 extractedSize = true;
             }
 
-        } while( errorCode || readedSize == messageSize );
+        } while( !errorCode && readedSize < messageSize );
 
         return errorCode;
+    }
+
+    void responseToMessage()
+    {
+        char data[10] = "PRZYJALEM";
+        std::cout << "\nOdpowiadam\n";
+        socket_.write_some( boost::asio::buffer( data, 10 ) );
     }
 
     void do_read( )
@@ -65,6 +72,7 @@ private:
             else
             {
                 std::cout << "Reading message succesfull. Message:\n" << data_.data() + 4;
+                responseToMessage();
             }
         }
     }

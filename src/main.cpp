@@ -39,8 +39,8 @@ int main( int argc, char* argv[] )
             port = argv[1];
 
         boost::asio::io_service io_service;
-        Server s( io_service, std::atoi( port ) );
-        io_service.run( );
+        Server s( io_service );
+        s.run( );
     }
     catch( std::exception& e )
     {
