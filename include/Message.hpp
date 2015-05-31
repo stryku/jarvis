@@ -6,8 +6,9 @@
 
 using boost::asio::ip::tcp;
 
-struct Message
+class Message
 {
+public:
     static const size_t defaultVectorLength = 5 * 1024;
 
     std::vector<char> data;
@@ -32,10 +33,18 @@ struct Message
     }
     ~Message( ) {}
 
-    std::vector<char>::const_iterator end() const
+    std::string toStdString() const
     {
-        return data.begin() + length;
+        return std::string( data.begin(), data.end() );
     }
+
+private:
+    std::vector<char>::const_iterator end( ) const
+    {
+        return data.begin( ) + length;
+    }
+
+    
 
 };
 
