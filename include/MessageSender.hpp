@@ -15,10 +15,10 @@ public:
         boost::asio::async_write( socket,
                                   boost::asio::buffer( message.c_str(), message.size() ),
                                   []( boost::system::error_code ec ) 
-        {   
-            if( !ec )
-                throw boost::system::system_error( errorCode );
-        } );
+                                  {   
+                                      if( !ec )
+                                          throw boost::system::system_error( ec );
+                                  } );
     }
 };
 
