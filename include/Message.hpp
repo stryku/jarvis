@@ -12,19 +12,22 @@ struct Message
 
     std::vector<char> data;
     size_t length;
-    tcp::socket &socket;
+    tcp::socket *socket;
 
-    Message( ) : length( 0 )
+    Message( ) : 
+        length( 0 ),
+        socket( nullptr )
     {
         data.resize( defaultVectorLength );
     }
-    Message( const Message &message )
+    Message( const Message &message ) : 
+        length( message.length ),
+        socket( message.socket )
     {
         const auto dataBegin = message.data.begin( ),
                    dataEnd = message.end();
 
-        length = message.length;
-        data.resize( message.length );
+        data.resize( length );
         std::copy( dataBegin, dataEnd, data.begin() );
     }
     ~Message( ) {}
