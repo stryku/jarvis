@@ -14,10 +14,10 @@ public:
     MessageManager() {}
     ~MessageManager() {}
 
-    std::queue<Message> receivedMessages;
-    std::queue<Message> messagesToSend;
+    std::queue<RawMessage> receivedMessages;
+    std::queue<RawMessage> messagesToSend;
 
-    void receivedNewMessage( const Message &message )
+    void receivedNewMessage( const RawMessage &message )
     {
         receivedMessages.push( message );
     }
@@ -30,9 +30,10 @@ public:
 
             while( !messagesToSend.empty() )
             {
-                Message &message = messagesToSend.front();
+                RawMessage &rawMessage = messagesToSend.front( );
 
-                MessageSender::sendMessage( *message.socket, message.toStdString() );
+                MessageSender::sendMessage( *( rawMessage.socket ),
+                                            rawMessage.toStdString( ) );
 
                 messagesToSend.pop();
             }

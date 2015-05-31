@@ -4,7 +4,7 @@
 #include <array>
 
 #include <TaskExecutor.hpp>
-#include <Message.hpp>
+#include <RawMessage.hpp>
 #include <MessageManager.hpp>
 
 using boost::asio::ip::tcp;
@@ -14,7 +14,7 @@ class Server
 private:
     TaskExecutor taskExecutor;
     std::array<char, 2048> data;
-    Message receivedMessage;
+    RawMessage receivedMessage;
 
 
 public:

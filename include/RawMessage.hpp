@@ -6,22 +6,22 @@
 
 using boost::asio::ip::tcp;
 
-class Message
+class RawMessage
 {
 public:
-    static const size_t defaultVectorLength = 5 * 1024;
 
     std::vector<char> data;
     size_t length;
     tcp::socket *socket;
 
-    Message( ) : 
+    RawMessage( ) :
         length( 0 ),
         socket( nullptr )
     {
         data.resize( defaultVectorLength );
     }
-    Message( const Message &message ) : 
+
+    RawMessage( const RawMessage &message ) :
         length( message.length ),
         socket( message.socket )
     {
@@ -31,7 +31,8 @@ public:
         data.resize( length );
         std::copy( dataBegin, dataEnd, data.begin() );
     }
-    ~Message( ) {}
+
+    ~RawMessage( ) {}
 
     std::string toStdString() const
     {
@@ -39,13 +40,12 @@ public:
     }
 
 private:
+    static const size_t defaultVectorLength = 5 * 1024;
+
     std::vector<char>::const_iterator end( ) const
     {
         return data.begin( ) + length;
     }
-
-    
-
 };
 
 #endif // RECEIVEDMESSAGE_HPP
