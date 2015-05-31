@@ -8,15 +8,21 @@ class ReceivedMessage
 private:
     static const size_t defaultVectorLength = 5 * 1024;
 
+    std::array<char, defaultVectorLength> data;
+    size_t length;
 public:
-    ReceivedMessage() : length( 0 )
-    {
-        message.resize( defaultVectorLength );
-    }
+    ReceivedMessage() : length( 0 ) {}
     ~ReceivedMessage() {}
 
-    std::vector<char> message;
-    size_t length;
+    char* data() const
+    {
+        return data.data( );
+    }
+
+    size_t maxLength() const
+    {
+        return defaultVectorLength;
+    }
 };
 
 #endif // RECEIVEDMESSAGE_HPP
