@@ -1,0 +1,10 @@
+<msg>
+	<type>MsgType</type>
+	<data>MsgData</data>
+</msg>
+
+MsgType
+	test
+	
+MsgData	
+	depend of MsgType
