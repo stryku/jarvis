@@ -31,8 +31,8 @@ public:
     {
         switch( type )
         {
-            case XMSG_TEST: return std::make_shared<TestXmlMessage>( socket, data );
-            case XMSG_TASK_RECEIVED: return std::make_shared<TaskReceivedMessage>( socket, data );
+            case XMSG_TEST:             return std::make_shared<TestXmlMessage>( socket, data );
+            case XMSG_TASK_RECEIVED:    return std::make_shared<TaskReceivedMessage>( socket, data );
                 //case XMSG_TEST: return std::make_shared<TestXmlMessage>( socket, data );
                 //default:        return std::make_shared<TestXmlMessage>( /*socket,*/ data );
                 //default:        return std::make_shared<TestXmlMessage>( socket, data );
