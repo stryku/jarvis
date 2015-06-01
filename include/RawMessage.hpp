@@ -1,5 +1,5 @@
-#ifndef RECEIVEDMESSAGE_HPP
-#define RECEIVEDMESSAGE_HPP
+#ifndef RAWMESSAGE_HPP
+#define RAWMESSAGE_HPP
 
 #include <vector>
 #include <boost/asio.hpp>
@@ -9,7 +9,6 @@ using boost::asio::ip::tcp;
 class RawMessage
 {
 public:
-
     std::vector<char> data;
     size_t length;
     tcp::socket *socket;
@@ -19,6 +18,13 @@ public:
         socket( nullptr )
     {
         data.resize( defaultVectorLength );
+    }
+    RawMessage( tcp::socket *socket, const std::string &stringData ) :
+        socket( socket ),
+        length( stringData.size() )
+    {
+        data.resize( length );
+        std::copy( stringData.begin( ), stringData.end( ), data.begin( ) );
     }
 
     RawMessage( const RawMessage &message ) :
@@ -48,4 +54,4 @@ private:
     }
 };
 
-#endif // RECEIVEDMESSAGE_HPP
+#endif // RAWMESSAGE_HPP
