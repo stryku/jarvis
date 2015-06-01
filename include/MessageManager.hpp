@@ -2,6 +2,7 @@
 #define MESSAGEMANAGER_HPP
 
 #include <queue>
+#include <boost/lockfree/queue.hpp>
 
 #include <MessageSender.hpp>
 #include <XmlMessageFactory.hpp>
@@ -19,23 +20,28 @@ private:
 
             while( !messagesToSend.empty( ) )
             {
-                MessageSender::sendMessage( messagesToSend.front( ) );
-
-                messagesToSend.pop( );
+                RawMessage tmp;
+                messagesToSend.pop( tmp );
+                MessageSender::sendMessage( tmp );
             }
 
             sendingInProgress = false;
         }
     }
 
+    void newMessageToExecute( const RawMessage &rawMessage )
+    {
+
+    }
+
+    boost::lockfree::queue<RawMessage> receivedMessages;
+    boost::lockfree::queue<RawMessage> messagesToSend;
+
 public:
     MessageManager() : 
         sendingInProgress( false ) 
     {}
     ~MessageManager() {}
-
-    std::queue<RawMessage> receivedMessages;
-    std::queue<RawMessage> messagesToSend;
 
     void receivedNewMessage( const RawMessage &message )
     {
