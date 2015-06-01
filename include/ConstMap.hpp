@@ -7,14 +7,17 @@
 
 #include <AbstractConstMap.hpp>
 
-template <class KeyType, class ValueType>
+template <class Left, class Right>
 class ConstMap : public AbstractConstMap
 {
 protected:
-    typedef std::pair<KeyType, ValueType> ElementPair;
-    //typedef std::map<KeyType, ValueType> Map;
+    typedef std::pair<Left, Right> ElementPair;
+    typedef boost::bimap<Left, Right> Map;
 
-    typedef boost::bimap<KeyType, ValueType> Map;
+    void add( const Left &left, const Right &right )
+    {
+        map.insert( Map::value_type( left, right ) );
+    }
 
     Map map;
 
@@ -22,7 +25,7 @@ public:
     ConstMap() {}
     virtual ~ConstMap( ) {}
 
-    const ValueType& operator[]( const KeyType &key )
+    const Right& operator[]( const Left &key )
     {
         return map.left.at( key );
     }
@@ -32,7 +35,7 @@ public:
 
    // getByValue
 
-    KeyType& operator[]( const ValueType &value )
+    Left& operator[]( const Right &value )
     {
         return map.right.at( value );
     }

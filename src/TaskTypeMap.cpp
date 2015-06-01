@@ -1,18 +1,10 @@
 #include <TaskTypeMap.hpp>
 
-void TaskTypeMap::addTaskType( const std::string &taskString, TaskType taskType )
-{
-    //map.insert( ElementPair( taskString, taskType ) );
-    map.insert( Map::value_type( taskString, taskType ) );
-
-    //bm_type::value_typeW
-}
-
 void TaskTypeMap::init( )
 {
-    addTaskType( "pc manage", TASK_PC_MANAGE );
-    addTaskType( "jarvis manage", TASK_JARVIS_MANAGE );
+    add( "pc manage", TASK_PC_MANAGE );
+    add( "jarvis manage", TASK_JARVIS_MANAGE );
 
-    addTaskType( "test", TASK_TEST );
-    addTaskType( "change volume", TASK_VOLUME_CHANGE );
+    add( "test", TASK_TEST );
+    add( "change volume", TASK_VOLUME_CHANGE );
 }
