@@ -9,7 +9,8 @@ class TaskReceivedMessage : public XmlMessage
 protected:
     void createDataNode( void *dataPtr )
     {
-        xmlMessageCreator.addDataElement( "succes", true );
+        auto &dataElem = xmlMessageCreator.dataElement;
+        dataElem.appendSimpleElement( "succes", true );
     }
 
 private:

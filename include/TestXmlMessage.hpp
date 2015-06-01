@@ -10,9 +10,11 @@ protected:
     {
         DataStruct data( dataPtr );
 
-        xmlMessageCreator.addDataElement( "someint", data.someInt );
-        xmlMessageCreator.addDataElement( "somechar", data.someChar );
-        xmlMessageCreator.addDataElement( "somechararray", data.someCharArray );
+        auto &dataElem = xmlMessageCreator.dataElement;
+
+        dataElem.appendSimpleElement( "someint", data.someInt );
+        dataElem.appendSimpleElement( "somechar", data.someChar );
+        dataElem.appendSimpleElement( "somechararray", data.someCharArray );
     }
 
 private:
