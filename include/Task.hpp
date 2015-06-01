@@ -44,6 +44,11 @@ public:
     {
         return idNumber;
     }
+
+    std::string stringType() const
+    {
+        return taskTypeMap[type];
+    }
 };
 
 #endif // _TASKSTRUCT_HPP_
