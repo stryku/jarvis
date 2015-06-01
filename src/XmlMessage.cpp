@@ -2,13 +2,14 @@
 
 MessageTypeMap XmlMessage::messageTypeMap = MessageTypeMap();
 
-XmlMessage::XmlMessage( MessageType type ) : type( type )
-{
-
-}
-XmlMessage::XmlMessage( tcp::socket *socket ) :
-socket( socket )
+XmlMessage::XmlMessage( MessageType type, tcp::socket *socketPtr ) :
+    type( type ),
+    socketPtr( socketPtr )
 {}
+//
+//XmlMessage::XmlMessage( tcp::socket *socket ) :
+//    socket( socket )
+//{}
 
 void XmlMessage::createXmlDoc( void *dataPtr )
 {
@@ -23,6 +24,6 @@ std::string XmlMessage::toStdString( )
 
 RawMessage XmlMessage::toRawMessage()
 {
-    return RawMessage( socket, toStdString() );
+    return RawMessage( socketPtr, toStdString() );
 }
 

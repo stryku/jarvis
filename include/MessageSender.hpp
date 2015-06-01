@@ -13,9 +13,9 @@ class MessageSender
 public:
     static void sendMessage( const RawMessage &message )
     {
-        boost::asio::async_write( *( message.socket ), 
+        boost::asio::async_write( *( message.socketPtr ),
                                   boost::asio::buffer( message.toStdString( ) ),
-                                  []( boost::system::error_code ec ) 
+                                  []( boost::system::error_code ec, size_t writtenBytesCount ) 
                                   {   
                                       if( !ec )
                                           throw boost::system::system_error( ec );

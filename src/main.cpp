@@ -1,15 +1,35 @@
-//#include <TaskExecutor.hpp>
+//#include <XmlMessageFactory.hpp>
 //#include <fstream>
 //#include <string>
+//#include <iostream>
+//
+//struct DataStruct
+//{
+//    int someInt;
+//    char someChar;
+//    char someCharArray[20];
+//
+//    DataStruct() {}
+//    DataStruct( void *dataPtr )
+//    {
+//        *this = reinterpret_cast<DataStruct*>( dataPtr );
+//    }
+//};
 //
 //int main( int argc, char* argv[] )
 //{
-//    TaskExecutor task;
-//    std::ifstream t( "C:/moje/programowanie/c++/Jarvis/files/test.xml" );
-//    std::string str( ( std::istreambuf_iterator<char>( t ) ),
-//                     std::istreambuf_iterator<char>( ) );
+//    DataStruct data;
 //
-//    task.execute( str.c_str() );
+//    data.someInt = 22;
+//    data.someChar = 'A';
+//    data.someCharArray[0] = 'a';
+//    data.someCharArray[1] = 'b';
+//    data.someCharArray[2] = 'c';
+//    data.someCharArray[3] = '\0';
+//
+//    auto m = XmlMessageFactory::generateXmlMessage( XMSG_TASK_RECEIVED );
+//
+//    std::cout << m->toStdString();
 //
 //    return 0;
 //}

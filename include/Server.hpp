@@ -31,10 +31,10 @@ public:
         socket.read_some( boost::asio::buffer( &receivedLength, sizeof( int32_t ) ),
                           errorCode );
 
-        if( !errorCode )
+        if( errorCode )
             throw boost::system::system_error( errorCode );
 
-        return receivedLength;
+        return receivedLength - sizeof( int32_t );
     }
 
     size_t readPartOfMessage( boost::system::error_code &ec)
@@ -60,6 +60,8 @@ public:
         if( errorCode )
             throw boost::system::system_error( errorCode );
 
+
+        receivedMessage.socketPtr = &socket;
         //data[readedSize] = '\0';
     }
 
@@ -97,6 +99,8 @@ public:
         acceptor.accept( socket );
 
         readMessages();
+
+        return 0;
     }
 
     MessageManager messageManager;

@@ -30,20 +30,15 @@ private:
 
 
 public:
-    TestXmlMessage( void *data ) : XmlMessage( XMSG_TEST )
+    TestXmlMessage( const TestXmlMessage &message ) :
+        XmlMessage( XMSG_TEST, message.socketPtr )
+    {
+        xmlMessageCreator = message.xmlMessageCreator;
+    }
+    TestXmlMessage( tcp::socket *socketPtr, void *data ) : 
+        XmlMessage( XMSG_TEST, socketPtr )
     {
         createXmlDoc( data );
-    };
-    TestXmlMessage( tcp::socket *socket, void *data ) :
-        XmlMessage( socket )
-    {};
-
-
-    RawMessage toRawMessage()
-    {
-        RawMessage rawMessage;
-
-        return rawMessage;
     };
 };
 

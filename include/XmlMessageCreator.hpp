@@ -30,8 +30,9 @@ private:
     std::string typeString;
 
 public:
-    XmlMessageCreator() {}
+    XmlMessageCreator( ) {}
     ~XmlMessageCreator() {}
+
 
     void addType( const std::string &type )
     {
@@ -110,6 +111,8 @@ public:
 
         return ret;
     }
+
+
 };
 
 #endif

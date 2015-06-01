@@ -22,7 +22,7 @@ public:
     bool doWork( const char *data )
     {
         std::cout << "Changing volume to: 50%\n";
-        waveOutSetVolume( NULL, 100 );
+        //waveOutSetVolume( NULL, 100 );
 
         return true;
     }

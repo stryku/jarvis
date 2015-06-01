@@ -19,7 +19,7 @@ private:
 
             while( !messagesToSend.empty( ) )
             {
-                MessageSender::sendMessage( messagesToSend.front( ); );
+                MessageSender::sendMessage( messagesToSend.front( ) );
 
                 messagesToSend.pop( );
             }
@@ -40,8 +40,9 @@ public:
     void receivedNewMessage( const RawMessage &message )
     {
         receivedMessages.push( message );
+        auto replyMessage = XmlMessageFactory::generateXmlMessage( XMSG_TASK_RECEIVED, message.socketPtr );
         // reply that we have received that message - need xml message factory
-        newMessageToSend( XmlMessageFactory::generateXmlMessage( XMSG_TASK_RECEIVED )->toRawMessage() );
+        newMessageToSend( replyMessage->toRawMessage( ) );
         //      
         // execute task - need task executor
     }
