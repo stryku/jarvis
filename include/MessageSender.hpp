@@ -4,16 +4,17 @@
 #include <string>
 #include <boost/asio.hpp>
 
+#include <RawMessage.hpp>
+
 using boost::asio::ip::tcp;
 
 class MessageSender
 {
 public:
-    static void sendMessage( tcp::socket &socket,
-                             const std::string &message )
+    static void sendMessage( const RawMessage &message )
     {
-        boost::asio::async_write( socket,
-                                  boost::asio::buffer( message.c_str(), message.size() ),
+        boost::asio::async_write( *( message.socket ), 
+                                  boost::asio::buffer( message.toStdString( ) ),
                                   []( boost::system::error_code ec ) 
                                   {   
                                       if( !ec )
