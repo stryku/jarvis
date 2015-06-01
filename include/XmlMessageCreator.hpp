@@ -60,6 +60,13 @@ public:
         dataElements.push_back( DataElement( name, std::to_string( value ) ) );
     }
 
+    void addDataElement( const std::string &name,
+                         const bool value )
+    {
+        dataElements.push_back( DataElement( name, 
+                                             ( value ? "true" : "false" ) ) );
+    }
+
     void createBasicXml( XmlDocument &xmlDoc )
     {
         auto msg = xmlDoc.allocate_node( node_element, "msg" );
