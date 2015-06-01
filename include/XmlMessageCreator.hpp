@@ -85,7 +85,7 @@ public:
     {
         auto dataNode = xmlDoc.allocate_node( node_element, "data" );
 
-        for( const auto dataElement : dataElements )
+        for( const auto &dataElement : dataElements )
             createDataElement( xmlDoc, dataNode, dataElement );
 
         xmlDoc.first_node( )->append_node( dataNode );
