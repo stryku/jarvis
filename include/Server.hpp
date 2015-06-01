@@ -37,6 +37,12 @@ public:
         return receivedLength;
     }
 
+    size_t readPartOfMessage( boost::system::error_code &ec)
+    {
+        return socket.read_some( boost::asio::buffer( receivedMessage.data ),
+                                 ec );
+    }
+
     void readMessage()
     {
         boost::system::error_code errorCode;
@@ -47,16 +53,14 @@ public:
 
         do
         {
-            readedSize += socket.read_some( boost::asio::buffer( receivedMessage.data ),
-                                            errorCode );
-
+            readedSize += readPartOfMessage( errorCode );
 
         } while( !errorCode && readedSize < messageLength );
 
         if( errorCode )
             throw boost::system::system_error( errorCode );
 
-        data[readedSize] = '\0';
+        //data[readedSize] = '\0';
     }
 
     void responseToMessage( )
