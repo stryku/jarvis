@@ -9,14 +9,14 @@ enum MessageType
     MSG_TASK_RECEIVED
 };
 
-class Message
+class XmlMessage
 {
 private:
     xml_document <> doc;
 
 public:
-    Message() {}
-    ~Message() {}
+    XmlMessage( ) {}
+    ~XmlMessage( ) {}
 
     std::string toStdString() const
     {
