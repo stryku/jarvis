@@ -10,6 +10,7 @@ class MessageManager
 {
 private:
     bool sendingInProgress;
+
 public:
     MessageManager() {}
     ~MessageManager() {}
@@ -20,6 +21,8 @@ public:
     void receivedNewMessage( const RawMessage &message )
     {
         receivedMessages.push( message );
+        // reply that we have received that message
+        // execute task
     }
 
     void sendMessage()
@@ -30,10 +33,7 @@ public:
 
             while( !messagesToSend.empty() )
             {
-                RawMessage &rawMessage = messagesToSend.front( );
-
-                MessageSender::sendMessage( *( rawMessage.socket ),
-                                            rawMessage.toStdString( ) );
+                MessageSender::sendMessage( messagesToSend.front( ); );
 
                 messagesToSend.pop();
             }
