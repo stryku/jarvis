@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 #include <rapidxml\rapidxml.hpp>
 #include <rapidxml\rapidxml_print.hpp>
@@ -10,11 +11,13 @@
 #include <Task.hpp>
 #include <TaskTypeMap.hpp>
 
+typedef std::shared_ptr<Task> TaskPtr;
 using namespace rapidxml;
 
 class XMLTaskParser
 {
 private:
+
     static TaskTypeMap taskTypeMap;
 
     static const char* extractChildElementText( const xml_node<> *taskNode,
@@ -26,9 +29,9 @@ public:
     XMLTaskParser() {}
     ~XMLTaskParser() {}
 
-    static std::vector<Task> extractTasks( const char *xmlData );
-    static Task extractTask( const xml_node<> *taskNode );
-    static Task extractTask( const char *xmlData );
+    static std::vector<TaskPtr> extractTasks( const char *xmlData );
+    static TaskPtr extractTask( const xml_node<> *taskNode );
+    static TaskPtr extractTask( const char *xmlData );
 };
 
 #endif // _XMLTASKPARSER_HPP_

@@ -11,28 +11,25 @@ class TaskExecutor
 {
 private:
     WorkersManager workersManager;
-    //std::map<size_t, std::shared_ptr<Task>> ;
 
-    void executeTask( const Task &task )
+    void executeTask( const TaskPtr &taskPtr )
     {
-        //std::cout << task << "\n\n";
-
-        auto subTask = XMLTaskParser::extractTask( task.data.c_str( ) );
-        //std::cout << subTask << "\n\n\n";
-
-        subTask.execute();
+        auto subTask = XMLTaskParser::extractTask( taskPtr->data.c_str( ) );
+        subTask->execute();
     }
 
 public:
     TaskExecutor( ) {}
     ~TaskExecutor( ) {}
 
-    void execute( const char *data )
+    std::vector<TaskPtr> execute( const char *data )
     {
         auto tasks = XMLTaskParser::extractTasks( data );
 
         for( const auto &task : tasks )
             executeTask( task );
+
+        return tasks;
     }
 };
 

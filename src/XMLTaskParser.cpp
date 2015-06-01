@@ -21,9 +21,9 @@ std::string XMLTaskParser::extractTaskData( const xml_node<> *taskNode )
     return ret;
 }
 
-std::vector<Task> XMLTaskParser::extractTasks( const char *xmlData )
+std::vector<TaskPtr> XMLTaskParser::extractTasks( const char *xmlData )
 {
-    std::vector<Task> tasks;
+    std::vector<TaskPtr> tasks;
     xml_document <> doc;
     doc.parse<0>( const_cast<char*>( xmlData ) );
 
@@ -34,7 +34,7 @@ std::vector<Task> XMLTaskParser::extractTasks( const char *xmlData )
         TaskType taskType = extractTaskType( taskNode );
         std::string taskData = extractTaskData( taskNode );
 
-        tasks.push_back( Task( taskType, taskData ) );
+        tasks.push_back( std::make_shared<Task>( taskType, taskData ) );
 
         doc.remove_first_node( );
     }
@@ -42,7 +42,7 @@ std::vector<Task> XMLTaskParser::extractTasks( const char *xmlData )
     return tasks;
 }
 
-Task XMLTaskParser::extractTask( const char *xmlData )
+TaskPtr XMLTaskParser::extractTask( const char *xmlData )
 {
     std::vector<Task> tasks;
     xml_document <> doc;
@@ -52,13 +52,13 @@ Task XMLTaskParser::extractTask( const char *xmlData )
     TaskType taskType = extractTaskType( taskNode );
     std::string taskData = extractTaskData( taskNode );
 
-    return Task( taskType, taskData );
+    return std::make_shared<Task>( taskType, taskData );
 }
 
-Task XMLTaskParser::extractTask( const xml_node<> *taskNode )
+TaskPtr XMLTaskParser::extractTask( const xml_node<> *taskNode )
 {
     TaskType taskType = extractTaskType( taskNode );
     std::string taskData = extractTaskData( taskNode );
 
-    return Task( taskType, taskData );
+    return std::make_shared<Task>( taskType, taskData );
 }

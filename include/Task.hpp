@@ -46,6 +46,4 @@ public:
     }
 };
 
-std::ostream& operator<<( std::ostream &ostream, const Task &task );
-
 #endif // _TASKSTRUCT_HPP_

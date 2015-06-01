@@ -1,6 +1,8 @@
 #include <Task.hpp>
 
 TaskTypeMap Task::taskTypeMap = TaskTypeMap( );
+uint32_t Task::tasksCount = 0;
+std::mutex Task::taskCountMutex;
 
 Task::Task( TaskType type, std::string data ) :
     type( type ),
@@ -9,11 +11,3 @@ Task::Task( TaskType type, std::string data ) :
     assignIdNumber();
 }
 
-
-std::ostream& operator<<( std::ostream &ostream, const Task &task )
-{
-    ostream << "Task type: " << task.taskTypeMap[ task.type ] << "\n"
-        << "Data:\n" << task.data;
-
-    return ostream;
-}
