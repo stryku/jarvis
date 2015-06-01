@@ -3,16 +3,35 @@
 
 #include <queue>
 
-#include <Message.hpp>
 #include <MessageSender.hpp>
+#include <XmlMessageFactory.hpp>
 
 class MessageManager
 {
 private:
     bool sendingInProgress;
 
+    void sendMessages( )
+    {
+        if( !sendingInProgress )
+        {
+            sendingInProgress = true;
+
+            while( !messagesToSend.empty( ) )
+            {
+                MessageSender::sendMessage( messagesToSend.front( ); );
+
+                messagesToSend.pop( );
+            }
+
+            sendingInProgress = false;
+        }
+    }
+
 public:
-    MessageManager() {}
+    MessageManager() : 
+        sendingInProgress( false ) 
+    {}
     ~MessageManager() {}
 
     std::queue<RawMessage> receivedMessages;
@@ -21,26 +40,19 @@ public:
     void receivedNewMessage( const RawMessage &message )
     {
         receivedMessages.push( message );
-        // reply that we have received that message
-        // execute task
+        // reply that we have received that message - need xml message factory
+        newMessageToSend( XmlMessageFactory::generateXmlMessage( XMSG_TASK_RECEIVED )->toRawMessage() );
+        //      
+        // execute task - need task executor
     }
 
-    void sendMessage()
+    void newMessageToSend( const RawMessage &rawMessage )
     {
-        if( !sendingInProgress )
-        {
-            sendingInProgress = true;
-
-            while( !messagesToSend.empty() )
-            {
-                MessageSender::sendMessage( messagesToSend.front( ); );
-
-                messagesToSend.pop();
-            }
-
-            sendingInProgress = false;
-        }
+        messagesToSend.push( rawMessage );
+        sendMessages();
     }
+
+    
 };
 
 #endif // MESSAGEMANAGER_HPP
