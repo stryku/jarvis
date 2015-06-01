@@ -58,7 +58,7 @@ public:
 
     void receivedNewMessage( const RawMessage &message )
     {
-        std::cout << message.data.data();
+        std::cout << "[ RECEIVED MESSAGE ]\n" << message.data.data() << "\n";;
         //receivedMessages.push( message );
         auto replyMessage = XmlMessageFactory::generateXmlMessage( XMSG_TASK_RECEIVED, message.socketPtr );
         // reply that we have received that message - need xml message factory
