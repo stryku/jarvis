@@ -9,6 +9,9 @@
 
 using namespace rapidxml;
 
+typedef xml_document<> XmlDocument;
+typedef xml_node<> XmlNode;
+
 class XmlMessageCreator
 {
 private:
@@ -23,9 +26,6 @@ private:
         {}
     };
 
-    typedef xml_document<> XmlDocument;
-    typedef xml_node<> XmlNode;
-
     std::vector<DataElement> dataElements;
     std::string typeString;
 
@@ -33,7 +33,7 @@ public:
     XmlMessageCreator() {}
     ~XmlMessageCreator() {}
 
-    void addTypeString( const std::string &type )
+    void addType( const std::string &type )
     {
         typeString = type;
     }
@@ -42,6 +42,22 @@ public:
                          const std::string &value )
     {
         dataElements.push_back( DataElement( name, value ) );
+    }
+
+    void addDataElement( const std::string &name,
+                         const char value )
+    {
+        char buf[2];
+        buf[0] = value;
+        buf[1] = '\0';
+
+        dataElements.push_back( DataElement( name, buf ) );
+    }
+
+    void addDataElement( const std::string &name,
+                         const int32_t value )
+    {
+        dataElements.push_back( DataElement( name, std::to_string( value ) ) );
     }
 
     void createBasicXml( XmlDocument &xmlDoc )
