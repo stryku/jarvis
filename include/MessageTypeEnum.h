@@ -3,7 +3,8 @@
 
 enum MessageType
 {
-    MSG_RECEIVED_TASK
+    XMSG_TEST,
+    XMSG_RECEIVED_TASK
 };
 
 #endif
