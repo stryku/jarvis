@@ -6,6 +6,7 @@
 
 #include <TaskTypeEnum.h>
 #include <TaskTypeMap.hpp>
+#include <WorkersFactory.hpp>
 
 struct Task
 {
@@ -18,6 +19,12 @@ struct Task
     Task( TaskType type, std::string data );
     ~Task() {}
 
+    void execute()
+    {
+        auto worker = WorkersFactory::createWorker( type );
+
+        worker->doWork( data.c_str() );
+    }
 };
 
 std::ostream& operator<<( std::ostream &ostream, const Task &task );

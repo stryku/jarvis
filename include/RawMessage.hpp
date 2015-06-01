@@ -42,7 +42,9 @@ public:
 
     std::string toStdString() const
     {
-        return std::string( data.begin(), data.end() );
+        std::string a( data.begin(), end() );
+
+        return std::string( data.begin(), end() );
     }
 
 private:

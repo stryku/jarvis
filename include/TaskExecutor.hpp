@@ -1,13 +1,17 @@
 #ifndef _MAINWORKER_HPP_
 #define _MAINWORKER_HPP_
 
+#include <map>
+
 #include <WorkersManager.hpp>
 #include <XMLTaskParser.hpp>
+#include <RawMessage.hpp>
 
 class TaskExecutor
 {
 private:
     WorkersManager workersManager;
+    //std::map<size_t, std::shared_ptr<Task>> ;
 
     void executeTask( const Task &task )
     {
@@ -16,7 +20,7 @@ private:
         auto subTask = XMLTaskParser::extractTask( task.data.c_str( ) );
         //std::cout << subTask << "\n\n\n";
 
-        workersManager.doWork( subTask.type, subTask.data );
+        subTask.execute();
     }
 
 public:

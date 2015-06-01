@@ -27,7 +27,7 @@ public:
     virtual ~XmlMessage( ) {}
 
     std::string toStdString();
-    RawMessage toRawMessage();
+    std::shared_ptr<RawMessage> toRawMessage( );
 
 
 };

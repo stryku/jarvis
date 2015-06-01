@@ -22,8 +22,8 @@ std::string XmlMessage::toStdString( )
     return xmlMessageCreator.toStdString();
 }
 
-RawMessage XmlMessage::toRawMessage()
+std::shared_ptr<RawMessage> XmlMessage::toRawMessage()
 {
-    return RawMessage( socketPtr, toStdString() );
+    return std::make_shared< RawMessage>( socketPtr, toStdString() );
 }
 

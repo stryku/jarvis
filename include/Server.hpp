@@ -12,7 +12,6 @@ using boost::asio::ip::tcp;
 class Server
 {
 private:
-    TaskExecutor taskExecutor;
     std::array<char, 2048> data;
     RawMessage receivedMessage;
 
@@ -23,21 +22,25 @@ public:
     {}
     ~Server() {}
 
-    size_t readMessageLength()
+    int32_t readMessageLength()
     {
+        const size_t bufSize = 5;
+
+        char buf[bufSize];
         int32_t receivedLength;
         boost::system::error_code errorCode;
+        
 
-        socket.read_some( boost::asio::buffer( &receivedLength, sizeof( int32_t ) ),
+        socket.read_some( boost::asio::buffer( buf, bufSize ),
                           errorCode );
 
         if( errorCode )
             throw boost::system::system_error( errorCode );
 
-        return receivedLength - sizeof( int32_t );
+        return *( reinterpret_cast<int32_t*>( buf ) );
     }
 
-    size_t readPartOfMessage( boost::system::error_code &ec)
+    size_t readPartOfMessage( boost::system::error_code &ec )
     {
         return socket.read_some( boost::asio::buffer( receivedMessage.data ),
                                  ec );
@@ -47,7 +50,8 @@ public:
     {
         boost::system::error_code errorCode;
         bool extractedSize = false;
-        size_t messageLength, readedSize = 0;
+        size_t readedSize = 0;
+        int32_t messageLength;
 
         messageLength = readMessageLength();
 
@@ -62,6 +66,8 @@ public:
 
 
         receivedMessage.socketPtr = &socket;
+        receivedMessage.length = messageLength;
+        receivedMessage.data[receivedMessage.length] = '\0';
         //data[readedSize] = '\0';
     }
 

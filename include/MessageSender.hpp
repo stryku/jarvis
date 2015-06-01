@@ -11,10 +11,10 @@ using boost::asio::ip::tcp;
 class MessageSender
 {
 public:
-    static void sendMessage( const RawMessage &message )
+    static void sendMessage( const std::shared_ptr<RawMessage> message )
     {
-        boost::asio::async_write( *( message.socketPtr ),
-                                  boost::asio::buffer( message.toStdString( ) ),
+        boost::asio::async_write( *( message->socketPtr ),
+                                  boost::asio::buffer( message->toStdString( ) ),
                                   []( boost::system::error_code ec, size_t writtenBytesCount ) 
                                   {   
                                       if( !ec )
