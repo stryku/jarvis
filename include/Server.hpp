@@ -24,7 +24,7 @@ public:
 
     int32_t readMessageLength()
     {
-        const size_t bufSize = 5;
+        const size_t bufSize = 20;
 
         char buf[bufSize];
         int32_t receivedLength;
@@ -37,7 +37,7 @@ public:
         if( errorCode )
             throw boost::system::system_error( errorCode );
 
-        return *( reinterpret_cast<int32_t*>( buf ) );
+        return atoi( buf );
     }
 
     size_t readPartOfMessage( boost::system::error_code &ec )
@@ -68,26 +68,7 @@ public:
         receivedMessage.socketPtr = &socket;
         receivedMessage.length = messageLength;
         receivedMessage.data[receivedMessage.length] = '\0';
-        //data[readedSize] = '\0';
     }
-
-    void responseToMessage( )
-    {
-        char data[10] = "PRZYJALEM";
-        socket.write_some( boost::asio::buffer( data, 10 ) );
-    }
-
-    /*void do_read( )
-    {
-        boost::system::error_code errorCode;
-
-        while( 1 )
-        {
-            if( ( errorCode = readMessage() ) == boost::system::errc::success )
-                responseToMessage( );
-            else
-        }
-    }*/
 
     void readMessages()
     {
