@@ -10,7 +10,9 @@ protected:
     {
         DataStruct data( dataPtr );
         auto dataNode = xmlDoc.allocate_node( node_element, "data" );
-        auto someIntNode = xmlDoc.allocate_node( node_element, "someint", std::to_string( data.someInt ).c_str() );
+        auto someIntString = std::to_string( data.someInt );
+
+        auto someIntNode = xmlDoc.allocate_node( node_element, "someint", someIntString.c_str() );
         auto someCharNode = xmlDoc.allocate_node( node_element, "somechar", &data.someChar, 0, 1 );
         auto someCharArrayNode = xmlDoc.allocate_node( node_element, "somechararray", data.someCharArray );
         
@@ -30,23 +32,26 @@ private:
 
         DataStruct( void *dataPtr )
         {
-            *this = reinterpret_cast<DataStruct*>( dataPtr );
+            *this = *( reinterpret_cast<DataStruct*>( dataPtr ) );
         }
     };
 
 
 public:
+    TestXmlMessage( void *data ) : XmlMessage( XMSG_TEST )
+    {
+        createXmlDoc( data );
+    };
     TestXmlMessage( tcp::socket *socket, void *data ) :
         XmlMessage( socket )
-    {
-        DataStruct
-    };
+    {};
 
 
     RawMessage toRawMessage()
     {
         RawMessage rawMessage;
 
+        return rawMessage;
     };
 };
 

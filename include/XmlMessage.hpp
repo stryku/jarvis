@@ -19,45 +19,20 @@ protected:
     tcp::socket *socket;
     MessageType type;
 
-    void createBasicXml()
-    {
-        auto msg = xmlDoc.allocate_node( node_element, "msg" );
-        auto typeNode = xmlDoc.allocate_node( node_element, "type", messageTypeMap[type].c_str() );
-
-        msg->append_node( typeNode );
-
-        xmlDoc.append_node( msg );
-    }
-
-    void createXmlDoc( void *dataPtr )
-    {
-        createBasicXml( );
-        createDataNode( dataPtr );
-    }
-
+    void createBasicXml();
+    void createXmlDoc( void *dataPtr );
     virtual void createDataNode( void *dataPtr ) = 0;
 
 
 public:
-    XmlMessage( ) {}
-    XmlMessage( tcp::socket *socket ) :
-        socket( socket )
-    {}
+    XmlMessage( MessageType type );
+    XmlMessage( tcp::socket *socket );
     virtual ~XmlMessage( ) {}
 
-    std::string toStdString() const
-    {
-        std::string ret;
-
-        print( std::back_inserter( ret ), doc, 0 );
-
-        return ret;
-    }
-
+    std::string toStdString() const;
     virtual RawMessage toRawMessage() = 0;
 
 
-    MessageType type;
 };
 
 #endif // MESSAGE_HPP

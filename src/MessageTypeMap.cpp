@@ -2,5 +2,6 @@
 
 void MessageTypeMap::init( )
 {
-    add( "received task", MSG_RECEIVED_TASK );
+    add( "received task", XMSG_RECEIVED_TASK );
+    add( "test", XMSG_TEST );
 }
