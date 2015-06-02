@@ -28,6 +28,7 @@ private:
 public:
     TaskType type;
     std::string data;
+    WorkerResultPtr result;
 
     Task() { assignIdNumber(); }
     Task( TaskType type, std::string data );
@@ -37,7 +38,7 @@ public:
     {
         auto worker = WorkersFactory::createWorker( type );
 
-        worker->doWork( data.c_str() );
+        result = worker->doWork( data.c_str() );
     }
 
     size_t getIdNumber() const

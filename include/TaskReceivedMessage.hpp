@@ -17,8 +17,8 @@ private:
 
 
 public:
-    TaskReceivedMessage( tcp::socket *socketPtr, void *data ) :
-        XmlMessage( XMSG_TASK_RECEIVED, socketPtr )
+    TaskReceivedMessage( void *data ) :
+        XmlMessage( XMSG_TASK_RECEIVED )
     {
         createXmlDoc( data );
     };

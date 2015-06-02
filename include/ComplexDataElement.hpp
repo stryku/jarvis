@@ -19,7 +19,7 @@ class ComplexDataElement
 private:
     std::vector<SimpleDataElement> simpleElements;
     std::vector<ComplexDataElement> complexElements;
-    std::string name;
+    std::string name, value;
 
     void toXmlNode( XmlNode *node )
     {
@@ -27,9 +27,15 @@ private:
     }
 
 public:
-    ComplexDataElement( const std::string &name ) :
-        name( name )
+    ComplexDataElement( const std::string &name, const std::string &value = std::string() ) :
+        name( name ),
+        value( value )
     {}
+
+    void appendComplexElement( const ComplexDataElement &elem )
+    {
+        complexElements.push_back( elem );
+    }
 
     void appendSimpleElement( const std::string &name,
                               const std::string &value )
@@ -88,7 +94,7 @@ public:
 
     XmlNode* toXmlNode( XmlDocument &xmlDoc ) const
     {
-        auto dataNode = xmlDoc.allocate_node( node_element, name.c_str() );
+        auto dataNode = xmlDoc.allocate_node( node_element, name.c_str(), value.c_str() );
 
         for( const auto &simpleElement : simpleElements )
             createSimpleElement( xmlDoc, dataNode, simpleElement );

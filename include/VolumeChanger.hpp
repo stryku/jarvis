@@ -2,6 +2,7 @@
 #define _VOLUMECHANGER_HPP_
 
 #include <Worker.hpp>
+#include <VolumeChangerResult.hpp>
 
 #include <iostream>
 
@@ -19,12 +20,12 @@ public:
     VolumeChanger( ) {}
     ~VolumeChanger( ) {}
 
-    bool doWork( const char *data )
+    WorkerResultPtr doWork( const char *data )
     {
         std::cout << "Changing volume to: 50%\n";
         //waveOutSetVolume( NULL, 100 );
 
-        return true;
+        return std::make_shared<VolumeChangerResult>( true );
     }
 };
 

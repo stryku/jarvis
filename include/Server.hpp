@@ -2,10 +2,13 @@
 #define _SERVER_HPP_
 
 #include <array>
+#include <set>
 
 #include <TaskExecutor.hpp>
 #include <RawMessage.hpp>
 #include <MessageManager.hpp>
+
+#include <Session.hpp>
 
 using boost::asio::ip::tcp;
 
@@ -13,16 +16,19 @@ class Server
 {
 private:
     std::array<char, 2048> data;
-    RawMessage receivedMessage;
-
+    std::set<std::shared_ptr<Session>> sessions;
 
 public:
-    Server( boost::asio::io_service& io_service ) :
+    Server( boost::asio::io_service& io_service,
+            const tcp::endpoint& endpoint ) :
+        acceptor_( io_service, endpoint ), 
         socket(io_service)
-    {}
+    {
+        do_accept();
+    }
     ~Server() {}
 
-    int32_t readMessageLength()
+    /*int32_t readMessageLength()
     {
         const size_t bufSize = 20;
 
@@ -77,21 +83,28 @@ public:
             readMessage();
             messageManager.receivedNewMessage( receivedMessage );
         }
-    }
+    }*/
 
-    int run()
+    void do_accept( )
     {
-        tcp::acceptor acceptor( socket.get_io_service( ), tcp::endpoint( tcp::v4( ), 21020 ) );
+        acceptor_.async_accept( socket,
+                                [this]( boost::system::error_code ec )
+        {
+            if( !ec )
+            {
 
-        acceptor.accept( socket );
+                auto session = std::make_shared<Session>( std::move( socket ) );
+                sessions.insert( session );
+                session->start();
+            }
 
-        readMessages();
-
-        return 0;
+            do_accept( );
+        } );
     }
 
-    MessageManager messageManager;
+    //MessageManager messageManager;
     tcp::socket socket;
+    tcp::acceptor acceptor_;
 };
 
 #endif

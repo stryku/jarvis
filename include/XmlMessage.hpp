@@ -14,7 +14,6 @@ class XmlMessage
 protected:
     static MessageTypeMap messageTypeMap;
 
-    tcp::socket *socketPtr;
     MessageType type;
     XmlMessageCreator xmlMessageCreator;
 
@@ -22,12 +21,12 @@ protected:
     virtual void createDataNode( void *dataPtr ) = 0;
 
 public:
-    XmlMessage( MessageType type, tcp::socket *socketPtr );
+    XmlMessage( MessageType type );
     //XmlMessage( tcp::socket *socket );
     virtual ~XmlMessage( ) {}
 
     std::string toStdString();
-    std::shared_ptr<RawMessage> toRawMessage( );
+    RawMessage toRawMessage( );
 
 
 };

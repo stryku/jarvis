@@ -3,14 +3,14 @@
 
 #include <map>
 
-#include <WorkersManager.hpp>
+//#include <WorkersManager.hpp>
 #include <XMLTaskParser.hpp>
 #include <RawMessage.hpp>
 
 class TaskExecutor
 {
 private:
-    WorkersManager workersManager;
+    //WorkersManager workersManager;
 
     void executeTask( const TaskPtr &taskPtr )
     {
@@ -22,14 +22,10 @@ public:
     TaskExecutor( ) {}
     ~TaskExecutor( ) {}
 
-    std::vector<TaskPtr> execute( const char *data )
+    void execute( std::vector<TaskPtr> &tasks )
     {
-        auto tasks = XMLTaskParser::extractTasks( data );
-
         for( const auto &task : tasks )
-            executeTask( task );
-
-        return tasks;
+            task->execute();
     }
 };
 

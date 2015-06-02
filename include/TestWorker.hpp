@@ -2,6 +2,7 @@
 #define _TESTWORKER_HPP_
 
 #include <Worker.hpp>
+#include <TestWorkerResult.hpp>
 
 #include <iostream>
 
@@ -17,11 +18,11 @@ public:
     TestWorker( ) {}
     ~TestWorker( ) {}
 
-    bool doWork(  const char *data )
+    WorkerResultPtr doWork( const char *data )
     {
         std::cout << "Changing test value to: test\n";
 
-        return true;
+        return std::make_shared<TestWorkerResult>( true );
     }
 };
 

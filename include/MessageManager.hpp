@@ -5,76 +5,28 @@
 #include <boost/lockfree/queue.hpp>
 #include <mutex>
 
-#include <MessageSender.hpp>
+//#include <MessageSender.hpp>
 #include <XmlMessageFactory.hpp>
 
 #include <iostream>
 
+#include <Session.hpp>
+
 class MessageManager
 {
 private:
-    typedef std::shared_ptr<RawMessage> MessagePtr;
-    typedef std::queue<MessagePtr> MessageQueue;
+    typedef std::shared_ptr<Session> SessionPtr;
 
-    std::mutex messagesToSendMutex;
-    bool sendingInProgress;
-
-    void sendMessages( )
-    {
-        if( !sendingInProgress )
-        {
-            sendingInProgress = true;
-
-            while( !messagesToSend.empty( ) )
-            {
-                MessagePtr tmp;
-                MessageSender::sendMessage( messagesToSend.front() );
-
-                messagesToSendMutex.lock();
-                messagesToSend.pop();
-                messagesToSendMutex.unlock();
-
-            }
-
-            sendingInProgress = false;
-        }
-    }
-
-    void newMessageToExecute( const RawMessage &rawMessage )
-    {
-
-    }
-
-    //MessageQueue receivedMessages;
-    MessageQueue messagesToSend;
     TaskExecutor taskExecutor;
-
+    SessionPtr sessionPtr;
 
 public:
-    MessageManager() : 
-        sendingInProgress( false ) 
+    MessageManager( SessionPtr sessionPtr ) :
+        sessionPtr( sessionPtr )
     {}
     ~MessageManager() {}
 
-    void receivedNewMessage( const RawMessage &message )
-    {
-        std::cout << "[ RECEIVED MESSAGE ]\n" << message.data.data() << "\n";;
-        //receivedMessages.push( message );
-        auto replyMessage = XmlMessageFactory::generateXmlMessage( XMSG_TASK_RECEIVED, message.socketPtr );
-        // reply that we have received that message - need xml message factory
-        newMessageToSend( replyMessage->toRawMessage( ) );
-        taskExecutor.execute( message.data.data() );
-        //      
-        // execute task - need task executor
-    }
-
-    void newMessageToSend( std::shared_ptr<RawMessage> &rawMessage )
-    {
-        messagesToSendMutex.lock();
-        messagesToSend.push( rawMessage );
-        messagesToSendMutex.unlock();
-        sendMessages();
-    }
+    void receivedNewMessage( const RawMessage message );
 
     
 };

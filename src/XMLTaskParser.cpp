@@ -31,6 +31,7 @@ std::vector<TaskPtr> XMLTaskParser::extractTasks( const char *xmlData )
          taskNode;
          taskNode = doc.first_node( ) )
     {
+        taskNode = taskNode->last_node();
         TaskType taskType = extractTaskType( taskNode );
         std::string taskData = extractTaskData( taskNode );
 

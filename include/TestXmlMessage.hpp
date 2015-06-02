@@ -33,12 +33,12 @@ private:
 
 public:
     TestXmlMessage( const TestXmlMessage &message ) :
-        XmlMessage( XMSG_TEST, message.socketPtr )
+        XmlMessage( XMSG_TEST )
     {
         xmlMessageCreator = message.xmlMessageCreator;
     }
-    TestXmlMessage( tcp::socket *socketPtr, void *data ) : 
-        XmlMessage( XMSG_TEST, socketPtr )
+    TestXmlMessage( void *data ) : 
+        XmlMessage( XMSG_TEST )
     {
         createXmlDoc( data );
     };

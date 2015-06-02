@@ -1,104 +1,114 @@
 #ifndef _SESSION_HPP_
 #define _SESSION_HPP_
 
-#include <array>
-#include <cstdlib>
-#include <iostream>
-#include <memory>
-#include <type_traits>
-#include <utility>
 #include <boost/asio.hpp>
-
-#include <CustonAllocHandler.hpp>
-
+//#include <MessageManager.hpp>
+#include <XMLTaskParser.hpp>
+#include <TaskExecutor.hpp>
 
 using boost::asio::ip::tcp;
 
-
-class session
-    : public std::enable_shared_from_this<session>
+class Session :
+    public std::enable_shared_from_this<Session>
 {
+private:
+    typedef std::queue<RawMessage> MessageQueue;
+    static const size_t messageLengthBuffSize = 20;
+
+    tcp::socket socket_;
+    char messageLengthBuff[messageLengthBuffSize];
+    RawMessage receivedMessage;
+    MessageQueue messagesToSend;
+    //MessageManager messageManager;
+    TaskExecutor taskExecutor;
+    
 public:
-    session( tcp::socket socket )
-        : socket_( std::move( socket ) )
+    Session( tcp::socket socket ) :
+        socket_( std::move( socket ) )/*,
+        messageManager( shared_from_this() )*/
     {}
+    ~Session( ) {}
 
     void start( )
     {
-        do_read( );
+        readMessageLength();
     }
 
-private:
-    boost::system::error_code readMessage()
+    void readMessageLength()
     {
-        boost::system::error_code errorCode;
-        bool extractedSize = false;
-        size_t messageSize, readedSize = 0;
-
-
-        do
-        {
-            readedSize += socket_.read_some( boost::asio::buffer( data_ ),
-                                             errorCode );
-
-            if( !extractedSize )
-            {
-                uint32_t *ptr = reinterpret_cast<uint32_t*>( data_.data() );
-                messageSize = *ptr;
-                extractedSize = true;
-            }
-
-        } while( !errorCode && readedSize < messageSize );
-
-        return errorCode;
-    }
-
-    void responseToMessage()
-    {
-        char data[10] = "PRZYJALEM";
-        std::cout << "\nOdpowiadam\n";
-        socket_.write_some( boost::asio::buffer( data, 10 ) );
-    }
-
-    void do_read( )
-    {
-        auto self( shared_from_this( ) );
-        boost::system::error_code errorCode;
-
-        while( 1 )
-        {
-            if( ( errorCode = readMessage() ) != boost::system::errc::success )
-                std::cerr << "Reading message failed. Error code: " << errorCode << "\n";
-            else
-            {
-                std::cout << "Reading message succesfull. Message:\n" << data_.data() + 4;
-                responseToMessage();
-            }
-        }
-    }
-
-    void do_write( std::size_t length )
-    {
-        auto self( shared_from_this( ) );
-        boost::asio::async_write( socket_, boost::asio::buffer( data_, length ),
-                                  make_custom_alloc_handler( allocator_,
-                                  [this, self]( boost::system::error_code ec, std::size_t /*length*/ )
+        boost::asio::async_read( socket_,
+                                 boost::asio::buffer( messageLengthBuff, messageLengthBuffSize ),
+                                 [this]( boost::system::error_code ec, std::size_t )
         {
             if( !ec )
             {
-                do_read( );
+                receivedMessage.length = atoi( messageLengthBuff );
+                readMessage();
             }
-        } ) );
+        } );
     }
 
-    // The socket used to communicate with the client.
-    tcp::socket socket_;
+    void readMessage( )
+    {
+        boost::system::error_code errorCode;
+        bool extractedSize = false;
+        size_t readedSize = 0;
+        int32_t messageLength;
 
-    // Buffer used to store data received from the client.
-    std::array<char, 1024> data_;
+        boost::asio::async_read( socket_,
+                                 boost::asio::buffer( receivedMessage.data, receivedMessage.length ),
+                                 [this]( boost::system::error_code ec, std::size_t /*length*/ )
+        {
+            if( !ec )
+            {
+                receivedMessage.data[receivedMessage.length] = '\0';
+                std::cout << "[ RECEIVED MESSAGE ]\n" << receivedMessage.data.data( ) << "\n";
 
-    // The allocator to use for handler-based custom memory allocation.
-    handler_allocator allocator_;
+                auto replyMessage = XmlMessageFactory::generateXmlMessage( XMSG_TASK_RECEIVED );
+                newMessageToSend( replyMessage->toRawMessage( ) );
+
+                auto tasks = XMLTaskParser::extractTasks( receivedMessage.data.data( ) );
+
+                replyMessage = XmlMessageFactory::generateXmlMessage( XMSG_TASKS_STARTED, &tasks );
+                newMessageToSend( replyMessage->toRawMessage( ) );
+
+                taskExecutor.execute( tasks );
+
+                replyMessage = XmlMessageFactory::generateXmlMessage( XMSG_TASKS_FINISHED, &tasks );
+                newMessageToSend( replyMessage->toRawMessage( ) );
+                readMessageLength();
+            }
+        } );
+    }
+
+    void newMessageToSend( const RawMessage& msg )
+    {
+        bool write_in_progress = !messagesToSend.empty( );
+        messagesToSend.push( msg );
+        if( !write_in_progress )
+        {
+            do_write( );
+        }
+    }
+
+    void do_write( )
+    {
+        boost::asio::async_write( socket_,
+                                  boost::asio::buffer( messagesToSend.front().data,
+                                  messagesToSend.front( ).length ),
+                                  [this]( boost::system::error_code ec, std::size_t /*length*/ )
+        {
+            if( !ec )
+            {
+                std::cout << "[ SEND ]\n" << messagesToSend.front().data.data() << "\n\n";
+                messagesToSend.pop();
+                if( !messagesToSend.empty( ) )
+                {
+                    do_write( );
+                }
+            }
+        } );
+    }
 };
 
 #endif

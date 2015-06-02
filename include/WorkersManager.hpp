@@ -19,10 +19,10 @@ public:
     }
     ~WorkersManager() {}
 
-    bool doWork( TaskType taskType, const std::string &data )
+   /* bool doWork( TaskType taskType, const std::string &data )
     {
         return workersMap[taskType]->doWork( data.c_str() );
-    }
+    }*/
 };
 
 #endif

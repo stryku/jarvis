@@ -4,5 +4,7 @@
 #include <XmlMessage.hpp>
 #include <TestXmlMessage.hpp>
 #include <TaskReceivedMessage.hpp>
+#include <TasksStartedMessage.hpp>
+#include <TasksFinishedMessage.hpp>
 
 #endif // XMLMESSAGES_H

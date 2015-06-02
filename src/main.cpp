@@ -58,9 +58,11 @@ int main( int argc, char* argv[] )
         else
             port = argv[1];
 
+        tcp::endpoint endpoint( tcp::v4( ), std::atoi( port ) );
         boost::asio::io_service io_service;
-        Server s( io_service );
-        s.run( );
+        Server s( io_service, endpoint );
+        //s.run( );
+        io_service.run( );
     }
     catch( std::exception& e )
     {

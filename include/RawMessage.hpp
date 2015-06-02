@@ -10,17 +10,14 @@ class RawMessage
 {
 public:
     std::vector<char> data;
-    size_t length;
-    tcp::socket *socketPtr;
+    int32_t length;
 
     RawMessage( ) :
-        length( 0 ),
-        socketPtr( nullptr )
+        length( 0 )
     {
         data.resize( defaultVectorLength );
     }
-    RawMessage( tcp::socket *socket, const std::string &stringData ) :
-        socketPtr( socket ),
+    RawMessage( const std::string &stringData ) :
         length( stringData.size() )
     {
         data.resize( length );
@@ -28,8 +25,7 @@ public:
     }
 
     RawMessage( const RawMessage &message ) :
-        length( message.length ),
-        socketPtr( message.socketPtr )
+        length( message.length )
     {
         const auto dataBegin = message.data.begin( ),
                    dataEnd = message.end();
