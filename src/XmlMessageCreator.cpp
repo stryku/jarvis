@@ -30,7 +30,7 @@ void XmlMessageCreator::createDataNode( XmlDocument &xmlDoc )
 {
     auto dataNode = dataElement.toXmlNode( xmlDoc );
 
-    xmlDoc.append_node( dataNode );
+    xmlDoc.first_node()->append_node( dataNode );
 }
 
 std::string XmlMessageCreator::toStdString( )
