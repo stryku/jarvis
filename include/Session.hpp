@@ -7,6 +7,7 @@
 //#include <TaskExecutor.hpp>
 
 #include <Client.hpp>
+#include <ReceivedMessageHandler.hpp>
 
 using boost::asio::ip::tcp;
 
@@ -47,6 +48,7 @@ private:
             if( !ec )
             {
                 receivedMessage.data[receivedMessage.length] = '\0';
+                ReceivedMessageHandler::handleMessage( receivedMessage );
                 readMessageLength( );
             }
         } );
