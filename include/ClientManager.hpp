@@ -12,24 +12,37 @@ private:
     typedef std::shared_ptr<Client> ClientPtr;
 
     std::set<SessionPtr> sessions;
-    std::map<tcp::socket*, ClientPtr> socketClientMap;
+    std::map<const tcp::socket*, ClientPtr> socketClientMap;
     std::map<std::string, ClientPtr> idClientMap;
+
+    ClientPtr createNewClient( tcp::socket *socket )
+    {
+        auto client = std::make_shared<Client>( socket );
+        socketClientMap[socket] = client;
+        return client;
+    }
+
+    void createNewSession( ClientPtr &client )
+    {
+        auto session = std::make_shared<Session>( client );
+        sessions.insert( session );
+        session->start( );
+    }
 
 public:
     ClientManager() {}
     ~ClientManager() {}
 
-    void newClient( tcp::socket *socket )
+    void newClientAccepted( tcp::socket *socket )
     {
-        auto client = std::make_shared<Client>( socket );
-        auto session = std::make_shared<Session>( client );
-        sessions.insert( session );
-        session->start();
+        auto client = createNewClient( socket );
+        createNewSession( client );
     }
 
-    void newClientId( const tcp::socket *clientSocket, const std::string &clientId )
+    void newClientId( tcp::socket *clientSocket, const std::string &clientId )
     {
         idClientMap[clientId] = socketClientMap[clientSocket];
+        socketClientMap[clientSocket]->id = clientId;
     }
 
     ClientPtr getClientBySocket( const tcp::socket *clientSocket )

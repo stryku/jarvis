@@ -14,15 +14,17 @@ using boost::asio::ip::tcp;
 class Session 
 {
 private:
+    typedef std::shared_ptr<Client> ClientPtr;
+
     static const size_t messageLengthBuffSize = 20;
 
     char messageLengthBuff[messageLengthBuffSize];
     RawMessage receivedMessage;
-    Client client;
+    ClientPtr client;
     
     void readMessageLength( )
     {
-        boost::asio::async_read( client.socket,
+        boost::asio::async_read( client->socket,
                                  boost::asio::buffer( messageLengthBuff, messageLengthBuffSize ),
                                  [this]( boost::system::error_code ec, std::size_t )
         {
@@ -41,22 +43,22 @@ private:
         size_t readedSize = 0;
         int32_t messageLength;
 
-        boost::asio::async_read( client.socket,
+        boost::asio::async_read( client->socket,
                                  boost::asio::buffer( receivedMessage.data, receivedMessage.length ),
                                  [this]( boost::system::error_code ec, std::size_t /*length*/ )
         {
             if( !ec )
             {
                 receivedMessage.data[receivedMessage.length] = '\0';
-                ReceivedMessageHandler::handleMessage( receivedMessage );
+                ReceivedMessageHandler::handleMessage( receivedMessage, client );
                 readMessageLength( );
             }
         } );
     }
 
 public:
-    Session( tcp::socket *socket ) :
-        client( socket )
+    Session( ClientPtr client ) :
+        client( client )
     {}
     ~Session( ) {}
 

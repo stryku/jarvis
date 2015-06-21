@@ -26,7 +26,7 @@ private:
                                 [this]( boost::system::error_code ec )
         {
             if( !ec )
-                clientManager.newClient( &socket );
+                clientManager.newClientAccepted( &socket );
 
             do_accept( );
         } );

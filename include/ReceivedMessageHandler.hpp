@@ -4,16 +4,19 @@
 #include <iostream>
 
 #include <RawMessage.hpp>
+#include <Client.hpp>
 
 class ReceivedMessageHandler
 {
+    typedef std::shared_ptr<Client> ClientPtr;
 public:
     ReceivedMessageHandler() {}
     ~ReceivedMessageHandler() {}
 
-    static void handleMessage( const RawMessage rawMessage )
+    static void handleMessage( const RawMessage rawMessage,
+                               const ClientPtr &clientPtr )
     {
-        std::cout << "[ RECEIVED ]\n" << rawMessage.data << "\n\n";
+        std::cout << "[ RECEIVED ]\n" << rawMessage.toStdString() << "\n\n";
     }
 };
 
