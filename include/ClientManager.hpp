@@ -14,7 +14,7 @@ public:
     ClientManager() {}
     ~ClientManager() {}
 
-    void newClient( tcp::socket &socket )
+    void newClient( tcp::socket *socket )
     {
         auto session = std::make_shared<Session>( socket );
         sessions.insert( session );

@@ -55,7 +55,7 @@ private:
     }
 
 public:
-    Session( tcp::socket socket ) :
+    Session( tcp::socket *socket ) :
         client( socket )
     {}
     ~Session( ) {}

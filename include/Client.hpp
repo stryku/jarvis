@@ -13,8 +13,8 @@ struct Client
     tcp::socket socket;
     std::string id;
 
-    Client( tcp::socket socket ) :
-        socket( std::move( socket ) )
+    Client( tcp::socket *socket ) :
+        socket( std::move( *socket ) )
     {}
     ~Client() {}
 };
