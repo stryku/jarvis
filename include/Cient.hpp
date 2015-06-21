@@ -19,6 +19,7 @@ struct Client
     Client( tcp::socket socket ) :
         socket( std::move( socket ) )
     {}
+    ~Client() {}
 };
 
 #endif
