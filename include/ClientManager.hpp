@@ -1,6 +1,7 @@
 #ifndef CLIENTMANAGER_HPP
 #define CLIENTMANAGER_HPP
 
+#include <memory>
 #include <map>
 
 #include <Session.hpp>

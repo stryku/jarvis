@@ -1,0 +1,17 @@
+<msg>
+	<id>MsgId</id>
+	<type>identify</type>
+	<data>
+		<id>ClientId</id>
+	</data>
+</msg>
+
+MsgId
+	unique string message id
+
+MsgType
+	identify
+		message to identify client
+	
+ClientId	
+	Client id in string

@@ -1,10 +1,19 @@
 <msg>
+	<id>MsgId</id>
 	<type>MsgType</type>
 	<data>MsgData</data>
 </msg>
 
+MsgId
+	unique string message id
+	
 MsgType
 	test
+		test message
+	task
+		message with tasks to do
+	identify
+		message to identify client
 	
 MsgData	
 	depend of MsgType

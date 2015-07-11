@@ -1,5 +1,5 @@
-#ifndef MESSAGE_HPP
-#define MESSAGE_HPP
+#ifndef XMLMESSAGE_HPP
+#define XMLMESSAGE_HPP
 
 #include <boost/asio.hpp>
 
