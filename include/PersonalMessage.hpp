@@ -3,17 +3,18 @@
 
 #include <zmq.hpp>
 
-struct ServerRequest
+struct PersonalMessage
 {
     zmq::message_t identity;
     zmq::message_t msg;
 
-    ServerRequest( zmq::message_t &identity_, zmq::message_t &msg_ )
+    PersonalMessage( zmq::message_t &identity_, zmq::message_t &msg_ )
     {
         identity.copy( &identity_ );
         msg.copy( &msg_ );
     }
-    ServerRequest( const ServerRequest &req )
+
+    PersonalMessage( const PersonalMessage &req )
     {
         identity.copy( &req.identity );
         msg.copy( &req.msg );
