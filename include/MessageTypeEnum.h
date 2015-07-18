@@ -3,8 +3,7 @@
 
 enum MessageType
 {
-    XMSG_IDENTIFY = 0,
-    XMSG_TASK,
+    XMSG_TASK = 0,
     XMSG_OPTIONS
 };
 

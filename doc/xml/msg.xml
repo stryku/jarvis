@@ -1,11 +1,16 @@
 <msg>
 	<id>MsgId</id>
+	<needreply>NeedReply</needreply>
 	<type>MsgType</type>
 	<data>MsgData</data>
 </msg>
 
 MsgId
-	unique string message id
+	unique msg id
+	
+NeedReply
+	true - if we need to reply short message to confirm that we have received that message
+	false - if we don't need to confirm
 	
 MsgType
 	test

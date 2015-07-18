@@ -1,14 +1,16 @@
 #ifndef _WORKER_HPP_
 #define _WORKER_HPP_
 
-#include <cstdint>
-#include <memory>
 #include <WorkerResult.hpp>
 
-typedef std::shared_ptr<WorkerResult> WorkerResultPtr;
+#include <cstdint>
+#include <memory>
 
 class Worker
 {
+private:
+    typedef std::shared_ptr<WorkerResult> WorkerResultPtr;
+
 public:
     Worker() {}
     virtual ~Worker() {}

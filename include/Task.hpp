@@ -12,6 +12,8 @@
 class Task
 {
 private:
+    typedef std::shared_ptr<WorkerResult> WorkerResultPtr;
+
     static TaskTypeMap taskTypeMap;
     static uint32_t tasksCount;
     static std::mutex taskCountMutex;

@@ -69,7 +69,7 @@ public:
         auto message = std::make_shared<Message>( );
         xml_document <> doc;
         doc.parse<0>( const_cast<char*>( xmlData ) );
-        auto *msgNode = doc.first_node( );
+        auto *msgNode = doc.first_node();
 
         message->id = extractId( msgNode );
         message->type = extractType( msgNode );

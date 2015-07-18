@@ -11,6 +11,8 @@
 class VolumeChanger : public Worker
 {
 private:
+    typedef std::shared_ptr<WorkerResult> WorkerResultPtr;
+
     struct WorkData
     {
         int8_t newVolumePercents;

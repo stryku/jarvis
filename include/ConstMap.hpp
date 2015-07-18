@@ -1,11 +1,11 @@
 #ifndef _CONSTMAP_HPP_
 #define _CONSTMAP_HPP_
 
+#include <AbstractConstMap.hpp>
+
 #include <memory>
 
 #include <boost/bimap.hpp>
-
-#include <AbstractConstMap.hpp>
 
 template <class Left, class Right>
 class ConstMap : public AbstractConstMap

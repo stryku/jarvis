@@ -9,6 +9,8 @@
 class TestWorker : public Worker
 {
 private:
+    typedef std::shared_ptr<WorkerResult> WorkerResultPtr;
+
     struct WorkData
     {
         int32_t value;

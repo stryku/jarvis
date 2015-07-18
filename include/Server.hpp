@@ -1,46 +1,41 @@
 #ifndef _SERVER_HPP_
 #define _SERVER_HPP_
 
-#include <array>
-#include <set>
+#include <ServerRequest.hpp>
+#include <RequestHandler.hpp>
 
-#include <TaskExecutor.hpp>
-#include <RawMessage.hpp>
-#include <MessageManager.hpp>
-
-//#include <Session.hpp>
-#include <ClientManager.hpp>
-
-using boost::asio::ip::tcp;
+#include <zmq.hpp>
 
 class Server
 {
-private:
-    ClientManager clientManager;
-    tcp::socket socket;
-    tcp::acceptor acceptor_;
-
-    void do_accept( )
-    {
-        acceptor_.async_accept( socket,
-                                [this]( boost::system::error_code ec )
-        {
-            if( !ec )
-                clientManager.newClientAccepted( &socket );
-
-            do_accept( );
-        } );
-    }
-
 public:
-    Server( boost::asio::io_service& io_service,
-            const tcp::endpoint& endpoint ) :
-        acceptor_( io_service, endpoint ), 
-        socket(io_service)
+    Server( ) : 
+        ctx( 1 ),
+        router( ctx, ZMQ_ROUTER ),
+        requestHandler( router )
+    {}
+
+    void run( )
     {
-        do_accept();
+        router.bind( "tcp://*:5570" );
+        zmq::message_t identity;
+        zmq::message_t msg;
+
+        while( true )
+        {
+            std::cout << "Server waiting for request\n";
+            router.recv( &identity );
+            router.recv( &msg );
+
+            std::cout << "Server received request\n";
+            requestHandler.newRequest( ServerRequest( identity, msg ) );
+        }
     }
-    ~Server() {}
+
+private:
+    zmq::context_t ctx;
+    zmq::socket_t router;
+    RequestHandler requestHandler;
 };
 
 #endif
