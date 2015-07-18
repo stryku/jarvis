@@ -4,6 +4,7 @@
 #include <ThreadSafeQueue.hpp>
 #include <ServerRequest.hpp>
 #include <log.h>
+#include <Semaphore.hpp>
 
 #include <boost/interprocess/sync/interprocess_semaphore.hpp>
 
@@ -14,8 +15,6 @@
 class RequestHandler
 {
 private:
-    typedef boost::interprocess::interprocess_semaphore Semaphore;
-
     zmq::socket_t &router;
     ThreadSafeQueue<ServerRequest> queue;
 
@@ -57,7 +56,7 @@ public:
         LOG( "[BROKER] received msg" );
 
         queue.push( req );
-        semaphore.post();
+        semaphore.notify();
     }
 };
 
