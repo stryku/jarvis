@@ -19,12 +19,9 @@ class RequestHandler
 private:
     typedef std::shared_ptr<Message> MessagePtr;
 
-    zmq::socket_t &router;
-    ThreadSafeQueue<PersonalMessage> queue;
+    static ThreadSafeQueue<PersonalMessage> queue;
 
-    Semaphore semaphore;
-
-    void sendReplyIfNeed( MessagePtr &msg, const zmq::message_t &identity )
+    static void sendReplyIfNeed( MessagePtr &msg, const zmq::message_t &identity )
     {
         if( msg->needReply )
         {
@@ -33,13 +30,13 @@ private:
         }
     }
 
-    void receivedConfimation( const MessagePtr &msg ) const
+    static void receivedConfimation( const MessagePtr &msg )
     {
         auto id = SimpleXmlParser::extractNode( "receivedmsgid", msg->data.c_str() );
         MessagesToSendManager::receivedConfim( id );
     }
 
-    void handle( const PersonalMessage &request ) const
+    static void handle( const PersonalMessage &request ) 
     {
         auto msg = XmlMessageParser::extract( static_cast<const char*>( request.msg.data() ) );
 
@@ -50,38 +47,20 @@ private:
     }
 
 public:
-    RequestHandler( zmq::socket_t &router ) :
-        router( router ),
-        semaphore( 0 )
+    static void run()
     {
-        std::future<void>( std::async( [this]()
-        {
-            while( 1 )
-            {
-                LOG( "[RequestHandler] Waiting for semaphore" );
-
-                semaphore.wait( );
-                LOG( "[RequestHandler] semaphore posted" );
-
-                /*std::future<void>( std::async( [this]( )
-                {
-                    std::cout << "Broker running worker\n";
-                    auto req = queue.pop();
-                    auto worker = std::make_shared<server_worker>( router, req );
-                    worker->work( );
-                } ) );*/
-
-            }
-        } ) );
+        while( 1 )
+            handle( queue.pop( ) );
     }
 
-    void newRequest( PersonalMessage &msg )
+    static void newRequest( PersonalMessage &msg )
     {
         LOG( "[BROKER] received msg" );
 
         queue.push( msg );
-        semaphore.notify();
     }
 };
+
+ThreadSafeQueue<PersonalMessage> RequestHandler::queue;
 
 #endif

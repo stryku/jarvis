@@ -14,8 +14,7 @@ class Server
 public:
     Server( ) : 
         ctx( 1 ),
-        router( ctx, ZMQ_ROUTER ),
-        requestHandler( router )
+        router( ctx, ZMQ_ROUTER )
     {}
 
     void run( )
@@ -26,6 +25,7 @@ public:
 
         MessageSender::setRouter( &router );
         std::future<void>( std::async( MessagesToSendManager::safeSenderMethod ) );
+        std::future<void>( std::async( RequestHandler::run ) );
 
         while( true )
         {
@@ -34,14 +34,13 @@ public:
             router.recv( &msg );
 
             std::cout << "Server received request\n";
-            requestHandler.newRequest( PersonalMessage( identity, msg ) );
+            RequestHandler::newRequest( PersonalMessage( identity, msg ) );
         }
     }
 
 private:
     zmq::context_t ctx;
     zmq::socket_t router;
-    RequestHandler requestHandler;
 };
 
 #endif
