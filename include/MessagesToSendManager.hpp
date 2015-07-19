@@ -85,6 +85,11 @@ public:
                                                           msg->toZmqMessage() ) );
     }
 
+    static void receivedConfim( const std::string &id )
+    {
+        confirmedMessages.push( id );
+    }
+
     static void safeSend( const MessageToSend &msg )
     {
         MessageSender::newMessageToSend( msg.personalMsg );

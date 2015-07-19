@@ -8,6 +8,7 @@
 #include <XmlMessageParser.hpp>
 #include <MessagesToSendManager.hpp>
 #include <XmlMessageFactory.hpp>
+#include <SimpleXmlParser.hpp>
 
 #include <future>
 
@@ -32,9 +33,20 @@ private:
         }
     }
 
+    void receivedConfimation( const MessagePtr &msg ) const
+    {
+        auto id = SimpleXmlParser::extractNode( "receivedmsgid", msg->data.c_str() );
+        MessagesToSendManager::receivedConfim( id );
+    }
+
     void handle( const PersonalMessage &request ) const
     {
         auto msg = XmlMessageParser::extract( static_cast<const char*>( request.msg.data() ) );
+
+        switch( msg->type )
+        {
+            case XMSG_RECEIVED: receivedConfimation( msg ); break;
+        }
     }
 
 public:
