@@ -2,11 +2,12 @@
 #define BROKER_HPP
 
 #include <ThreadSafeQueue.hpp>
-#include <ServerRequest.hpp>
+#include <PersonalMessage.hpp>
 #include <log.h>
 #include <Semaphore.hpp>
-
-#include <boost/interprocess/sync/interprocess_semaphore.hpp>
+#include <XmlMessageParser.hpp>
+#include <MessagesToSendManager.hpp>
+#include <XmlMessageFactory.hpp>
 
 #include <future>
 
@@ -15,14 +16,25 @@
 class RequestHandler
 {
 private:
+    typedef std::shared_ptr<Message> MessagePtr;
+
     zmq::socket_t &router;
-    ThreadSafeQueue<ServerRequest> queue;
+    ThreadSafeQueue<PersonalMessage> queue;
 
     Semaphore semaphore;
 
-    void handle( const ServerRequest &request ) const
+    void sendReplyIfNeed( MessagePtr &msg, const zmq::message_t &identity )
     {
+        if( msg->needReply )
+        {
+            auto xmlMessage = XmlMessageFactory::generateXmlMessage( XMSG_RECEIVED, &msg->id );
+            MessagesToSendManager::quickSend( xmlMessage, identity );
+        }
+    }
 
+    void handle( const PersonalMessage &request ) const
+    {
+        auto msg = XmlMessageParser::extract( static_cast<const char*>( request.msg.data() ) );
     }
 
 public:
@@ -51,11 +63,11 @@ public:
         } ) );
     }
 
-    void newRequest( ServerRequest &req )
+    void newRequest( PersonalMessage &msg )
     {
         LOG( "[BROKER] received msg" );
 
-        queue.push( req );
+        queue.push( msg );
         semaphore.notify();
     }
 };
