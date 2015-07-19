@@ -1,0 +1,7 @@
+<msg>
+	<id>MsgId</id>
+	<type>XMSG_RECEIVED</type>
+	<data>
+		<receivedmsgid>ReceivedMessageId</receivedmsgid>
+	</data>
+</msg>
