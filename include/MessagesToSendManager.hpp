@@ -19,6 +19,8 @@ private:
     typedef std::shared_ptr<XmlMessage> XmlMessagePtr;
     typedef std::shared_ptr<PersonalMessage> PersonalMessagePtr;
 
+    static const size_t defNexTryDelay = 5000;
+
     struct SafeMessage
     {
         PersonalMessagePtr msg;
@@ -30,8 +32,8 @@ private:
             msg( std::make_shared<PersonalMessage>(personalMsg)),
             id(id)
         {
-            static const std::chrono::milliseconds defNextTryDelay( 5000 );
-            nextTry = std::chrono::system_clock::now() + defNextTryDelay;
+            static const std::chrono::milliseconds nexTryDelay( defNexTryDelay );
+            nextTry = std::chrono::system_clock::now( ) + nexTryDelay;
         }
 
         bool operator<( const SafeMessage &other ) const
@@ -51,7 +53,7 @@ private:
 public:
     static void safeSenderMethod()
     {
-        static const std::chrono::milliseconds defNextTryDelay( 5000 );
+        static const std::chrono::milliseconds nexTryDelay( defNexTryDelay );
 
         while( 1 )
         {
@@ -69,7 +71,7 @@ public:
                 confirmedMessages.erase( msg->id );
             else
             {   
-                msg->nextTry = std::chrono::system_clock::now( ) + defNextTryDelay;
+                msg->nextTry = std::chrono::system_clock::now( ) + nexTryDelay;
 
                 MessageSender::newMessageToSend( *msg->msg.get( ) );
 

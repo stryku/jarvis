@@ -2,8 +2,10 @@
 
 MessageTypeMap XmlMessage::messageTypeMap = MessageTypeMap();
 
-XmlMessage::XmlMessage( MessageType type ) :
-    type( type )
+XmlMessage::XmlMessage( MessageType type, bool needReply ) :
+    id( MessageIdGenerator::get() ), 
+    type( type ),
+    needReply( needReply )
 {}
 //
 //XmlMessage::XmlMessage( tcp::socket *socket ) :
@@ -13,6 +15,8 @@ XmlMessage::XmlMessage( MessageType type ) :
 void XmlMessage::createXmlDoc( void *dataPtr )
 {
     xmlMessageCreator.addType( messageTypeMap[type] );
+    xmlMessageCreator.addNeedReply( needReply );
+    xmlMessageCreator.addId( id );
     createDataNode( dataPtr );
 }
 

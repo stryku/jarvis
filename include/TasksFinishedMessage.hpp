@@ -2,36 +2,32 @@
 #define _TASKFINISHEDMESSAGE_HPP_
 
 
-#include <XmlMessage.hpp>
+#include <XmlNeedReplyMessage.hpp>
 #include <Task.hpp>
 
-class TasksFinishedMessage : public XmlMessage
+class TaskFinishedMessage : public XmlNeedReplyMessage
 {
 protected:
-    typedef std::shared_ptr<Task> TaskPtr;
-    typedef std::vector<TaskPtr> TasksVec;
     void createDataNode( void *dataPtr )
     {
-        TasksVec *tasks;
-
-        tasks = reinterpret_cast<TasksVec*>( dataPtr );
+        Task &task = *( reinterpret_cast<Task*>( dataPtr ) );
 
         auto &dataElem = xmlMessageCreator.dataElement;
+        auto &taskElem = dataElem.newComplexDataElement( "result" );
 
-        for( auto &task : *tasks )
-        {
-            auto &taskElem = dataElem.newComplexDataElement( "task" );
+        dataElem.appendSimpleElement( "taskid", task.stringType() );
+        taskElem.appendComplexElement( task.result->toComplexDataElement() );
 
-            taskElem.appendSimpleElement( "type", task->stringType( ) );
-            taskElem.appendSimpleElement( "id", task->getIdNumber( ) );
-            taskElem.appendComplexElement( task->result->toComplexDataElement( ) );
-        }
+/*
+        taskElem.appendSimpleElement( "type", task->stringType( ) );
+        taskElem.appendSimpleElement( "id", task->getIdNumber( ) );
+        taskElem.appendComplexElement( task->result->toComplexDataElement( ) );*/
     }
 
 
 public:
-    TasksFinishedMessage( void *data ) :
-        XmlMessage( XMSG_TASKS_FINISHED )
+    TaskFinishedMessage( void *data ) :
+        XmlNeedReplyMessage( XMSG_TASK_FINISHED )
     {
         createXmlDoc( data );
     };

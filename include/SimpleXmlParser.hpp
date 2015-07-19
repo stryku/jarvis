@@ -19,13 +19,31 @@ public:
         return std::string( doc.value() );
     }
 
-    static std::string extractNode( const char *nodeName, 
+    static std::string extractNode( const char *nodeName,
                                     const char *xmlData )
     {
         xml_document <> doc;
         doc.parse<0>( const_cast<char*>( xmlData ) );
 
-        return std::string( doc.first_node( nodeName )->value() );
+        return std::string( doc.first_node( nodeName )->value( ) );
+    }
+
+    static std::string extractChildren( const char *nodeName,
+                                        const char *xmlData )
+    {
+        xml_document <> doc;
+        doc.parse<0>( const_cast<char*>( xmlData ) );
+        auto root = doc.first_node();
+
+        if( root != nullptr )
+        {
+            auto children = root->first_node( nodeName );
+
+            if( children != nullptr )
+                return std::string( children->value() );
+
+            return std::string();
+        }
     }
 };
 

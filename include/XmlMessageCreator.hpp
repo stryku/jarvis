@@ -10,6 +10,8 @@ class XmlMessageCreator
 {
 private:
     std::string typeString;
+    std::string needReplyString;
+    std::string id;
 
 public:
     XmlMessageCreator() :
@@ -18,6 +20,8 @@ public:
     ~XmlMessageCreator() {}
 
     void addType( const std::string &type );
+    void addNeedReply( const bool needReply );
+    void addId( const std::string &id );
     void createBasicXml( XmlDocument &xmlDoc ) const;
     void createDataElement( XmlDocument &xmlDoc,
                             XmlNode *dataNode,

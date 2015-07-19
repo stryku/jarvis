@@ -5,7 +5,8 @@ enum MessageType
 {
     XMSG_TASK = 0,
     XMSG_OPTIONS,
-    XMSG_RECEIVED
+    XMSG_RECEIVED,
+    XMSG_TASK_FINISHED
 };
 
 #endif

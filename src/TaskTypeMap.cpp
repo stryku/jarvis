@@ -2,9 +2,9 @@
 
 void TaskTypeMap::init( )
 {
-    add( "pc manage", TASK_PC_MANAGE );
-    add( "jarvis manage", TASK_JARVIS_MANAGE );
+    add( "TASK_PC_MANAGE", TASK_PC_MANAGE );
+    add( "TASK_JARVIS_MANAGE", TASK_JARVIS_MANAGE );
 
-    add( "test", TASK_TEST );
-    add( "change volume", TASK_VOLUME_CHANGE );
+    add( "TASK_TEST", TASK_TEST );
+    add( "TASK_VOLUME_CHANGE", TASK_VOLUME_CHANGE );
 }

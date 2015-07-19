@@ -1,31 +1,51 @@
 #ifndef _MAINWORKER_HPP_
 #define _MAINWORKER_HPP_
 
+#include <XMLTaskParser.hpp>
+#include <MessagesToSendManager.hpp>
+
 #include <map>
 
+#include <zmq.hpp>
+
 //#include <WorkersManager.hpp>
-#include <XMLTaskParser.hpp>
-#include <RawMessage.hpp>
 
 class TaskExecutor
 {
 private:
     //WorkersManager workersManager;
 
-    void executeTask( const TaskPtr &taskPtr )
+    static void sendResult( const TaskPtr &taskPtr, const zmq::message_t &identity )
     {
-        auto subTask = XMLTaskParser::extractTask( taskPtr->data.c_str( ) );
-        subTask->execute();
+        auto msg = XmlMessageFactory::generateXmlMessage( XMSG_TASK_FINISHED,
+                                                          taskPtr.get( ) );
+
+        MessagesToSendManager::safeSend( MessageToSend( msg->getId(), 
+                                                        msg.get(),
+                                                        identity ) );
+
+    }
+
+    static void executeTask( const TaskPtr &taskPtr, const zmq::message_t &identity )
+    {
+        /*auto subTask = XMLTaskParser::extractTask( taskPtr->data.c_str( ) );
+        subTask->execute();*/
+        if( taskPtr->fastTask )
+        {
+            taskPtr->execute();
+            sendResult( taskPtr, identity );
+        }
+
     }
 
 public:
-    TaskExecutor( ) {}
-    ~TaskExecutor( ) {}
+    TaskExecutor() {}
+    ~TaskExecutor() {}
 
-    void execute( std::vector<TaskPtr> &tasks )
+    static void execute( const std::vector<TaskPtr> &tasks, const zmq::message_t &identity )
     {
         for( const auto &task : tasks )
-            task->execute();
+            executeTask( task, identity );
     }
 };
 

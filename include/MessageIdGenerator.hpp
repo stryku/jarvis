@@ -11,10 +11,8 @@ private:
     static std::atomic<uint64_t> id;
 
 public:
-    static std::string get()
-    {
-        return std::to_string( id++ );
-    }
+    static std::string get();
 };
+
 
 #endif

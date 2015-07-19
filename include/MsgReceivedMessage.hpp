@@ -1,9 +1,9 @@
 #ifndef _TASKRECEIVEDMESSAGE_HPP_
 #define _TASKRECEIVEDMESSAGE_HPP_
 
-#include <XmlMessage.hpp>
+#include <XmlDontNeedReplyMessage.hpp>
 
-class MsgReceivedMessage : public XmlMessage
+class MsgReceivedMessage : public XmlDontNeedReplyMessage
 {
 protected:
     void createDataNode( void *dataPtr )
@@ -14,12 +14,10 @@ protected:
         dataElem.appendSimpleElement( "receivedmsgid", *stringId );
     }
 
-private:
-
 
 public:
     MsgReceivedMessage( void *data ) :
-        XmlMessage( XMSG_RECEIVED )
+        XmlDontNeedReplyMessage( XMSG_RECEIVED )
     {
         createXmlDoc( data );
     };

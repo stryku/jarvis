@@ -3,6 +3,7 @@
 
 #include <MessageTypeMap.hpp>
 #include <XmlMessageCreator.hpp>
+#include <MessageIdGenerator.hpp>
 
 #include <zmq.hpp>
 
@@ -13,20 +14,26 @@ protected:
 
     static MessageTypeMap messageTypeMap;
 
+    std::string id;
     MessageType type;
+    bool needReply;
     XmlMessageCreator xmlMessageCreator;
 
     void createXmlDoc( void *dataPtr );
     virtual void createDataNode( void *dataPtr ) = 0;
 
 public:
-    XmlMessage( MessageType type );
+    XmlMessage( MessageType type, bool needReply );
     //XmlMessage( tcp::socket *socket );
     virtual ~XmlMessage( ) {}
 
     std::string toStdString() const;
     ZmqMessagePtr toZmqMessage() const;
 
+    std::string getId() const
+    {
+        return id;
+    }
 
 };
 

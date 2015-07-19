@@ -9,6 +9,8 @@
 #include <MessagesToSendManager.hpp>
 #include <XmlMessageFactory.hpp>
 #include <SimpleXmlParser.hpp>
+#include <XMLTaskParser.hpp>
+#include <TaskExecutor.hpp>
 
 #include <future>
 
@@ -32,8 +34,15 @@ private:
 
     static void receivedConfimation( const MessagePtr &msg )
     {
-        auto id = SimpleXmlParser::extractNode( "receivedmsgid", msg->data.c_str() );
+        auto id = SimpleXmlParser::extractChildren( "receivedmsgid", msg->data.c_str() );
         MessagesToSendManager::receivedConfim( id );
+    }
+
+    static void runTasks( const MessagePtr &msg, const zmq::message_t &identity )
+    {
+        auto tasks = XMLTaskParser::extractTasks( msg->data.c_str() );
+
+        TaskExecutor::execute( tasks, identity );
     }
 
     static void handle( const PersonalMessage &request ) 
@@ -47,6 +56,7 @@ private:
         switch( msg->type )
         {
             case XMSG_RECEIVED: receivedConfimation( msg ); break;
+            case XMSG_TASK: runTasks( msg, request.identity ); break;
         }
     }
 

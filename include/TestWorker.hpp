@@ -16,6 +16,10 @@ private:
         int32_t value;
     };
 
+    virtual void extractWorkData( const char *data )
+    {}
+
+
 public:
     TestWorker( ) {}
     ~TestWorker( ) {}

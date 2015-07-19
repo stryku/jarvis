@@ -4,13 +4,31 @@ void XmlMessageCreator::addType( const std::string &type )
 {
     typeString = type;
 }
+void XmlMessageCreator::addNeedReply( const bool needReply )
+{
+    needReplyString = ( needReply ? "true" : "false" );
+}
+void XmlMessageCreator::addId( const std::string &id )
+{
+    this->id = id;
+}
 
 void XmlMessageCreator::createBasicXml( XmlDocument &xmlDoc ) const
 {
     auto msg = xmlDoc.allocate_node( node_element, "msg" );
-    auto typeNode = xmlDoc.allocate_node( node_element, "type", typeString.c_str( ) );
+    auto typeNode = xmlDoc.allocate_node( node_element, 
+                                          "type", 
+                                          typeString.c_str( ) );
+    auto needReplyNode = xmlDoc.allocate_node( node_element,
+                                               "needreply",
+                                               needReplyString.c_str( ) );
+    auto idNode = xmlDoc.allocate_node( node_element,
+                                        "id",
+                                        id.c_str( ) );
 
     msg->append_node( typeNode );
+    msg->append_node( needReplyNode );
+    msg->append_node( idNode );
 
     xmlDoc.append_node( msg );
 }

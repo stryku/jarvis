@@ -1,13 +1,14 @@
 #ifndef _TASKSTRUCT_HPP_
 #define _TASKSTRUCT_HPP_
 
-#include <string>
-#include <ostream>
-#include <mutex>
-
 #include <TaskTypeEnum.h>
 #include <TaskTypeMap.hpp>
 #include <WorkersFactory.hpp>
+
+#include <string>
+#include <ostream>
+#include <mutex>
+#include <atomic>
 
 class Task
 {
@@ -15,24 +16,35 @@ private:
     typedef std::shared_ptr<WorkerResult> WorkerResultPtr;
 
     static TaskTypeMap taskTypeMap;
-    static uint32_t tasksCount;
-    static std::mutex taskCountMutex;
+    static std::atomic<uint32_t> tasksCount;
 
     size_t idNumber;
 
     void assignIdNumber()
     {
-        taskCountMutex.lock();
         idNumber = tasksCount++;
-        taskCountMutex.unlock();
+    }
+
+    void determineIfFast()
+    {
+        auto fastTasksTypes = { TASK_VOLUME_CHANGE };
+
+        fastTask = std::any_of( fastTasksTypes.begin(),
+                                fastTasksTypes.end(),
+                                [this]( TaskType i ) { return i == type; } );
     }
 
 public:
     TaskType type;
     std::string data;
     WorkerResultPtr result;
+    bool fastTask;
 
-    Task() { assignIdNumber(); }
+    Task() 
+    { 
+        assignIdNumber(); 
+        determineIfFast();
+    }
     Task( TaskType type, std::string data );
     ~Task() {}
 
@@ -41,6 +53,7 @@ public:
         auto worker = WorkersFactory::createWorker( type );
 
         result = worker->doWork( data.c_str() );
+
     }
 
     size_t getIdNumber() const

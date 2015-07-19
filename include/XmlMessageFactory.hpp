@@ -35,6 +35,7 @@ public:
                 //default:        return std::make_shared<TestXmlMessage>( socket, data );
 
             case XMSG_RECEIVED: return std::make_shared<MsgReceivedMessage>( data );
+            case XMSG_TASK_FINISHED: return std::make_shared<TaskFinishedMessage>( data );
         }
     }
 };
