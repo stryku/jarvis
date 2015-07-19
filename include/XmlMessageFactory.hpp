@@ -1,12 +1,8 @@
 #ifndef XMLMESSAGEFACTORY_HPP
 #define XMLMESSAGEFACTORY_HPP
 
-#include <boost/asio.hpp>
-
 #include <MessageTypeEnum.h>
 #include <XmlMessages.h>
-
-using boost::asio::ip::tcp;
 
 class XmlMessageFactory
 {
@@ -37,6 +33,8 @@ public:
                 //case XMSG_TEST: return std::make_shared<TestXmlMessage>( socket, data );
                 //default:        return std::make_shared<TestXmlMessage>( /*socket,*/ data );
                 //default:        return std::make_shared<TestXmlMessage>( socket, data );
+
+            case XMSG_RECEIVED: return std::make_shared<MsgReceivedMessage>( data );
         }
     }
 };

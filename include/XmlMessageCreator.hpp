@@ -6,7 +6,6 @@
 
 #include <ComplexDataElement.hpp>
 
-
 class XmlMessageCreator
 {
 private:
@@ -19,13 +18,13 @@ public:
     ~XmlMessageCreator() {}
 
     void addType( const std::string &type );
-    void createBasicXml( XmlDocument &xmlDoc );
+    void createBasicXml( XmlDocument &xmlDoc ) const;
     void createDataElement( XmlDocument &xmlDoc,
                             XmlNode *dataNode,
-                            const SimpleDataElement &dataElement );
+                            const SimpleDataElement &dataElement ) const;
 
-    void createDataNode( XmlDocument &xmlDoc );
-    std::string toStdString();
+    void createDataNode( XmlDocument &xmlDoc ) const;
+    std::string toStdString() const;
 
     ComplexDataElement dataElement;
 };

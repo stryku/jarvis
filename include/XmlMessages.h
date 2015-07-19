@@ -2,6 +2,7 @@
 #define XMLMESSAGES_H
 
 #include <XmlMessage.hpp>
+#include <MsgReceivedMessage.hpp>
 //#include <TestXmlMessage.hpp>
 //#include <TaskReceivedMessage.hpp>
 //#include <TasksStartedMessage.hpp>

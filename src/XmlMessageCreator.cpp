@@ -5,7 +5,7 @@ void XmlMessageCreator::addType( const std::string &type )
     typeString = type;
 }
 
-void XmlMessageCreator::createBasicXml( XmlDocument &xmlDoc )
+void XmlMessageCreator::createBasicXml( XmlDocument &xmlDoc ) const
 {
     auto msg = xmlDoc.allocate_node( node_element, "msg" );
     auto typeNode = xmlDoc.allocate_node( node_element, "type", typeString.c_str( ) );
@@ -17,7 +17,7 @@ void XmlMessageCreator::createBasicXml( XmlDocument &xmlDoc )
 
 void XmlMessageCreator::createDataElement( XmlDocument &xmlDoc,
                                            XmlNode *dataNode,
-                                           const SimpleDataElement &dataElement )
+                                           const SimpleDataElement &dataElement ) const
 {
     auto dataElementNode = xmlDoc.allocate_node( node_element,
                                                  dataElement.name.c_str( ),
@@ -26,14 +26,14 @@ void XmlMessageCreator::createDataElement( XmlDocument &xmlDoc,
     dataNode->append_node( dataElementNode );
 }
 
-void XmlMessageCreator::createDataNode( XmlDocument &xmlDoc )
+void XmlMessageCreator::createDataNode( XmlDocument &xmlDoc ) const
 {
     auto dataNode = dataElement.toXmlNode( xmlDoc );
 
     xmlDoc.first_node()->append_node( dataNode );
 }
 
-std::string XmlMessageCreator::toStdString( )
+std::string XmlMessageCreator::toStdString( ) const
 {
     std::string ret;
     XmlDocument xmlDoc;
