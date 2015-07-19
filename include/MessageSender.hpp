@@ -1,64 +1,38 @@
 #ifndef MESSAGESENDER_HPP
 #define MESSAGESENDER_HPP
 
-#include <string>
-#include <boost/asio.hpp>
+#include <ThreadSafeQueue.hpp>
+#include <PersonalMessage.hpp>
+#include <Semaphore.hpp>
 
-#include <RawMessage.hpp>
-#include <Session.hpp>
-
-using boost::asio::ip::tcp;
+#include <zmq.hpp>
 
 class MessageSender
 {
 private:
+    static zmq::socket_t *router;
+    static ThreadSafeQueue<PersonalMessage> messagesToSend;
+    static Semaphore semaphore;
 
-    /*Session &session;
-
-    void sendMessages()
+public:
+    
+    static void run()
     {
-        if( !sendingInProgress )
+        while( 1 )
         {
-            sendingInProgress = true;
+            semaphore.wait();
+            auto msg = messagesToSend.pop();
 
-            while( !messagesToSend.empty( ) )
-            {
-                MessagePtr tmp;
-                MessageSender::sendMessage( messagesToSend.front( ) );
-
-                messagesToSendMutex.lock( );
-                messagesToSend.pop( );
-                messagesToSendMutex.unlock( );
-
-            }
-
-            sendingInProgress = false;
+            router->send( msg.identity );
+            router->send( msg.msg );
         }
     }
 
-public:
-    MessageSender( Session &session ) :
-        session( session )
-    {}
-
-    void sendMessage( const std::shared_ptr<RawMessage> message )
+    static void newMessageToSend( const PersonalMessage &msg )
     {
-        boost::asio::async_write( *( message->socketPtr ),
-                                  boost::asio::buffer( message->toStdString( ) ),
-                                  []( boost::system::error_code ec, size_t writtenBytesCount ) 
-                                  {   
-                                      if( !ec )
-                                          throw boost::system::system_error( ec );
-                                  } );
+        messagesToSend.push( msg );
+        semaphore.notify();
     }
-
-    void newMessageToSend( std::shared_ptr<RawMessage> &rawMessage )
-    {
-        messagesToSendMutex.lock( );
-        messagesToSend.push( rawMessage );
-        messagesToSendMutex.unlock( );
-        sendMessages( );
-    }*/
 };
 
 #endif // MESSAGESENDER_HPP
