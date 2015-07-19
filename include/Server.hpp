@@ -27,6 +27,8 @@ public:
         zmq::message_t msg;
 
         MessageSender::setRouter( &router );
+
+        std::future<void>( std::async( MessageSender::run ) );
         std::future<void>( std::async( MessagesToSendManager::safeSenderMethod ) );
         std::future<void>( std::async( RequestHandler::run ) );
 

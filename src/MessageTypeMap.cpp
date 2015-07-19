@@ -2,6 +2,7 @@
 
 void MessageTypeMap::init( )
 {
-    add( "task", XMSG_TASK );
-    add( "options", XMSG_OPTIONS);
+    add( "XMSG_TASK", XMSG_TASK );
+    add( "XMSG_OPTIONS", XMSG_OPTIONS );
+    add( "XMSG_RECEIVED", XMSG_RECEIVED );
 }

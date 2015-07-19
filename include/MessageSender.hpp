@@ -20,10 +20,9 @@ public:
     {
         while( 1 )
         {
-            semaphore.wait();
             auto msg = messagesToSend.pop();
 
-            router->send( msg.identity );
+            router->send( msg.identity, ZMQ_SNDMORE );
             router->send( msg.msg );
         }
     }
@@ -31,7 +30,6 @@ public:
     static void newMessageToSend( const PersonalMessage &msg )
     {
         messagesToSend.push( msg );
-        semaphore.notify();
     }
 
     static void setRouter( zmq::socket_t *newRouter )

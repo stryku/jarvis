@@ -40,7 +40,9 @@ private:
     {
         auto msg = XmlMessageParser::extract( static_cast<const char*>( request.msg.data() ) );
 
-        LOG( "Handling message: " << *msg.get() );
+        LOG( "Handling message:\n" << *msg.get() );
+
+        sendReplyIfNeed( msg, request.identity );
 
         switch( msg->type )
         {
@@ -57,7 +59,7 @@ public:
 
     static void newRequest( PersonalMessage &msg )
     {
-        LOG( "Received msg" << std::endl << msg.msg.data() );
+        LOG( "Received msg" << std::endl << static_cast<const char*>( msg.msg.data() ) );
 
         queue.push( msg );
     }
