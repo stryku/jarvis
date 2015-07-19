@@ -1,7 +1,7 @@
 #ifndef _SERVER_HPP_
 #define _SERVER_HPP_
 
-#include <ServerRequest.hpp>
+#include <PersonalMessage.hpp>
 #include <RequestHandler.hpp>
 
 #include <zmq.hpp>
@@ -28,7 +28,7 @@ public:
             router.recv( &msg );
 
             std::cout << "Server received request\n";
-            requestHandler.newRequest( ServerRequest( identity, msg ) );
+            requestHandler.newRequest( PersonalMessage( identity, msg ) );
         }
     }
 
