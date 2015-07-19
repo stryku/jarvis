@@ -33,6 +33,15 @@ public:
         messagesToSend.push( msg );
         semaphore.notify();
     }
+
+    static void setRouter( zmq::socket_t *newRouter )
+    {
+        router = newRouter;
+    }
 };
+
+zmq::socket_t* MessageSender::router;
+ThreadSafeQueue<PersonalMessage> MessageSender::messagesToSend;
+Semaphore MessageSender::semaphore;
 
 #endif // MESSAGESENDER_HPP

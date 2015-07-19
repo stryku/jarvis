@@ -1,15 +1,10 @@
 #ifndef XMLMESSAGE_HPP
 #define XMLMESSAGE_HPP
 
-#include <boost/asio.hpp>
-
-#include <RawMessage.hpp>
 #include <MessageTypeMap.hpp>
 #include <XmlMessageCreator.hpp>
 
 #include <zmq.hpp>
-
-using boost::asio::ip::tcp;
 
 class XmlMessage
 {

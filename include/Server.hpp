@@ -3,6 +3,9 @@
 
 #include <PersonalMessage.hpp>
 #include <RequestHandler.hpp>
+#include <MessagesToSendManager.hpp>
+
+#include <future>
 
 #include <zmq.hpp>
 
@@ -20,6 +23,9 @@ public:
         router.bind( "tcp://*:5570" );
         zmq::message_t identity;
         zmq::message_t msg;
+
+        MessageSender::setRouter( &router );
+        std::future<void>( std::async( MessagesToSendManager::safeSenderMethod ) );
 
         while( true )
         {

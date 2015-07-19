@@ -4,7 +4,6 @@
 #include <string>
 
 #include <MessageTypeEnum.h>
-#include <RawMessage.hpp>
 
 struct Message
 {
