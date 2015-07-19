@@ -7,11 +7,15 @@
 #include <MessageTypeMap.hpp>
 #include <XmlMessageCreator.hpp>
 
+#include <zmq.hpp>
+
 using boost::asio::ip::tcp;
 
 class XmlMessage
 {
 protected:
+    typedef std::shared_ptr<zmq::message_t> ZmqMessagePtr;
+
     static MessageTypeMap messageTypeMap;
 
     MessageType type;
@@ -25,8 +29,8 @@ public:
     //XmlMessage( tcp::socket *socket );
     virtual ~XmlMessage( ) {}
 
-    std::string toStdString();
-    RawMessage toRawMessage( );
+    std::string toStdString() const;
+    ZmqMessagePtr toZmqMessage() const;
 
 
 };

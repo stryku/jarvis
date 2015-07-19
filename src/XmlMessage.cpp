@@ -16,13 +16,14 @@ void XmlMessage::createXmlDoc( void *dataPtr )
     createDataNode( dataPtr );
 }
 
-std::string XmlMessage::toStdString( )
+std::string XmlMessage::toStdString() const
 {
     return xmlMessageCreator.toStdString();
 }
 
-RawMessage XmlMessage::toRawMessage( )
+XmlMessage::ZmqMessagePtr XmlMessage::toZmqMessage( ) const
 {
-    return RawMessage( toStdString() );
+    auto strMessage = toStdString();
+    return std::make_shared<zmq::message_t>( strMessage.begin(), strMessage.end() );
 }
 
