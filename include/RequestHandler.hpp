@@ -40,6 +40,8 @@ private:
     {
         auto msg = XmlMessageParser::extract( static_cast<const char*>( request.msg.data() ) );
 
+        LOG( "Handling message: " << *msg.get() );
+
         switch( msg->type )
         {
             case XMSG_RECEIVED: receivedConfimation( msg ); break;
@@ -55,7 +57,7 @@ public:
 
     static void newRequest( PersonalMessage &msg )
     {
-        LOG( "[BROKER] received msg" );
+        LOG( "Received msg" << std::endl << msg.msg.data() );
 
         queue.push( msg );
     }

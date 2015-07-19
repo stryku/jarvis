@@ -4,6 +4,7 @@
 #include <PersonalMessage.hpp>
 #include <RequestHandler.hpp>
 #include <MessagesToSendManager.hpp>
+#include <log.h>
 
 #include <future>
 
@@ -19,6 +20,8 @@ public:
 
     void run( )
     {
+        LOG( "Server started" );
+
         router.bind( "tcp://*:5570" );
         zmq::message_t identity;
         zmq::message_t msg;
@@ -29,11 +32,11 @@ public:
 
         while( true )
         {
-            std::cout << "Server waiting for request\n";
             router.recv( &identity );
             router.recv( &msg );
 
-            std::cout << "Server received request\n";
+            LOG( "Server received request\n" );
+
             RequestHandler::newRequest( PersonalMessage( identity, msg ) );
         }
     }

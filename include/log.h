@@ -1,8 +1,8 @@
 #ifndef LOG_H
 #define LOG_H
 
-#include <iostream>
+#include <easylogging++.h>
 
-#define LOG(string) ( std::cout << string << std::endl )
+#define LOG(string) ( EASYLOG(INFO) << string )
 
 #endif

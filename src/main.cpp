@@ -33,22 +33,24 @@
 //
 //    return 0;
 //}
-#include <array>
-#include <cstdlib>
-#include <iostream>
-#include <memory>
-#include <type_traits>
-#include <utility>
-#include <boost/asio.hpp>
 
 #include <Server.hpp>
 
-using boost::asio::ip::tcp;
+#include <easylogging++.h>
+
+INITIALIZE_EASYLOGGINGPP
+
+void initEasylogging()
+{
+    el::Configurations conf( "config/log/log.conf" );
+    el::Loggers::reconfigureAllLoggers( conf );
+}
 
 int main( int argc, char* argv[] )
 {
     try
     {
+        initEasylogging();
         char *port;
 
         if( argc != 2 )
