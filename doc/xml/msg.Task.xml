@@ -1,0 +1,27 @@
+<msg>
+	<id>MsgId</id>
+	<needreply>true</needreply>
+	<type>XMSG_TASK</type>
+	<data>
+		<task>
+			<tasktype>TaskType</tasktype>
+			<taskdata>TaskData</taskdata>
+		</task>
+		...
+	</data>
+</msg>
+
+MsgId
+	unique msg id
+	
+NeedReply
+	const
+	
+XMSG_TASK
+	const
+	
+TaskType	
+	One of task types
+	
+TaskData
+	Depend of TaskType

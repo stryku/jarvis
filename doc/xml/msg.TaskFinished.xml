@@ -1,0 +1,24 @@
+<msg>
+	<id>MsgId</id>
+	<needreply>true</needreply>
+	<type>XMSG_TASK_FINISHED</type>
+	<data>
+		<taskid>TaskId</taskid>
+		<result>TaskResult</result>
+	</data>
+</msg>
+
+MsgId
+	unique msg id
+	
+NeedReply
+	true - const
+	
+MsgType
+	XMSG_TASK_FINISHED - const
+	
+TaskId	
+	Unique task id
+	
+TaskResult
+	Task result
