@@ -8,7 +8,11 @@
 
 #include <iostream>
 
-#include <Windows.h>
+#ifdef _WIN32
+    #include <Windows.h>
+    #include <mmdeviceapi.h>
+    #include <endpointvolume.h>
+#endif
 
 class VolumeChanger : public Worker
 {
@@ -27,16 +31,54 @@ private:
         workData.newVolumePercents = static_cast<int8_t>( std::stoi( data ) );
     }
 
+#ifdef _WIN32
+    bool ChangeVolume( double nVolume )
+    {
+        HRESULT hr = NULL;
+        double newVolume = nVolume;
+
+        CoInitialize( NULL );
+        IMMDeviceEnumerator *deviceEnumerator = NULL;
+        hr = CoCreateInstance( __uuidof( MMDeviceEnumerator ), NULL, CLSCTX_INPROC_SERVER,
+                               __uuidof( IMMDeviceEnumerator ), (LPVOID *)&deviceEnumerator );
+        IMMDevice *defaultDevice = NULL;
+
+        hr = deviceEnumerator->GetDefaultAudioEndpoint( eRender, eConsole, &defaultDevice );
+        deviceEnumerator->Release( );
+        deviceEnumerator = NULL;
+
+        IAudioEndpointVolume *endpointVolume = NULL;
+        hr = defaultDevice->Activate( __uuidof( IAudioEndpointVolume ),
+                                      CLSCTX_INPROC_SERVER, NULL, (LPVOID *)&endpointVolume );
+        defaultDevice->Release( );
+        defaultDevice = NULL;
+
+        hr = endpointVolume->SetMasterVolumeLevelScalar( (float)newVolume, NULL );
+
+        endpointVolume->Release( );
+
+        CoUninitialize( );
+
+        return FALSE;
+    }
+#endif
+
+#ifndef __linux__
+
+#endif
+
 public:
-    VolumeChanger( ) {}
-    ~VolumeChanger( ) {}
+    VolumeChanger() {}
+    ~VolumeChanger() {}
 
     WorkerResultPtr doWork( const char *data )
     {
-        //waveOutSetVolume( NULL, 100 );
         std::string taskData( data );
         extractWorkData( taskData.c_str() );
-        LOG( "Changing volume to " << static_cast<int>( workData.newVolumePercents ) );
+
+        LOG( "Changing volume to " << static_cast<int>( workData.newVolumePercents ) << "%" );
+
+        ChangeVolume( static_cast<double>( workData.newVolumePercents ) / 100.0 );
 
         return std::make_shared<VolumeChangerResult>( true );
     }
