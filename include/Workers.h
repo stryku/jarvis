@@ -3,5 +3,6 @@
 
 #include <VolumeChanger.hpp>
 #include <FolderContentGetter.hpp>
+#include <DirectoryEntryRenamer.hpp>
 
 #endif

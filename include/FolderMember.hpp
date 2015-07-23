@@ -24,7 +24,6 @@ public:
     {
         auto dirEntry = DirEntry( path );
 
-
         if( boost::filesystem::is_directory( path ) )
         {
             type = FM_FOLDER;
@@ -44,7 +43,7 @@ public:
     {
         ComplexXmlElement element( "member" );
 
-        element.appendSimpleElement( "name", path.string() );
+        element.appendSimpleElement( "name", path.filename().string() );
         element.appendSimpleElement( "type", typeMap[type] );
         element.appendSimpleElement( "size", size );
 

@@ -28,7 +28,8 @@ private:
     void determineIfFast()
     {
         auto fastTasksTypes = { TASK_VOLUME_CHANGE,
-                                TASK_GET_FOLDER_CONTENT };
+                                TASK_GET_FOLDER_CONTENT,
+                                TASK_RENAME_DIR_ENTRY };
 
         fastTask = std::any_of( fastTasksTypes.begin(),
                                 fastTasksTypes.end(),
