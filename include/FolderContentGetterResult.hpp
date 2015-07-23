@@ -8,28 +8,28 @@
 
 #include <boost/filesystem/path.hpp>
 
-struct FolderContentGetterResult : public WorkerResult
+class FolderContentGetterResult : public WorkerResult
 {
 private:
     typedef std::vector<FolderMember> Members;
 
-public:
-    bool success;
     Members members;
     std::string taskId;
 
-    FolderContentGetterResult( bool success, const Members &members ) :
-        success( success ),
+public:
+    FolderContentGetterResult( const TaskResultCode resultCode,
+                               const Members &members ) :
+        WorkerResult( resultCode ), 
         members( members ),
         taskId( taskId )
     {}
 
-    ComplexXmlElement toComplexXmlElement( )
+    ComplexXmlElement toComplexXmlElement()
     {
         ComplexXmlElement dataElement( "results" );
         ComplexXmlElement membersElement( "members" );
 
-        dataElement.appendSimpleElement( "success", ( success ? "true" : "false" ) );
+        dataElement.appendSimpleElement( "resultcode", stringResultCode( ) );
 
         for( const auto &member : members )
             membersElement.appendComplexElement( member.toComplexXmlElement() );

@@ -24,6 +24,7 @@ private:
         int8_t newVolumePercents;
     }workData;
 
+
     void extractWorkData( const char *taskData )
     {
         auto data = SimpleXmlParser::extractChildren( "newvalue", taskData );
@@ -75,12 +76,15 @@ public:
     {
         std::string taskData( data );
         extractWorkData( taskData.c_str() );
+        TaskResultCode resultCode;
 
         LOG( "Changing volume to " << static_cast<int>( workData.newVolumePercents ) << "%" );
 
-        ChangeVolume( static_cast<double>( workData.newVolumePercents ) / 100.0 );
+        auto volumeChanged = ChangeVolume( static_cast<double>( workData.newVolumePercents ) / 100.0 );
 
-        return std::make_shared<VolumeChangerResult>( true );
+        resultCode = ( volumeChanged ? RC_SUCCESS : RC_FAIL );
+
+        return std::make_shared<VolumeChangerResult>( resultCode );
     }
 };
 

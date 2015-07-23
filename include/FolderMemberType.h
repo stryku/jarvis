@@ -8,3 +8,4 @@ enum FolderMemberType
 
     FM_UNDEF
 };
+

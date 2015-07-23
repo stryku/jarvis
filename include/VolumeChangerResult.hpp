@@ -1,20 +1,19 @@
-#ifndef _VOLUMECHANGERRESULT_HPP_
-#define _VOLUMECHANGERRESULT_HPP_
+#ifndef _VOLUMECHANGERRC_HPP_
+#define _VOLUMECHANGERRC_HPP_
 
 #include <WorkerResult.hpp>
 
-struct VolumeChangerResult : public WorkerResult
+class VolumeChangerResult : public WorkerResult
 {
-    bool success;
-
-    VolumeChangerResult( bool success ) :
-        success( success )
+public:
+    VolumeChangerResult( TaskResultCode resultCode ) :
+        WorkerResult( resultCode )
     {}
 
     ComplexXmlElement toComplexXmlElement( )
     {
-        return ComplexXmlElement( "success", ( success ? "true" : "false" ) );
+        return ComplexXmlElement( "resultcode", stringResultCode() );
     }
 };
 
-#endif // _VOLUMECHANGERRESULT_HPP_
+#endif // _VOLUMECHANGERRC_HPP_

@@ -42,8 +42,8 @@ private:
     }
 
 public:
-    FolderContentGetter( ) {}
-    ~FolderContentGetter( ) {}
+    FolderContentGetter() {}
+    ~FolderContentGetter() {}
 
     WorkerResultPtr doWork( const char *data )
     {
@@ -52,18 +52,18 @@ public:
 
         extractWorkData( taskData.c_str( ) );
 
-        LOG( "Getting members from " << workData.path << "%" );
+        LOG( "Getting members from " << workData.path );
 
         try
         {
             getMembers( workData.path, members );
-            return std::make_shared<FolderContentGetterResult>( true, members );
+            return std::make_shared<FolderContentGetterResult>( RC_SUCCESS, members );
         }
         catch( ... )
         {
-            return std::make_shared<FolderContentGetterResult>( false, Members() );
+            return std::make_shared<FolderContentGetterResult>( RC_FAIL, Members( ) );
         }
 
-        return std::make_shared<FolderContentGetterResult>( false, Members( ) );
+        return std::make_shared<FolderContentGetterResult>( RC_FAIL, Members( ) );
     }
 };

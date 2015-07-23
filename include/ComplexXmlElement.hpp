@@ -1,6 +1,8 @@
 #ifndef _COMPLEXDATAELEMENT_HPP_
 #define _COMPLEXDATAELEMENT_HPP_
 
+//#include <SimpleXmlElementFactory>w
+
 #include <rapidxml/rapidxml.hpp>
 #include <rapidxml/rapidxml_print.hpp>
 
@@ -45,26 +47,11 @@ public:
     }
 
     void appendSimpleElement( const std::string &name,
-                              const char *value )
-    {
-        simpleElements.push_back( SimpleXmlElement( name, value ) );
-    }
-
-    void appendSimpleElement( const std::string &name,
                               const char value )
     {
-        char buf[2];
-        buf[0] = value;
-        buf[1] = '\0';
+        char buf[2] = { value, '\0' };
 
         simpleElements.push_back( SimpleXmlElement( name, buf ) );
-    }
-
-    void appendSimpleElement( const std::string &name,
-                              const int32_t value )
-    {
-        simpleElements.push_back( SimpleXmlElement( name,
-                                                     std::to_string( value ) ) );
     }
 
     void appendSimpleElement( const std::string &name,

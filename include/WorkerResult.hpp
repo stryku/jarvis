@@ -1,13 +1,34 @@
-#ifndef _WORKERRESULT_HPP_
-#define _WORKERRESULT_HPP_
+#ifndef _WORKERRC_HPP_
+#define _WORKERRC_HPP_
+
+#include <ComplexXmlElement.hpp>
+#include <TaskResultCode.h>
 
 #include <string>
-#include <ComplexXmlElement.hpp>
 
-struct WorkerResult
+class WorkerResult
 {
-    bool success;
-    virtual ComplexXmlElement toComplexXmlElement( ) = 0;
+protected:
+    TaskResultCode resultCode;
+    
+    std::string stringResultCode( ) const
+    {
+        switch( resultCode )
+        {
+            case RC_SUCCESS: return "RC_SUCCESS";
+            case RC_FAIL: return "RC_FAIL";
+
+            default: return "RC_UNDEF";
+        }
+    }
+
+public:
+    WorkerResult( TaskResultCode rc ) :
+        resultCode(rc)
+    {}
+    virtual ~WorkerResult() {}
+
+    virtual ComplexXmlElement toComplexXmlElement() = 0;
 };
 
-#endif // _WORKERRESULT_HPP_
+#endif // _WORKERRC_HPP_
