@@ -1,0 +1,32 @@
+<msg>
+	<id>MsgId</id>
+	<needreply>true</needreply>
+	<type>XMSG_TASK</type>
+	<data>
+		<task>
+			<tasktype>TASK_RENAME_DIR_ENTRY</tasktype>
+			<taskdata>
+				<path>Path</path>
+				<newname>NewName</newname>
+			</taskdata>
+		</task>
+	</data>
+</msg>
+
+MsgId
+	unique msg id
+	
+NeedReply
+	true - const
+	
+XMSG_TASK
+	XMSG_TASK - const
+	
+TaskType	
+	TASK_RENAME_DIR_ENTRY - const
+	
+Path
+	PAth to directory entry which we want to rename
+	
+NewName
+	New name for directory entry
