@@ -3,11 +3,11 @@
 
 #include <string>
 
-struct SimpleDataElement
+struct SimpleXmlElement
 {
     std::string name, value;
 
-    SimpleDataElement( const std::string &name,
+    SimpleXmlElement( const std::string &name,
                        const std::string &value ) :
                        name( name ),
                        value( value )

@@ -17,8 +17,8 @@ private:
 
     static void sendResult( const TaskPtr &taskPtr, const zmq::message_t &identity )
     {
-        auto msg = XmlMessageFactory::generateXmlMessage( XMSG_TASK_FINISHED,
-                                                          taskPtr.get( ) );
+        auto msg = XmlMessageFactory::generateXmlMessage( XMSG_RESULT,
+                                                          taskPtr.get() );
 
         MessagesToSendManager::safeSend( MessageToSend( msg->getId(), 
                                                         msg.get(),

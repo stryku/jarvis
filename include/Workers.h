@@ -3,5 +3,6 @@
 
 #include <TestWorker.hpp>
 #include <VolumeChanger.hpp>
+#include <FolderContentGetter.hpp>
 
 #endif

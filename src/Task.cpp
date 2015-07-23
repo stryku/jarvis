@@ -3,9 +3,10 @@
 TaskTypeMap Task::taskTypeMap = TaskTypeMap( );
 std::atomic<uint32_t> Task::tasksCount = 0;
 
-Task::Task( TaskType type, std::string data ) :
+Task::Task( TaskType type, std::string data, std::string id ) :
     type( type ),
-    data( data )
+    data( data ),
+    id( id )
 {
     assignIdNumber();
     determineIfFast( );

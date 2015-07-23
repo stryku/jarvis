@@ -35,7 +35,7 @@ void XmlMessageCreator::createBasicXml( XmlDocument &xmlDoc ) const
 
 void XmlMessageCreator::createDataElement( XmlDocument &xmlDoc,
                                            XmlNode *dataNode,
-                                           const SimpleDataElement &dataElement ) const
+                                           const SimpleXmlElement &dataElement ) const
 {
     auto dataElementNode = xmlDoc.allocate_node( node_element,
                                                  dataElement.name.c_str( ),

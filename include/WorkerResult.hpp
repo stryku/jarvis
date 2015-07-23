@@ -2,11 +2,12 @@
 #define _WORKERRESULT_HPP_
 
 #include <string>
-#include <ComplexDataElement.hpp>
+#include <ComplexXmlElement.hpp>
 
 struct WorkerResult
 {
-    virtual ComplexDataElement toComplexDataElement( ) = 0;
+    bool success;
+    virtual ComplexXmlElement toComplexXmlElement( ) = 0;
 };
 
 #endif // _WORKERRESULT_HPP_

@@ -4,7 +4,7 @@
 #include <vector>
 #include <string>
 
-#include <ComplexDataElement.hpp>
+#include <ComplexXmlElement.hpp>
 
 class XmlMessageCreator
 {
@@ -25,12 +25,12 @@ public:
     void createBasicXml( XmlDocument &xmlDoc ) const;
     void createDataElement( XmlDocument &xmlDoc,
                             XmlNode *dataNode,
-                            const SimpleDataElement &dataElement ) const;
+                            const SimpleXmlElement &dataElement ) const;
 
     void createDataNode( XmlDocument &xmlDoc ) const;
     std::string toStdString() const;
 
-    ComplexDataElement dataElement;
+    ComplexXmlElement dataElement;
 };
 
 #endif

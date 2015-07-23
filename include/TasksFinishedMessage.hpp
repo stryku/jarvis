@@ -13,15 +13,15 @@ protected:
         Task &task = *( reinterpret_cast<Task*>( dataPtr ) );
 
         auto &dataElem = xmlMessageCreator.dataElement;
-        auto &taskElem = dataElem.newComplexDataElement( "result" );
+        auto &taskElem = dataElem.newComplexXmlElement( "result" );
 
         dataElem.appendSimpleElement( "taskid", task.stringType() );
-        taskElem.appendComplexElement( task.result->toComplexDataElement() );
+        taskElem.appendComplexElement( task.result->toComplexXmlElement() );
 
 /*
         taskElem.appendSimpleElement( "type", task->stringType( ) );
         taskElem.appendSimpleElement( "id", task->getIdNumber( ) );
-        taskElem.appendComplexElement( task->result->toComplexDataElement( ) );*/
+        taskElem.appendComplexElement( task->result->toComplexXmlElement( ) );*/
     }
 
 

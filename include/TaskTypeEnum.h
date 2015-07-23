@@ -10,6 +10,7 @@ enum TaskType
 
     TASK_TEST,
     TASK_VOLUME_CHANGE,
+    TASK_GET_FOLDER_CONTENT,
 
     TASK_END
 };

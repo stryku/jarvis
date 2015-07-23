@@ -11,9 +11,9 @@ struct TestWorkerResult : public WorkerResult
         success( success )
     {}
 
-    ComplexDataElement toComplexDataElement( )
+    ComplexXmlElement toComplexXmlElement( )
     {
-        return ComplexDataElement( "success", ( success ? "true" : "false" ) );
+        return ComplexXmlElement( "success", ( success ? "true" : "false" ) );
     }
 };
 

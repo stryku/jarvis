@@ -18,7 +18,7 @@ private:
     static TaskTypeMap taskTypeMap;
     static std::atomic<uint32_t> tasksCount;
 
-    size_t idNumber;
+    uint32_t idNumber;
 
     void assignIdNumber()
     {
@@ -27,7 +27,8 @@ private:
 
     void determineIfFast()
     {
-        auto fastTasksTypes = { TASK_VOLUME_CHANGE };
+        auto fastTasksTypes = { TASK_VOLUME_CHANGE,
+                                TASK_GET_FOLDER_CONTENT };
 
         fastTask = std::any_of( fastTasksTypes.begin(),
                                 fastTasksTypes.end(),
@@ -37,6 +38,7 @@ private:
 public:
     TaskType type;
     std::string data;
+    std::string id;
     WorkerResultPtr result;
     bool fastTask;
 
@@ -45,7 +47,7 @@ public:
         assignIdNumber(); 
         determineIfFast();
     }
-    Task( TaskType type, std::string data );
+    Task( TaskType type, std::string data, std::string id );
     ~Task() {}
 
     void execute()

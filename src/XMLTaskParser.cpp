@@ -6,9 +6,18 @@ TaskType XMLTaskParser::extractTaskType( const xml_node<> *taskNode )
 {
     const char *taskTypeString;
 
-    taskTypeString = taskNode->first_node( "tasktype" )->value();
+    taskTypeString = taskNode->first_node( "tasktype" )->value( );
 
     return taskTypeMap[taskTypeString];
+}
+
+std::string XMLTaskParser::extractTaskId( const xml_node<> *taskNode )
+{
+    const char *taskIdString;
+
+    taskIdString = taskNode->first_node( "taskid" )->value( );
+
+    return taskIdString;
 }
 
 std::string XMLTaskParser::extractTaskData( const xml_node<> *taskNode )
@@ -33,9 +42,10 @@ std::vector<TaskPtr> XMLTaskParser::extractTasks( const char *xmlData )
     {
         taskNode = taskNode->last_node();
         TaskType taskType = extractTaskType( taskNode );
+        auto id =extractTaskId( taskNode );
         std::string taskData = extractTaskData( taskNode );
 
-        tasks.push_back( std::make_shared<Task>( taskType, taskData ) );
+        tasks.push_back( std::make_shared<Task>( taskType, taskData, id ) );
 
         doc.remove_first_node( );
     }
@@ -52,14 +62,16 @@ TaskPtr XMLTaskParser::extractTask( const char *xmlData )
 
     TaskType taskType = extractTaskType( taskNode );
     std::string taskData = extractTaskData( taskNode );
+    auto id = extractTaskId( taskNode );
 
-    return std::make_shared<Task>( taskType, taskData );
+    return std::make_shared<Task>( taskType, taskData, id );
 }
 
 TaskPtr XMLTaskParser::extractTask( const xml_node<> *taskNode )
 {
     TaskType taskType = extractTaskType( taskNode );
     std::string taskData = extractTaskData( taskNode );
+    auto id = extractTaskId( taskNode );
 
-    return std::make_shared<Task>( taskType, taskData );
+    return std::make_shared<Task>( taskType, taskData, id );
 }

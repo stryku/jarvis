@@ -7,5 +7,6 @@
 //#include <TaskReceivedMessage.hpp>
 //#include <TasksStartedMessage.hpp>
 #include <TasksFinishedMessage.hpp>
+#include <TaskRasultsMessage.hpp>
 
 #endif // XMLMESSAGES_H

@@ -18,12 +18,12 @@ protected:
 
         for( auto &task : tasks )
         {
-            auto &taskElem = dataElem.newComplexDataElement( "task" );
+            auto &taskElem = dataElem.newComplexXmlElement( "task" );
             //auto 
 
             taskElem.appendSimpleElement( "type", task->stringType( ) );
             taskElem.appendSimpleElement( "id", task->getIdNumber( ) );
-            //taskElem.appendComplexElement( task->result->toComplexDataElement( ) );
+            //taskElem.appendComplexElement( task->result->toComplexXmlElement( ) );
         }
     }
 

@@ -24,6 +24,7 @@ private:
                                                 const char *elementName );
     static TaskType extractTaskType( const xml_node<> *taskNode );
     static std::string extractTaskData( const xml_node<> *taskNode );
+    static std::string extractTaskId( const xml_node<> *taskNode );
 
 public:
     XMLTaskParser() {}
