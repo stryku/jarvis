@@ -5,9 +5,10 @@
 	<data>
 		<task>
 			<tasktype>TASK_RENAME_DIR_ENTRY</tasktype>
+			<taskid>TaskId</taskid>
 			<taskdata>
 				<path>Path</path>
-				<newname>NewName</newname>
+				<newpath>NewName</newpath>
 			</taskdata>
 		</task>
 	</data>
@@ -24,6 +25,9 @@ XMSG_TASK
 	
 TaskType	
 	TASK_RENAME_DIR_ENTRY - const
+	
+TaskId
+	unique task id
 	
 Path
 	PAth to directory entry which we want to rename

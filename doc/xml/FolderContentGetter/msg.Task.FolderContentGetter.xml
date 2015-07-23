@@ -5,6 +5,7 @@
 	<data>
 		<task>
 			<tasktype>TASK_GET_FOLDER_CONTENT</tasktype>
+			<taskid>TaskId</taskid>
 			<taskdata>
 				<path>Path</path>
 			</taskdata>
@@ -24,6 +25,9 @@ XMSG_TASK
 	
 TaskType	
 	TASK_GET_FOLDER_CONTENT - const
+
+TaskId
+	unique task id
 	
 Path
 	Path to folder from which we want content

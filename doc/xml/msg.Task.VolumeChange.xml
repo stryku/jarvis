@@ -5,6 +5,7 @@
 	<data>
 		<task>
 			<tasktype>TASK_VOLUME_CHANGE</tasktype>
+			<taskid>TaskId</taskid>
 			<taskdata>
 				<newvalue>NewVolumeValue</newvalue>
 			</taskdata>
@@ -24,6 +25,9 @@ XMSG_TASK
 	
 TaskType	
 	TASK_VOLUME_CHANGE - const
+	
+TaskId
+	unique task id
 	
 NewVolumeValue
 	New volume percent value. Integer from 0 to 100.
