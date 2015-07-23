@@ -32,7 +32,8 @@ public:
                                         const char *xmlData )
     {
         xml_document <> doc;
-        doc.parse<0>( const_cast<char*>( xmlData ) );
+        std::string stringData( xmlData );
+        doc.parse<0>( const_cast<char*>( stringData.c_str() ) );
         auto root = doc.first_node();
 
         if( root != nullptr )
