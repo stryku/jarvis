@@ -5,6 +5,7 @@
 	<data>
 		<task>
 			<tasktype>TaskType</tasktype>
+			<taskid>TaskId</taskid>
 			<taskdata>TaskData</taskdata>
 		</task>
 		...
@@ -22,6 +23,9 @@ XMSG_TASK
 	
 TaskType	
 	One of task types
+	
+TaskId
+	unique task id
 	
 TaskData
 	Depend of TaskType

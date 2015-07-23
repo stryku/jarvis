@@ -1,0 +1,29 @@
+<msg>
+	<id>MsgId</id>
+	<needreply>true</needreply>
+	<type>XMSG_TASK</type>
+	<data>
+		<task>
+			<tasktype>TASK_GET_FOLDER_CONTENT</tasktype>
+			<taskdata>
+				<path>Path</path>
+			</taskdata>
+		</task>
+		...
+	</data>
+</msg>
+
+MsgId
+	unique msg id
+	
+NeedReply
+	true - const
+	
+XMSG_TASK
+	XMSG_TASK - const
+	
+TaskType	
+	TASK_GET_FOLDER_CONTENT - const
+	
+Path
+	Path to folder from which we want content

@@ -1,0 +1,44 @@
+<msg>
+	<id>MsgId</id>
+	<needreply>true</needreply>
+	<type>XMSG_RESULT</type>
+	<data>
+		<taskid>TaskId</taskid>
+		<results>
+			<success>Success</success>
+			<members>
+				<member>
+					<name>Name</name>
+					<type>Type</type>
+					<size>Size</size>
+				</member>
+			...
+			</members>
+		</results>
+	</data>
+</msg>
+
+MsgId
+	unique msg id
+	
+NeedReply
+	true - const
+	
+XMSG_TASK
+	XMSG_TASK - const
+	
+TaskId	
+	unique task id
+	
+Success
+	true or false
+	
+Name
+	Folder member name
+	
+Type
+	Folder member type. 
+	One of FM_FILE, FM_FOLDER, FM_HIDDEN_FILE
+	
+Size
+	If member is file then its file size. If folder then 0
