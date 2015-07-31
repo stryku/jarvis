@@ -4,7 +4,6 @@
 #include <ThreadSafeQueue.hpp>
 #include <PersonalMessage.hpp>
 #include <log.h>
-#include <Semaphore.hpp>
 #include <XmlMessageParser.hpp>
 #include <MessagesToSendManager.hpp>
 #include <XmlMessageFactory.hpp>
@@ -15,10 +14,12 @@
 #include <future>
 
 #include <zmq.hpp>
+#include <boost/interprocess/sync/interprocess_semaphore.hpp>
 
 class RequestHandler
 {
 private:
+    typedef boost::interprocess::interprocess_semaphore Semaphore;
     typedef std::shared_ptr<Message> MessagePtr;
 
     static ThreadSafeQueue<PersonalMessage> queue;

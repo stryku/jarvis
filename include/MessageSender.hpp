@@ -3,16 +3,19 @@
 
 #include <ThreadSafeQueue.hpp>
 #include <PersonalMessage.hpp>
-#include <Semaphore.hpp>
 
 #include <zmq.hpp>
+#include <boost/interprocess/sync/interprocess_semaphore.hpp>
 
 class MessageSender
 {
 private:
+    typedef boost::interprocess::interprocess_semaphore Semaphore;
+    typedef std::unique_ptr<Semaphore> SemaphorePtr;
+
     static zmq::socket_t *router;
     static ThreadSafeQueue<PersonalMessage> messagesToSend;
-    static Semaphore semaphore;
+    static SemaphorePtr semaphore;
 
 public:
     
@@ -40,6 +43,6 @@ public:
 
 zmq::socket_t* MessageSender::router;
 ThreadSafeQueue<PersonalMessage> MessageSender::messagesToSend;
-Semaphore MessageSender::semaphore;
+MessageSender::SemaphorePtr MessageSender::semaphore = std::make_unique<MessageSender::Semaphore>( 0 );
 
 #endif // MESSAGESENDER_HPP

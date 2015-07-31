@@ -34,6 +34,7 @@ public:
     {
         try
         {
+            ::Sleep( 3000 );
             std::string taskData( data );
 
             extractWorkData( taskData.c_str( ) );
