@@ -1,0 +1,27 @@
+<msg>
+	<id>MsgId</id>
+	<needreply>true</needreply>
+	<type>XMSG_RESULT</type>
+	<data>
+		<taskid>TaskId</taskid>
+		<results>
+			<resultcode>ResultCode</resultcode>
+		</results>
+	</data>
+</msg>
+
+MsgId
+	unique msg id
+	
+NeedReply
+	true - const
+	
+XMSG_RESULT
+	XMSG_RESULT - const
+	
+TaskId	
+	unique task id
+	
+ResultCode
+	RC_SUCCESS 
+	RC_FAILED 

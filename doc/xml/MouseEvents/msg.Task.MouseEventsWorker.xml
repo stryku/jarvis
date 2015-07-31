@@ -1,0 +1,39 @@
+<msg>
+	<id>MsgId</id>
+	<needreply>true</needreply>
+	<type>XMSG_TASK</type>
+	<data>
+		<task>
+			<tasktype>TASK_MOUSE_EVENTS</tasktype>
+			<taskid>TaskId</taskid>
+			<taskdata>
+				<event>
+					<type>EventType</type>
+					<data>EventData</data>
+				</event>
+				...
+			</taskdata>
+		</task>
+	</data>
+</msg>
+
+MsgId
+	unique msg id
+	
+NeedReply
+	true - const
+	
+XMSG_TASK
+	XMSG_TASK - const
+	
+TaskType	
+	TASK_MOUSE_EVENTS - const 
+	
+TaskId
+	unique task id
+	
+EventType	
+	type of mouse event
+	
+EventData
+	data for mouse event
