@@ -1,6 +1,6 @@
 #pragma once
 
-enum EventType
+enum InputEventType
 {
     MOUSE_LEFT_DOWN,
     MOUSE_LEFT_UP,
