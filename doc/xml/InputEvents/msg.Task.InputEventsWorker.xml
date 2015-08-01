@@ -33,7 +33,41 @@ TaskId
 	unique task id
 	
 EventType	
-	type of input event
+	type of input event. One of
+		MOUSE_LEFT_DOWN,
+		MOUSE_LEFT_UP,
+		MOUSE_RIGHT_DOWN,
+		MOUSE_RIGHT_UP,
+		MOUSE_MIDDLE_DOWN,
+		MOUSE_MIDDLE_UP,
+		MOUSE_X_DOWN,
+		MOUSE_X_UP,
+		MOUSE_SCROLL_DOWN,
+		MOUSE_SCROLL_UP,
+
+		MOUSE_MOVE,
+
+		KB_DOWN,
+		KB_UP
 	
 EventData
-	data for input event
+	data for input event. Depend of EventType
+		MOUSE_LEFT_DOWN,
+		MOUSE_LEFT_UP,
+		MOUSE_RIGHT_DOWN,
+		MOUSE_RIGHT_UP,
+		MOUSE_MIDDLE_DOWN,
+		MOUSE_MIDDLE_UP,
+		MOUSE_X_DOWN,
+		MOUSE_X_UP,
+		MOUSE_SCROLL_DOWN,
+		MOUSE_SCROLL_UP,
+			Data is empty
+			
+		MOUSE_MOVE,
+			<x>x</x>
+			<y>y</y>
+			
+		KB_DOWN,
+		KB_UP
+			<key>key</key>
