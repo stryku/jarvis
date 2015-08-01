@@ -1,13 +1,16 @@
 #pragma once
 
 #include <InputEvent.hpp>
+
 #include <vector>
+#include <thread>
 
 #include <Windows.h>
 
 class InputEventExecutor
 {
 private:
+    static const size_t defSleepTime = 15;
     typedef std::vector<InputEvent> Events;
 
     struct Coordination
@@ -66,32 +69,50 @@ private:
         return SendInput( 1, &input, sizeof( INPUT ) );
     }
 
-    static UINT mouseMove( const Point2d<size_t> &newPos )
+    static BOOL mouseMove( const Point2d<size_t> &newPos )
     {
-        INPUT input;
-        RECT rect;
-
-        mouseSetup( input );
-
-        rect = getDesktopResolution();
-
-        input.mi.dx = ( newPos.x * ( 0xFFFF / rect.right ) );
-        input.mi.dy = ( newPos.y * ( 0xFFFF / rect.bottom ) );
-        input.mi.dwFlags = ( MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE );
-
-        return SendInput( 1, &input, sizeof( INPUT ) );
+        return SetCursorPos( newPos.x, newPos.y );
     }
+
+    /*static std::pair<INPUT, INPUT> inputsForKeyPressAndRelease( int key )
+    {
+        INPUT press, release;
+        press.type = INPUT_KEYBOARD;
+        press.ki.wScan = 0;
+        press.ki.time = 0;
+        press.ki.dwExtraInfo = 0;
+
+        press.ki.wVk = key; 
+        press.ki.dwFlags = 0; 
+
+        release = press;
+
+        release.ki.dwFlags = KEYEVENTF_KEYUP;
+
+        return std::make_pair( press, release );
+    }*/
+
+    /*static bool writeText( const char *text )
+    {
+        std::string txt( text );
+        std::vector<INPUT> inputs;
+
+        std::transform( txt.begin(),
+    }*/
 
 public:
     static bool execute( Events events )
     {
+
+        auto sleepTime = std::chrono::milliseconds( defSleepTime );
+
         for( const auto &event : events )
         {
             switch( event.type )
             {
                 case MOUSE_MOVE:
                 {
-                    if( mouseMove( event.mouseMoveTo ) == 0 )
+                    if( !mouseMove( event.mouseMoveTo ) )
                         return false;
                 } break;
 
@@ -108,8 +129,10 @@ public:
                         return false;
                 } break;
             }
+
+            std::this_thread::sleep_for( sleepTime );
         }
 
-        return 0;
+        return true;
     }
 };

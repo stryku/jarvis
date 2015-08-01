@@ -16,5 +16,7 @@ enum InputEventType
     MOUSE_MOVE,
 
     KB_DOWN,
-    KB_UP
+    KB_UP,
+
+    WRITE_TEXT
 };

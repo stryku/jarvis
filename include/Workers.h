@@ -4,5 +4,6 @@
 #include <VolumeChanger.hpp>
 #include <FolderContentGetter.hpp>
 #include <DirectoryEntryRenamer.hpp>
+#include <InputEventsWorker.hpp>
 
 #endif

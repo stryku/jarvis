@@ -6,8 +6,9 @@
 #include <SimpleWorkerResult.hpp> // TODO
 #include <InputEvent.hpp>
 #include <InputEventExecutor.hpp>
-#include <string>
+#include <InputEventTypeMap.hpp>
 
+#include <string>
 #include <mutex>
 
 class InputEventsWorker : public Worker //todo
@@ -15,35 +16,18 @@ class InputEventsWorker : public Worker //todo
 private:
     typedef std::shared_ptr<WorkerResult> WorkerResultPtr;
 
+    static InputEventTypeMap eventTypeMap;
+
     struct WorkData
     {
         std::vector<InputEvent> eventsToExecute;
     }workData;
 
-    static InputEventType stringToEnumType( const std::string &stringType )
-    {
-        static std::map<const std::string&, InputEventType> map{
-            { "MOUSE_LEFT_DOWN", MOUSE_LEFT_DOWN },
-            { "MOUSE_LEFT_UP", MOUSE_LEFT_UP },
-            { "MOUSE_RIGHT_DOWN", MOUSE_RIGHT_DOWN },
-            { "MOUSE_RIGHT_UP", MOUSE_RIGHT_UP },
-            { "MOUSE_MIDDLE_DOWN", MOUSE_MIDDLE_DOWN },
-            { "MOUSE_MIDDLE_UP", MOUSE_MIDDLE_UP },
-            { "MOUSE_X_DOWN", MOUSE_X_DOWN },
-            { "MOUSE_X_UP", MOUSE_X_UP },
-            { "MOUSE_SCROLL_DOWN", MOUSE_SCROLL_DOWN },
-            { "MOUSE_SCROLL_UP", MOUSE_SCROLL_UP },
-            { "MOUSE_MOVE", MOUSE_MOVE }
-        };
-
-        return map[stringType];
-    }
-
     static InputEventType extractType( const std::string &eventInXml )
     {
         auto stringType = SimpleXmlParser::extractChildren( "type", eventInXml.c_str() );
 
-        return stringToEnumType( stringType );
+        return eventTypeMap[stringType];
     }
 
     static Point2d<size_t> extractMouseMoveData( const std::string &eventDataInXml )
@@ -54,22 +38,24 @@ private:
         strX = SimpleXmlParser::extractChildren( "x", eventDataInXml.c_str() );
         strY = SimpleXmlParser::extractChildren( "y", eventDataInXml.c_str() );
 
-        point.x = std::strtol( strX );
-        point.y = std::strtol( strY );
+        //todo zmiana przy zmianie 
+        point.x = std::atoi( strX.c_str() );
+        point.y = std::atoi( strY.c_str() );
 
         return point;
     }
 
     static int extractKbKeyData( const std::string &eventDataInXml )
     {
-        auto kbKeyStr = SimpleXmlParser::extractChildren( "key", eventDataInXml.c_str() );
+        auto kbKeyStr = SimpleXmlParser::extractChildrenValue( "key", eventDataInXml.c_str() );
 
         return static_cast<int>( kbKeyStr[0] );
     }
 
     static void extractData( const std::string &eventInXml, InputEvent &event )
     {
-        auto eventData = SimpleXmlParser::extractChildren( "data", eventInXml.c_str() );
+        auto eventData = SimpleXmlParser::wholeChildrenValue( "data", 
+                                                              eventInXml.c_str() );
 
         if( event.type == MOUSE_MOVE )
             event.mouseMoveTo = extractMouseMoveData( eventData );
@@ -112,7 +98,7 @@ public:
             extractWorkData( taskData.c_str() );
 
             //todo
-            LOG( "" );
+            LOG( "InputEventsWorker::doWork" );
 
             if( !InputEventExecutor::execute( workData.eventsToExecute ) )
                 throw std::runtime_error( "InputEventExecutor::execute return false" );
@@ -127,3 +113,4 @@ public:
         return std::make_shared<SimpleWorkerResult>( RC_FAIL );//todo
     }
 };
+
