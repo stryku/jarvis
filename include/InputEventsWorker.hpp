@@ -3,7 +3,7 @@
 #include <Worker.hpp>
 #include <SimpleXmlParser.hpp>
 #include <log.h>
-#include <InputEventsWorkerResult.hpp> // TODO
+#include <SimpleWorkerResult.hpp> // TODO
 #include <InputEvent.hpp>
 #include <InputEventExecutor.hpp>
 #include <string>
@@ -117,13 +117,13 @@ public:
             if( !InputEventExecutor::execute( workData.eventsToExecute ) )
                 throw std::runtime_error( "InputEventExecutor::execute return false" );
 
-            return std::make_shared<InputEventsWorkerResult>( RC_SUCCESS );//todo
+            return std::make_shared<SimpleWorkerResult>( RC_SUCCESS );//todo
         }
         catch( ... )
         {
-            return std::make_shared<InputEventsWorkerResult>( RC_FAIL );//todo
+            return std::make_shared<SimpleWorkerResult>( RC_FAIL );//todo
         }
 
-        return std::make_shared<InputEventsWorkerResult>( RC_FAIL );//todo
+        return std::make_shared<SimpleWorkerResult>( RC_FAIL );//todo
     }
 };

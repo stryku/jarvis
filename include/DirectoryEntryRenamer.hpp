@@ -3,7 +3,7 @@
 #include <Worker.hpp>
 #include <SimpleXmlParser.hpp>
 #include <log.h>
-#include <DirectoryEntryRenamerResult.hpp> 
+#include <SimpleWorkerResult.hpp> 
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem.hpp>
@@ -43,13 +43,13 @@ public:
         
             boost::filesystem::rename( workData.path, workData.newPath );
 
-            return std::make_shared<DirectoryEntryRenamerResult>( RC_SUCCESS );
+            return std::make_shared<SimpleWorkerResult>( RC_SUCCESS );
         }
         catch( ... )
         {
-            return std::make_shared<DirectoryEntryRenamerResult>( RC_FAIL );
+            return std::make_shared<SimpleWorkerResult>( RC_FAIL );
         }
 
-        return std::make_shared<DirectoryEntryRenamerResult>( RC_FAIL );
+        return std::make_shared<SimpleWorkerResult>( RC_FAIL );
     }
 };
