@@ -4,7 +4,7 @@
 	<type>XMSG_TASK</type>
 	<data>
 		<task>
-			<tasktype>TASK_MOUSE_EVENTS</tasktype>
+			<tasktype>TASK_INPUT_EVENTS</tasktype>
 			<taskid>TaskId</taskid>
 			<taskdata>
 				<event>
@@ -27,13 +27,13 @@ XMSG_TASK
 	XMSG_TASK - const
 	
 TaskType	
-	TASK_MOUSE_EVENTS - const 
+	TASK_INPUT_EVENTS - const 
 	
 TaskId
 	unique task id
 	
 EventType	
-	type of mouse event
+	type of input event
 	
 EventData
-	data for mouse event
+	data for input event
