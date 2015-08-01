@@ -14,14 +14,12 @@ private:
     typedef std::vector<FolderMember> Members;
 
     Members members;
-    std::string taskId;
 
 public:
     FolderContentGetterResult( const TaskResultCode resultCode,
                                const Members &members ) :
         WorkerResult( resultCode ), 
-        members( members ),
-        taskId( taskId )
+        members( members )
     {}
 
     ComplexXmlElement toComplexXmlElement()

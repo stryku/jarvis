@@ -18,7 +18,6 @@ private:
     static SemaphorePtr semaphore;
 
 public:
-    
     static void run()
     {
         while( 1 )

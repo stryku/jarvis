@@ -29,7 +29,8 @@ private:
     {
         auto fastTasksTypes = { TASK_VOLUME_CHANGE,
                                 TASK_GET_FOLDER_CONTENT,
-                                TASK_RENAME_DIR_ENTRY };
+                                TASK_RENAME_DIR_ENTRY,
+                                TASK_INPUT_EVENTS };
 
         fastTask = std::any_of( fastTasksTypes.begin(),
                                 fastTasksTypes.end(),
