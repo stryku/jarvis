@@ -1,12 +1,15 @@
 #pragma once
 
-#include <InputEnums.h>
+#include <InputEvent.hpp>
+#include <vector>
 
 #include <Windows.h>
 
 class InputEventExecutor
 {
 private:
+    typedef std::vector<InputEvent> Events;
+
     struct Coordination
     {
         size_t x, y;
@@ -33,7 +36,7 @@ private:
         return resolution;
     }
 
-    static DWORD getWindowsEventType( EventType eventType )
+    static DWORD getWindowsEventType( InputEventType eventType )
     {
         switch( eventType )
         {
@@ -50,7 +53,7 @@ private:
         }
     }
 
-    static UINT mouseBtnEvent( EventType eventType )
+    static UINT mouseBtnEvent( InputEventType eventType )
     {
         INPUT input;
         DWORD btnEventType;
@@ -63,7 +66,7 @@ private:
         return SendInput( 1, &input, sizeof( INPUT ) );
     }
 
-    static UINT mouseMove( Coordination coord )
+    static UINT mouseMove( const Point2d<size_t> &newPos )
     {
         INPUT input;
         RECT rect;
@@ -72,30 +75,39 @@ private:
 
         rect = getDesktopResolution();
 
-        input.mi.dx = ( coord.x * ( 0xFFFF / rect.right ) );
-        input.mi.dy = ( coord.y * ( 0xFFFF / rect.bottom ) );
+        input.mi.dx = ( newPos.x * ( 0xFFFF / rect.right ) );
+        input.mi.dy = ( newPos.y * ( 0xFFFF / rect.bottom ) );
         input.mi.dwFlags = ( MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE );
 
         return SendInput( 1, &input, sizeof( INPUT ) );
     }
 
 public:
-    static UINT execute( EventType eventType, void *eventData = nullptr )
+    static bool execute( Events events )
     {
-        switch( eventType )
+        for( const auto &event : events )
         {
-            case MOUSE_LEFT_DOWN: 
-            case MOUSE_LEFT_UP: 
-            case MOUSE_RIGHT_DOWN: 
-            case MOUSE_RIGHT_UP: 
-            case MOUSE_MIDDLE_DOWN: 
-            case MOUSE_MIDDLE_UP: 
-            case MOUSE_X_DOWN: 
-            case MOUSE_X_UP: 
-                return mouseBtnEvent( eventType );
+            switch( event.type )
+            {
+                case MOUSE_MOVE:
+                {
+                    if( mouseMove( event.mouseMoveTo ) == 0 )
+                        return false;
+                } break;
 
-            case MOUSE_MOVE:
-                return mouseMove( *( static_cast<Coordination*>( eventData ) ) );
+                case MOUSE_LEFT_DOWN:
+                case MOUSE_LEFT_UP:
+                case MOUSE_RIGHT_DOWN:
+                case MOUSE_RIGHT_UP:
+                case MOUSE_MIDDLE_DOWN:
+                case MOUSE_MIDDLE_UP:
+                case MOUSE_X_DOWN:
+                case MOUSE_X_UP:
+                {
+                    if( mouseBtnEvent( event.type ) == 0 )
+                        return false;
+                } break;
+            }
         }
 
         return 0;
