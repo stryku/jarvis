@@ -13,5 +13,8 @@ enum InputEventType
     MOUSE_SCROLL_DOWN,
     MOUSE_SCROLL_UP,
 
-    MOUSE_MOVE
+    MOUSE_MOVE,
+
+    KB_DOWN,
+    KB_UP
 };
