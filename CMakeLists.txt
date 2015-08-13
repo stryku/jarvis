@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.1)
 
 project (Jarvis)
 
+
+include_directories (${CMAKE_CURRENT_SOURCE_DIR}/include)
 include_directories (${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 include (Local.cmake)
