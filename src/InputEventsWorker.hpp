@@ -4,9 +4,14 @@
 #include "SimpleXmlParser.hpp"
 #include "log.h"
 #include "SimpleWorkerResult.hpp"
-#include "InputEvent.hpp"
-#include "InputEventTypeMap.hpp"
-#include "EventsFactory.hpp"
+
+#ifdef WIN32
+#include "windows/EventsFactory.hpp"
+#endif
+
+#ifdef __linux__
+#include "linux/EventsFactory.hpp"
+#endif
 
 #include <string>
 #include <mutex>
@@ -17,10 +22,12 @@ class InputEventsWorker : public Worker
 private:
     typedef std::shared_ptr<WorkerResult> WorkerResultPtr;
     typedef std::shared_ptr<AbstractEvent> AbstractEventPtr;
+    typedef std::uniqie_ptr<AbstractEventFactory> EventsFactoryPtr;
     
     static const size_t defSleepTime = 2000;
 
     static InputEventTypeMap eventTypeMap;
+    static EventsFactoryPtr eventsFactory;
 
     struct WorkData
     {
@@ -113,7 +120,7 @@ private:
                             auto eventData = SimpleXmlParser::wholeChildrenValue( "data",
                                                                                   child.c_str() );
 
-                            return EventsFactory::getEvent( type, eventData );
+                            return eventsFactory->getEvent( type, eventData );
                         } );
 
 
@@ -126,7 +133,9 @@ private:
     }
 
 public:
-    InputEventsWorker() {}
+    InputEventsWorker() :
+        eventsFactory( std::make_shared<EventsFactory>() )
+    {}
     ~InputEventsWorker() {}
 
     WorkerResultPtr doWork( const char *data )
