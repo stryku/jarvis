@@ -5,8 +5,8 @@
 #include <vector>
 #include <memory>
 
-#include <rapidxml\rapidxml.hpp>
-#include <rapidxml\rapidxml_print.hpp>
+#include <rapidxml/rapidxml.hpp>
+#include <rapidxml/rapidxml_print.hpp>
 
 #include <Task.hpp>
 #include <TaskTypeMap.hpp>
