@@ -3,7 +3,7 @@
 #include "Worker.hpp"
 #include "SimpleXmlParser.hpp"
 #include "log.h"
-#include "SimpleWorkerResult.hpp>"
+#include "SimpleWorkerResult.hpp"
 
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem.hpp>
