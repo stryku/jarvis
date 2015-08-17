@@ -5,7 +5,7 @@
 
 #include <memory>
 
-class EventsFactory
+class InputEventsFactory 
 {
     private:
         typedef std::shared_ptr<AbstractEvent> EventPtr;
@@ -33,6 +33,9 @@ class EventsFactory
                 case MOUSE_X_DOWN: 
                 case MOUSE_X_UP: 
                     return std::make_shared<MouseBtnEvent>( type );
+
+                default:
+                    return nullptr;
             }
         }
 };

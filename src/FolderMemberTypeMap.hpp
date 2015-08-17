@@ -5,7 +5,7 @@
 
 #include <string>
 
-class FolderMemberTypeMap : public ConstMap<const std::string, FolderMemberType>
+class FolderMemberTypeMap : public ConstMap<std::string, FolderMemberType>
 {
 private:
     void init( );

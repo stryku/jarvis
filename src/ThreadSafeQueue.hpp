@@ -7,20 +7,23 @@
 #include <thread>
 #include <mutex>
 #include <condition_variable>
+#include <algorithm>
 
 template<class T>
-class ThreadSafeQueue : public std::queue<T>
+class ThreadSafeQueue 
 {
 private:
     typedef typename
         std::queue<T>::container_type::const_iterator const_iterator;
+
+    std::deque<T> c;   
 
 public:
     T pop()
     {
         std::unique_lock<std::mutex> mlock( mutex_ );
 
-        while( c.empty( ) )
+        while( c.empty() )
             cond_.wait( mlock );
 
         auto item = c.front( );
@@ -31,28 +34,28 @@ public:
     void pop( T& item )
     {
         std::unique_lock<std::mutex> mlock( mutex_ );
-        while( c.empty( ) )
+        while( c.empty() )
         {
             cond_.wait( mlock );
         }
-        item = c.pop_front( );
-        c.pop( );
+        item = c.front();
+        c.pop_front();
     }
 
     void push( const T& item )
     {
         std::unique_lock<std::mutex> mlock( mutex_ );
         c.push_back( item );
-        mlock.unlock( );
-        cond_.notify_one( );
+        mlock.unlock();
+        cond_.notify_one();
     }
 
     void push( T&& item )
     {
         std::unique_lock<std::mutex> mlock( mutex_ );
         c.push_back( std::move( item ) );
-        mlock.unlock( );
-        cond_.notify_one( );
+        mlock.unlock();
+        cond_.notify_one();
     }
 
     void erase( const T &item )
@@ -61,7 +64,7 @@ public:
 
         auto it = find( item );
 
-        if( it != c.end( ) )
+        if( it != c.end() )
             c.erase( it );
 
         mlock.unlock();

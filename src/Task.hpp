@@ -8,7 +8,6 @@
 #include <string>
 #include <ostream>
 #include <mutex>
-#include <atomic>
 
 class Task
 {
@@ -16,9 +15,9 @@ private:
     typedef std::shared_ptr<WorkerResult> WorkerResultPtr;
 
     static TaskTypeMap taskTypeMap;
-    static std::atomic<uint32_t> tasksCount;
+    static std::size_t tasksCount;
 
-    uint32_t idNumber;
+    std::size_t idNumber;
 
     void assignIdNumber()
     {
@@ -60,7 +59,7 @@ public:
 
     }
 
-    size_t getIdNumber() const
+    std::size_t getIdNumber() const
     {
         return idNumber;
     }

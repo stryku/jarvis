@@ -1,5 +1,7 @@
 #pragma once
 
+#include "InputEventType.h"
+
 class AbstractEvent
 {
 public:

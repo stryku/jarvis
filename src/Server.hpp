@@ -6,7 +6,7 @@
 #include "MessagesToSendManager.hpp"
 #include "log.h"
 
-#include <future>
+#include <thread>
 
 #include <zmq.hpp>
 
@@ -28,12 +28,13 @@ public:
 
         MessageSender::setRouter( &router );
 
-        std::future<void>( std::async( MessageSender::run ) );
-        std::future<void>( std::async( MessagesToSendManager::safeSenderMethod ) );
-        std::future<void>( std::async( RequestHandler::run ) );
+        std::thread{ MessageSender::run }.detach();
+        std::thread{ MessagesToSendManager::safeSenderMethod }.detach();
+        std::thread{ RequestHandler::run }.detach();
 
         while( true )
         {
+            LOG( "Server: waiting for request" );
             router.recv( &identity );
             router.recv( &msg );
 

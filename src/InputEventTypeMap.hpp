@@ -5,7 +5,7 @@
 
 #include <string>
 
-class InputEventTypeMap : public ConstMap<const std::string, InputEventType>
+class InputEventTypeMap : public ConstMap<std::string, InputEventType>
 {
 private:
     void init();

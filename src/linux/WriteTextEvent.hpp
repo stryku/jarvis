@@ -1,86 +1,69 @@
 #pragma once
 
-#include "InputEvent.hpp"
-#include "SimpleXmlParser.hpp"
+#include "InputEvents.hpp"
+#include "../SimpleXmlParser.hpp"
 
 #include <cstdlib>
 
 class WriteTextEvent : public AbstractEvent
 {
-private:
-    typedef std::shared_ptr<InputEvent> EventPtr;
-    typedef std::vector<EventPtr> Events;
+    private:
+        typedef std::shared_ptr<InputEvent> EventPtr;
+        typedef std::vector<EventPtr> Events;
 
-    Events events;
+        Events events;
 
-    static void insertInputsForKey( int key, Events &dest )
-    {
-        bool needReleaseShift = false;
-
-        if( isupper( key ) )
+        static void insertInputsForKey( int key, Events &dest )
         {
-            needReleaseShift = true;
-            dest.push_back( std::make_shared<KbEvent>( KB_DOWN, VK_SHIFT ) );
+            dest.push_back( std::make_shared<KbEvent>( KB_DOWN, key ) );
+            dest.push_back( std::make_shared<KbEvent>( KB_UP, key ) );
         }
-        else
-            key = toupper( key );
 
-        dest.push_back( std::make_shared<KbEvent>( KB_DOWN, key ) );
-        dest.push_back( std::make_shared<KbEvent>( KB_UP, key ) );
-
-        if( needReleaseShift )
-            dest.push_back( std::make_shared<KbEvent>( KB_UP, VK_SHIFT ) );
-    }
-
-    static int decodeSpecialKey( int c )
-    {
-        switch( c )
+        static void str_replace( std::string &s, 
+                                 const std::string &search, 
+                                 const std::string &replace ) 
         {
-            case '1': return '<';
-            case '2': return '>';
+            for( size_t pos = 0; ; pos += replace.length() ) 
+            {
+                pos = s.find( search, pos );
+                if( pos == std::string::npos ) break;
+
+                s.erase( pos, search.length() );
+                s.insert( pos, replace );
+            }
         }
-    }
-    //todo
-    static int getSpecialKey( char *code )
-    {
-        /*int intCode = std::atoi( code );
 
-        if( isdigit( c ) )
-            return decodeSpecialKey( c );
-
-        return c;*/
-
-        return 0;
-    }
-
-    void prepareEvents( const std::string &eventDataInXml )
-    {
-        auto text = SimpleXmlParser::extractChildrenValue( "text", eventDataInXml.c_str() );
-
-        for( size_t i = 0; i < text.length(); ++i )
+        static void prepareText( std::string &text )
         {
-            int key = text[i];
-
-            if( text[i] == '\\' )
-                key = getSpecialKey( &text[++i] );
-
-            insertInputsForKey( key, events );
+            str_replace( text, "\\0", "<" );
+            str_replace( text, "\\1", ">" );
+            str_replace( text, "\\\\", "\\" );
         }
-    }
 
-public:
-    WriteTextEvent( const std::string &eventDataInXml )
-    {
-        prepareEvents( eventDataInXml );
-    }
-    ~WriteTextEvent() {}
+        void prepareEvents( const std::string &eventDataInXml )
+        {
+            auto text = SimpleXmlParser::extractChildrenValue( "text", 
+                                                               eventDataInXml.c_str() );
 
-    bool execute()
-    {
-        for( const auto &event : events )
-            if( !event->execute() )
-                return false;
+            prepareText( text );
 
-        return true;
-    }
+            for( char &key : text )
+                insertInputsForKey( key, events );
+        }
+
+    public:
+        WriteTextEvent( const std::string &eventDataInXml )
+        {
+            prepareEvents( eventDataInXml );
+        }
+        ~WriteTextEvent() {}
+
+        bool execute()
+        {
+            for( const auto &event : events )
+                if( !event->execute() )
+                    return false;
+
+            return true;
+        }
 };

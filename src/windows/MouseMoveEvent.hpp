@@ -1,8 +1,10 @@
 #pragma once
 
 #include "InputEvent.hpp"
-#include "Point2d.hpp"
-#include "SimpleXmlParser.hpp"
+#include "../Point2d.hpp"
+#include "../SimpleXmlParser.hpp"
+
+#include <windows.h>
 
 class MouseMoveEvent : public InputEvent
 {
@@ -13,21 +15,6 @@ private:
         GetWindowRect( GetDesktopWindow(), &desktop );
 
         return { desktop.right, desktop.bottom };
-    }
-
-    static Point2d<size_t> extractData( const std::string &eventDataInXml )
-    {
-        Point2d<size_t> point;
-        std::string strX, strY;
-
-        strX = SimpleXmlParser::extractChildren( "x", eventDataInXml.c_str() );
-        strY = SimpleXmlParser::extractChildren( "y", eventDataInXml.c_str() );
-
-        //todo zmiana przy zmianie 
-        point.x = std::atoi( strX.c_str() );
-        point.y = std::atoi( strY.c_str() );
-
-        return point;
     }
 
     void prepareInput()

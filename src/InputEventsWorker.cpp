@@ -1,4 +1,4 @@
-#include <InputEventsWorker.hpp>
+#include "InputEventsWorker.hpp"
 
 InputEventTypeMap InputEventsWorker::eventTypeMap;
-InputEventsWorker::EventFactory InputEventsWorker::eventsFactory;
+InputEventsWorker::EventsFactoryPtr InputEventsWorker::eventsFactory;

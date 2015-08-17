@@ -68,8 +68,8 @@ class VolumeChanger : public Worker
         }
 #endif
 
-#ifndef __linux__
-        bool ChangeVolume(long volume)
+#ifdef __linux__
+        bool ChangeVolume( double volume )
         {
             long min, max;
             snd_mixer_t *handle;

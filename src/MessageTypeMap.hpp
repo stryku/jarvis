@@ -6,7 +6,7 @@
 
 #include <string>
 
-class MessageTypeMap : public ConstMap<const std::string, MessageType>
+class MessageTypeMap : public ConstMap<std::string, MessageType>
 {
 private:
     void init();

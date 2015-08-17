@@ -48,7 +48,7 @@ private:
         Semaphore semaphore( 0 );
 
         auto threadFunction = [&semaphore]( const TaskPtr taskPtr,
-                                  zmq::message_t &_id )
+                                  zmq::message_t &_id )->void
                               {
                                   zmq::message_t id;
                                   id.copy( &_id );
@@ -59,7 +59,7 @@ private:
                                   sendResult( taskPtr, id );
                               };
 
-        std::thread thread( threadFunction, taskPtr,  std::move( id ) );
+        std::thread thread( threadFunction, taskPtr, std::ref( id ) );
 
         semaphore.wait();
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#ifndef WIN32
+#ifdef WIN32
 #include "windows/InputEvents.hpp"
 #endif // WIN32
 

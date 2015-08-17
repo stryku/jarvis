@@ -16,7 +16,7 @@ protected:
 
     void add( const Left &left, const Right &right )
     {
-        map.insert( Map::value_type( left, right ) );
+        map.insert( typename Map::value_type( left, right ) );
     }
 
     Map map;
@@ -35,7 +35,7 @@ public:
 
    // getByValue
 
-    Left& operator[]( const Right &value )
+    const Left& operator[]( const Right &value )
     {
         return map.right.at( value );
     }

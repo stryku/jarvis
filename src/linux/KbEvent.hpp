@@ -1,24 +1,45 @@
 #pragma once
 
-#include "../AbstractEvent.hpp"
-#include "SimpleXmlParser.hpp"
+#include "InputEvent.hpp"
+#include "../InputEventDataExtractor.hpp"
 
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
-class KbEvent : public AbstractEvent
+#include <cctype>
+
+class KbEvent : public InputEvent
 {
     private:
+        typedef InputEventDataExtractor DataExtractor;
+
         XKeyEvent event;
-        Display *display = nullptr;
         Window root;
         Window winFocus;
+        int mask;
+        int key;
 
-        static int extractKey( const std::string &eventDataInXml )
+        static int getXEventMask( InputEventType type )
         {
-            auto kbKeyStr = SimpleXmlParser::extractChildrenValue( "key", eventDataInXml.c_str() );
+            switch( buttonDirection( type ) )
+            {
+                case UP: return KeyPressMask;
+                case DOWN: return KeyReleaseMask;
 
-            return static_cast<int>( kbKeyStr[0] );
+                default: return -1;
+            }
+        }
+
+
+        static int getXEventType( InputEventType type )
+        {
+            switch( buttonDirection( type ) )
+            {
+                case UP: return KeyPress;
+                case DOWN: return KeyRelease;
+
+                default: return -1;
+            }
         }
 
         static XKeyEvent createKeyEvent( Display *display, 
@@ -43,58 +64,70 @@ class KbEvent : public AbstractEvent
             event.keycode     = XKeysymToKeycode(display, keycode);
             event.state       = modifiers;
 
-            if(press)
-                event.type = KeyPress;
-            else
-                event.type = KeyRelease;
+            if( isupper( keycode ) )
+                event.state |= XK_Shift_L;
 
             return event;
         }
 
-        void prepareEvent( InputEventType type, int key )
+        void init()
         {
-            int    revert;
-            display = XOpenDisplay(0);
+            int revert;
 
-            if( display == nullptr )
-                return;
-
-            winRoot = XDefaultRootWindow(display);
+            root = XDefaultRootWindow(display);
 
             XGetInputFocus(display, &winFocus, &revert);
 
+
             event = createKeyEvent( display, 
-                                    winFocus, 
-                                    winRoot, 
-                                    type == KB_DOWN, 
-                                    key, 
-                                    0);
+                    winFocus, 
+                    root,
+                    getXEventType( type ) == KeyPress,
+                    key, 
+                    0 );
+
+            event.type = getXEventType( type );
         }
 
+        bool prepare()
+        {
+            if( !prepareDisplay() )
+                return false;
+
+            init();
+
+            return true;
+        }
+
+
     public:
-        KbEvent( InputEventType type, int key ) 
-        {
-            prepareInput( type );
-            input.ki.wVk = key;
-        }
-        KbEvent( InputEventType type, const std::string &eventDataInXml )
-        {
-            prepareInput( type );
-            input.ki.wVk = extractKey( eventDataInXml );
-        }
+        KbEvent( InputEventType type, int key ) :
+            InputEvent( type ),
+            key( key )
+    {
+    }
+        KbEvent( InputEventType type, const std::string &eventDataInXml ) :
+            InputEvent( type )
+            {
+                key = DataExtractor::kbKey( eventDataInXml );
+            }
         ~KbEvent() 
         {
-            if( display != nullptr )
-                XCloseDisplay(display);
         }
 
         bool execute()
         {
-            if( display == nullptr )
+            if( !prepare() )
                 return false;
 
-            XSendEvent(event.display, event.window, True, KeyPressMask, (XEvent *)&event);
+            int result = XSendEvent( event.display, 
+                    event.window, 
+                    True, 
+                    mask, 
+                    reinterpret_cast<XEvent*>( &event ) );
 
-            return true;
+            closeDisplay();
+
+            return result != 0;
         }
 };

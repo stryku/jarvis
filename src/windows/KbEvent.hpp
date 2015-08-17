@@ -1,11 +1,13 @@
 #pragma once
 
 #include "InputEvent.hpp"
-#include "SimpleXmlParser.hpp"
+#include "../InputEventDataExtractor.hpp"
 
 class KbEvent : public InputEvent
 {
 private:
+    typedef InputEventDataExtractor DataExtractor;
+
     void prepareInput( InputEventType type )
     {
         input.type = INPUT_KEYBOARD;
@@ -13,13 +15,6 @@ private:
         input.ki.time = 0;
         input.ki.dwExtraInfo = 0;
         input.ki.dwFlags = getWindowsEventDwFlags( type );
-    }
-
-    static int extractKey( const std::string &eventDataInXml )
-    {
-        auto kbKeyStr = SimpleXmlParser::extractChildrenValue( "key", eventDataInXml.c_str() );
-
-        return static_cast<int>( kbKeyStr[0] );
     }
 
 public:
@@ -31,7 +26,7 @@ public:
     KbEvent( InputEventType type, const std::string &eventDataInXml )
     {
         prepareInput( type );
-        input.ki.wVk = extractKey( eventDataInXml );
+        input.ki.wVk = DataExtractor::extractKbKey( eventDataInXml );
     }
     ~KbEvent() {}
 };

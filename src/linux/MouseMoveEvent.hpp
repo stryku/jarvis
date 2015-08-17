@@ -1,57 +1,61 @@
 #pragma once
 
 #include "InputEvent.hpp"
-#include "Point2d.hpp"
-#include "SimpleXmlParser.hpp"
+#include "../InputEventDataExtractor.hpp"
 
 class MouseMoveEvent : public InputEvent
 {
-private:
-    static Point2d<size_t> monitorRect()
-    {
-        RECT desktop;
-        GetWindowRect( GetDesktopWindow(), &desktop );
+    private:
+        typedef InputEventDataExtractor DataExtractor;
 
-        return { desktop.right, desktop.bottom };
-    }
+        Point2d<size_t> newCoord;
 
-    static Point2d<size_t> extractData( const std::string &eventDataInXml )
-    {
-        Point2d<size_t> point;
-        std::string strX, strY;
+        Point2d<size_t> currentCoord()
+        {
+            if( display == nullptr )
+                return Point2d<size_t>();
 
-        strX = SimpleXmlParser::extractChildren( "x", eventDataInXml.c_str() );
-        strY = SimpleXmlParser::extractChildren( "y", eventDataInXml.c_str() );
+            XQueryPointer( display, 
+                           DefaultRootWindow (display),
+                           &event.xbutton.root, 
+                           &event.xbutton.window,
+                           &event.xbutton.x_root, 
+                           &event.xbutton.y_root,
+                           &event.xbutton.x, 
+                           &event.xbutton.y,
+                           &event.xbutton.state );
 
-        //todo zmiana przy zmianie 
-        point.x = std::atoi( strX.c_str() );
-        point.y = std::atoi( strY.c_str() );
+            return { static_cast<size_t>( event.xbutton.x ), 
+                     static_cast<size_t>( event.xbutton.y ) };
+        }
 
-        return point;
-    }
+    public:
+        MouseMoveEvent( const std::string &eventDataInXml ) :
+            InputEvent( MOUSE_MOVE )
+        {
+            newCoord = DataExtractor::newMouseCoord( eventDataInXml );
+        }
 
-    void prepareInput()
-    {
-        input.type = INPUT_MOUSE;
-        input.mi.mouseData = 0;
-        input.mi.dwFlags = MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE;
-        input.mi.time = 0;
-        input.mi.dwExtraInfo = 0;
-    }
+        bool execute()
+        {
+            if( !prepare() )
+                return false;
 
-    void initFromXml( const std::string &eventDataInXml )
-    {
-        auto newPos = extractData( eventDataInXml );
-        auto displayRect = monitorRect();
+            auto current = currentCoord();
 
-        input.mi.dx = ( newPos.x * ( 0xFFFF / displayRect.x ) );
-        input.mi.dy = ( newPos.y * ( 0xFFFF / displayRect.y ) );
-    }
+            XWarpPointer( display, None, None, 0,0,0,0, 
+                          -current.x, 
+                          -current.y );
 
-public:
-    MouseMoveEvent( const std::string &eventDataInXml )
-    {
-        prepareInput();
-        initFromXml( eventDataInXml );
-    }
+            XWarpPointer( display, None, None, 0,0,0,0, 
+                          newCoord.x, 
+                          newCoord.y );
+
+            XFlush( display );
+            usleep( 1 );
+
+            closeDisplay();
+
+            return true;
+        }
 };
