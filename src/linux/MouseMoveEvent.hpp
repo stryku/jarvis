@@ -38,7 +38,7 @@ class MouseMoveEvent : public InputEvent
 
         bool execute()
         {
-            if( !prepare() )
+            if( display == nullptr )
                 return false;
 
             auto current = currentCoord();
@@ -53,8 +53,6 @@ class MouseMoveEvent : public InputEvent
 
             XFlush( display );
             usleep( 1 );
-
-            closeDisplay();
 
             return true;
         }

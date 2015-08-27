@@ -83,7 +83,7 @@ class MouseBtnEvent : public InputEvent
 
         bool prepare()
         {
-            if( !prepareDisplay() )
+            if( display == nullptr )
                 return false;
 
             init();
@@ -111,14 +111,13 @@ class MouseBtnEvent : public InputEvent
 
             if ( result == 0 )
             {
+                LOG("MouseBtnEvent::execute fail");
                 closeDisplay();
                 return false;
             }
 
             XFlush( display );
             usleep( 1 );
-
-            closeDisplay();
 
             return true;
         }

@@ -2,11 +2,14 @@
 
 #include "InputEvent.hpp"
 #include "../InputEventDataExtractor.hpp"
+#include "log.h";
 
 #include <X11/Xlib.h>
 #include <X11/keysym.h>
 
 #include <cctype>
+#include <thread>
+#include <chrono>
 
 class KbEvent : public InputEvent
 {
@@ -42,6 +45,13 @@ class KbEvent : public InputEvent
             }
         }
 
+        static bool needShift( const char c )
+        {
+            static const std::string charsThatNeedShift = "QWERTYUIOPASDFGHJKLZXCVBNM~!@#$%^&*()_+{}|:\"<>?";
+
+            return charsThatNeedShift.find( c ) != std::string::npos;
+        }
+
         static XKeyEvent createKeyEvent( Display *display, 
                 Window &win,
                 Window &winRoot, 
@@ -63,8 +73,9 @@ class KbEvent : public InputEvent
             event.same_screen = True;
             event.keycode     = XKeysymToKeycode(display, keycode);
             event.state       = modifiers;
+            event.send_event  = true;
 
-            if( isupper( keycode ) )
+            if( needShift( keycode ) && press )
                 event.state |= XK_Shift_L;
 
             return event;
@@ -91,7 +102,7 @@ class KbEvent : public InputEvent
 
         bool prepare()
         {
-            if( !prepareDisplay() )
+            if( display == nullptr )
                 return false;
 
             init();
@@ -118,7 +129,11 @@ class KbEvent : public InputEvent
         bool execute()
         {
             if( !prepare() )
+            {
                 return false;
+            }
+
+            LOG("executing: "<<(char)key<<" "<<key<<", " <<event.keycode);
 
             int result = XSendEvent( event.display, 
                     event.window, 
@@ -126,7 +141,7 @@ class KbEvent : public InputEvent
                     mask, 
                     reinterpret_cast<XEvent*>( &event ) );
 
-            closeDisplay();
+            std::this_thread::sleep_for( std::chrono::milliseconds( 10 ) );
 
             return result != 0;
         }

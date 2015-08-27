@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../AbstractEvent.hpp"
+#include "../log.h"
 
 #include <X11/Xlib.h>
 
@@ -9,9 +10,12 @@
 
 class InputEvent : public AbstractEvent
 {
+    private:
+        static size_t displayRef;
+
     protected:
         XEvent event;
-        Display *display;
+        static Display *display;
         InputEventType type;
 
         enum ButtonDirection
@@ -41,23 +45,9 @@ class InputEvent : public AbstractEvent
                     return UNKNOW;
             }
         }
-        void closeDisplay()
-        {
-            if( display != nullptr )
-                XCloseDisplay(display);
+        void closeDisplay();
 
-        }
-
-        bool prepareDisplay()
-        {
-            display = XOpenDisplay( nullptr );
-
-            if( display == nullptr )
-                return false;
-
-            return true;
-
-        }
+        bool prepareDisplay();
 
         virtual bool prepare()
         {
@@ -67,9 +57,12 @@ class InputEvent : public AbstractEvent
     public:
         InputEvent( InputEventType type ) :
             type( type )
-        {
-        }
+    {
+        prepareDisplay();
+    }
         virtual ~InputEvent() 
         {
+            closeDisplay();
         }
 };
+

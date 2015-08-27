@@ -20,6 +20,7 @@ private:
     typedef std::unique_ptr<InputEventsFactory> EventsFactoryPtr;
     
     static const size_t defSleepTime = 2000;
+    
 
     static InputEventTypeMap eventTypeMap;
     static EventsFactoryPtr eventsFactory;

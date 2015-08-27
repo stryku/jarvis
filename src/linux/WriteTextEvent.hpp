@@ -33,11 +33,16 @@ class WriteTextEvent : public AbstractEvent
             }
         }
 
+
+
+        
         static void prepareText( std::string &text )
         {
-            str_replace( text, "\\0", "<" );
-            str_replace( text, "\\1", ">" );
-            str_replace( text, "\\\\", "\\" );
+            str_replace( text, "&lt;", "<" );
+            str_replace( text, "&gt;", ">" );
+            str_replace( text, "&amp;", "&" );
+            str_replace( text, "&apos;", "'" );
+            str_replace( text, "&quot;", "\"" );
         }
 
         void prepareEvents( const std::string &eventDataInXml )
@@ -48,7 +53,10 @@ class WriteTextEvent : public AbstractEvent
             prepareText( text );
 
             for( char &key : text )
+            {
+                LOG("key: "<< key <<" = "<<(int)key);
                 insertInputsForKey( key, events );
+            }
         }
 
     public:
