@@ -68,7 +68,7 @@ public:
             handle( queue.pop( ) );
     }
 
-    static void newRequest( PersonalMessage &msg )
+    static void newRequest( const PersonalMessage &msg )
     {
         LOG( "Received msg" << std::endl << static_cast<const char*>( msg.msg.data() ) );
 

@@ -1,7 +1,7 @@
-#include <Task.hpp>
+#include "Task.hpp"
 
 TaskTypeMap Task::taskTypeMap = TaskTypeMap( );
-std::atomic<uint32_t> Task::tasksCount = 0;
+std::size_t Task::tasksCount = 0;
 
 Task::Task( TaskType type, std::string data, std::string id ) :
     type( type ),

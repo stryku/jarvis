@@ -6,7 +6,7 @@
 
 #include <string>
 
-class TaskTypeMap : public ConstMap<const std::string, TaskType>
+class TaskTypeMap : public ConstMap<std::string, TaskType>
 {
 private:
 

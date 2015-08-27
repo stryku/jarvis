@@ -28,6 +28,8 @@ std::string XmlMessage::toStdString() const
 XmlMessage::ZmqMessagePtr XmlMessage::toZmqMessage( ) const
 {
     auto strMessage = toStdString() + '\0';
-    return std::make_shared<zmq::message_t>( strMessage.begin(), strMessage.end() );
+    return std::make_shared<zmq::message_t>( const_cast<char*>(strMessage.c_str() ),
+                                             strMessage.size(),
+                                             nullptr );
 }
 

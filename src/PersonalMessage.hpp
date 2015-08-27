@@ -14,20 +14,20 @@ struct PersonalMessage
 
     PersonalMessage( const zmq::message_t &identity_, const zmq::message_t &msg_ )
     {
-        identity.copy( &identity_ );
-        msg.copy( &msg_ );
+        identity.copy( const_cast<zmq::message_t*>( &identity_ ) );
+        msg.copy( const_cast<zmq::message_t*>( &msg_ ) );
     }
 
     PersonalMessage( const zmq::message_t &identity_, const ZmqMessagePtr &msg_ )
     {
-        identity.copy( &identity_ );
+        identity.copy( const_cast<zmq::message_t*>( &identity_ ) );
         msg.copy( msg_.get() );
     }
 
     PersonalMessage( const PersonalMessage &req )
     {
-        identity.copy( &req.identity );
-        msg.copy( &req.msg );
+        identity.copy( const_cast<zmq::message_t*>( &req.identity ) );
+        msg.copy( const_cast<zmq::message_t*>( &req.msg ) );
     }
 };
 #endif
